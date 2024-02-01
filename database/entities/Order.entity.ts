@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { CustomerEntity } from './Customer.entity';
 import { StatusEntity } from './Status.entity';
+import { OrderDetailEntity } from './OrderDetail.entity';
 
 @Entity('orders')
 export class OrderEntity {
@@ -71,4 +73,8 @@ export class OrderEntity {
   @OneToOne(() => StatusEntity)
   @JoinColumn({ name: 'status_id' })
   status: StatusEntity;
+
+  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order)
+  @JoinColumn({ name: 'id' })
+  orders_details: OrderDetailEntity[];
 }
