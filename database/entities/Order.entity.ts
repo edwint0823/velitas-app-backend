@@ -16,10 +16,10 @@ export class OrderEntity {
   id: number;
 
   @Column({
-    type: 'int',
+    type: 'varchar',
     unique: true,
   })
-  code: number;
+  code: string;
 
   @Column({
     type: 'float',

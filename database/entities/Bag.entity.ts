@@ -1,22 +1,22 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('bags_inventory_need')
-export class BagInventoryNeedEntity {
+@Entity('bags')
+export class BagEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
-    type: 'int',
+    type: 'varchar',
   })
-  bag_id: number;
+  name: string;
 
   @Column({
     type: 'int',
   })
-  order_id: number;
+  capacity: number;
 
   @Column({
-    type: 'int',
+    type: 'boolean',
   })
-  quantity: number;
+  available: boolean;
 }

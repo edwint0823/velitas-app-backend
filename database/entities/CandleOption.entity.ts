@@ -4,10 +4,13 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { CandleTypeEntity } from './CandleType.entity';
+import { PackNameEntity } from './PackName.entity';
 
-@Entity('candle_types')
+@Entity('candle_options')
 export class CandleOptionEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -38,11 +41,23 @@ export class CandleOptionEntity {
   is_pack: boolean;
 
   @Column({
+    type: 'boolean',
+  })
+  visible: boolean;
+
+  @Column({
     type: 'int',
   })
   candle_type_id: number;
 
-  @OneToOne(() => CandleTypeEntity)
+  @ManyToOne(
+    () => CandleTypeEntity,
+    (candle_type) => candle_type.candle_options,
+  )
   @JoinColumn({ name: 'candle_type_id' })
   candle_type: CandleTypeEntity;
+
+  @OneToMany(() => PackNameEntity, (pack_names) => pack_names.candle_option)
+  @JoinColumn({ name: 'id' })
+  pack_names: PackNameEntity[];
 }
