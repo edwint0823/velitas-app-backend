@@ -34,6 +34,12 @@ export class BagsInventoryMovements1707664397307 implements MigrationInterface {
             type: 'boolean',
           },
           {
+            name: 'observation',
+            type: 'text',
+            isNullable: true,
+            default: "'Sin observaciones'",
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
