@@ -19,7 +19,7 @@ export class Orders1706533928202 implements MigrationInterface {
           },
           {
             name: 'code',
-            type: 'int',
+            type: 'varchar(6)',
             isUnique: true,
           },
           {

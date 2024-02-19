@@ -8,7 +8,7 @@ export class BagInventoryNeedEntity {
   @Column({
     type: 'int',
   })
-  bag_inventory_id: number;
+  bag_id: number;
 
   @Column({
     type: 'int',
