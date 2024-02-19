@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayNotEmpty,
   IsBoolean,
   IsEmail,
   IsIn,
@@ -146,6 +147,7 @@ export class createOrderDto {
   customer: customerInfoDto;
 
   @ApiProperty({ type: [Candle], description: 'Lista de velas' })
+  @ArrayNotEmpty({ message: 'Debe agregar al menos una vela al pedido' })
   @ValidateNested({ each: true })
   candles: Candle[];
 }

@@ -37,13 +37,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
       tempMessage = details;
     }
     this.logger.error(exception.message, {
-      statusCode: status,
+      status,
       path: request.url,
       detail: tempDetails,
       message: tempMessage,
     });
     response.status(status).json({
-      statusCode: status,
+      status,
       timestamp: new Date().toISOString(),
       path: request.url,
       detail: tempDetails,

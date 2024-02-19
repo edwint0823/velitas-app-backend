@@ -135,11 +135,13 @@ export class OrderService implements IOrderService {
 
         if (RemindCandles > 0) candleToPackAlone += RemindCandles;
 
-        temporaryBagsNeed.push({
-          bag_id: individualBag.id,
-          quantity: candleToPackAlone,
-          order_id: undefined,
-        });
+        if (candleToPackAlone > 0) {
+          temporaryBagsNeed.push({
+            bag_id: individualBag.id,
+            quantity: candleToPackAlone,
+            order_id: undefined,
+          });
+        }
 
         for (const bag of temporaryBagsNeed) {
           const indexBagsInventoryNeed =

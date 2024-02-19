@@ -17,6 +17,8 @@ async function bootstrap() {
   app.useGlobalFilters(new QueryExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Velitas App API Server')
     .setDescription('API Server Documentation')
