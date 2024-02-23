@@ -20,6 +20,7 @@ export class CandleOptionRepository
           id: true,
           name: true,
           url_image: true,
+          is_vip_pack: true,
           is_pack: true,
           bulk_price: true,
           retail_price: true,

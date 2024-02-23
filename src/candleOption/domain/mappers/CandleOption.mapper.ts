@@ -27,6 +27,7 @@ export class CandleOptionMapper {
             name: candle.name,
             urlImage: candle.url_image,
             isPack: candle.is_pack,
+            isVipPack: candle.is_vip_pack,
             packNames: candle.pack_names.map((pack) => pack.name),
             bulkPrice: candle.bulk_price,
             retailPrice: candle.retail_price,

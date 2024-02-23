@@ -3,6 +3,7 @@ interface IItemOption {
   name: string;
   urlImage: string;
   isPack: boolean;
+  isVipPack: boolean;
   packNames: Array<string>;
   bulkPrice: number;
   retailPrice: number;

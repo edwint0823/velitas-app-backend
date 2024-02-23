@@ -43,6 +43,11 @@ export class CandleOptionEntity {
   @Column({
     type: 'boolean',
   })
+  is_vip_pack: boolean;
+
+  @Column({
+    type: 'boolean',
+  })
   visible: boolean;
 
   @Column({
