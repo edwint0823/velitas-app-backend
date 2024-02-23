@@ -3,4 +3,6 @@ import { createOrderResponseDomain } from '../model/out/createOrderResponseDomai
 
 export interface IOrderService {
   create(orderInfo: createOrderDto): Promise<createOrderResponseDomain>;
+
+  findByCode(code: string): Promise<any>;
 }

@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { OrderEntity } from './Order.entity';
+import { CandleOptionEntity } from './CandleOption.entity';
 
 @Entity('orders_detail')
 export class OrderDetailEntity {
@@ -45,4 +46,8 @@ export class OrderDetailEntity {
   @ManyToOne(() => OrderEntity)
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity;
+
+  @ManyToOne(() => CandleOptionEntity)
+  @JoinColumn({ name: 'candle_option_id' })
+  candle_option: CandleOptionEntity;
 }

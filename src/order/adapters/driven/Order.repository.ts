@@ -68,4 +68,19 @@ export class OrderRepository
       },
     );
   }
+
+  getOrderAndDetailsByCode(code: string): Promise<OrderEntity> {
+    return this.findOne({
+      relations: {
+        orders_details: {
+          candle_option: true,
+        },
+        status: true,
+        customer: true,
+      },
+      where: {
+        code: code,
+      },
+    });
+  }
 }

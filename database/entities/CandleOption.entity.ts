@@ -3,12 +3,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
 } from 'typeorm';
 import { CandleTypeEntity } from './CandleType.entity';
 import { PackNameEntity } from './PackName.entity';
+import { OrderDetailEntity } from './OrderDetail.entity';
 
 @Entity('candle_options')
 export class CandleOptionEntity {
@@ -43,6 +43,11 @@ export class CandleOptionEntity {
   @Column({
     type: 'boolean',
   })
+  is_vip_pack: boolean;
+
+  @Column({
+    type: 'boolean',
+  })
   visible: boolean;
 
   @Column({
@@ -60,4 +65,11 @@ export class CandleOptionEntity {
   @OneToMany(() => PackNameEntity, (pack_names) => pack_names.candle_option)
   @JoinColumn({ name: 'id' })
   pack_names: PackNameEntity[];
+
+  @OneToMany(
+    () => OrderDetailEntity,
+    (order_details) => order_details.candle_option,
+  )
+  @JoinColumn({ name: 'id' })
+  order_details: OrderDetailEntity[];
 }

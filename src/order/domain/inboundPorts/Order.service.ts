@@ -1,8 +1,21 @@
-import * as dayjs from 'dayjs';
 import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
+import * as dayjs from 'dayjs';
+
 import { IOrderService } from './IOrderService';
 import { createOrderDto } from '../../adapters/model/orderCreate.dto';
 import { IOrderRepository } from '../outboundPorts/IOrderRepository';
+import { IConfigurationService } from '../../../configuration/domain/inboundPorts/IConfigurationService';
+import { ICustomerRepository } from '../../../customer/domain/outboundPorts/ICustomerRepository';
+import { IStatusRepository } from '../../../status/domain/outhboundPorts/IStatusRepository';
+import { IBagRepository } from '../../../bag/domain/outboundPorts/IBagRepository';
+import {
+  IBagInventoryNeed,
+  ICreateOrderInfoDomain,
+} from '../model/in/createOrderInfoDomain';
+import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
+import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
+import { OrderMapper } from '../mappers/Order.mapper';
 import {
   dayMaxDelivery,
   minimumDaysToDoOrder,
@@ -13,16 +26,6 @@ import {
   timeZoneDayjs,
   workingHours,
 } from '../../../../core/constants';
-import { IConfigurationService } from '../../../configuration/domain/inboundPorts/IConfigurationService';
-import { ICustomerRepository } from '../../../customer/domain/outboundPorts/ICustomerRepository';
-import { IStatusRepository } from '../../../status/domain/outhboundPorts/IStatusRepository';
-import { IBagRepository } from '../../../bag/domain/outboundPorts/IBagRepository';
-import {
-  IBagInventoryNeed,
-  ICreateOrderInfoDomain,
-} from '../model/in/createOrderInfoDomain';
-import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
-import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -181,6 +184,11 @@ export class OrderService implements IOrderService {
       );
       throw new HttpException(message, status);
     }
+  }
+
+  async findByCode(code: string): Promise<FindOrderAndDetailsDomain> {
+    const findOrder = await this.orderRepository.getOrderAndDetailsByCode(code);
+    return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 
   /*
