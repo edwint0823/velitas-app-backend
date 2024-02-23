@@ -17,6 +17,16 @@ export class StatusEntity {
   })
   name: string;
 
+  @Column({
+    type: 'varchar',
+  })
+  public_name: string;
+
+  @Column({
+    type: 'int',
+  })
+  order: number;
+
   @OneToMany(() => OrderEntity, (order) => order.status)
   @JoinColumn({ name: 'id' })
   orders: OrderEntity[];
