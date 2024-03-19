@@ -46,6 +46,7 @@ console.log({
       username: process.env.PG_APP_VELITAS_USERNAME,
       password: process.env.PG_APP_VELITAS_PASSWORD,
       database: process.env.PG_APP_VELITAS_DATABASE,
+      extra: process.env.NODE_ENV === 'production' ? { ssl: true } : {},
       entities: [
         CustomerEntity,
         BagEntity,
