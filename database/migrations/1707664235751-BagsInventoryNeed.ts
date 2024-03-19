@@ -5,7 +5,7 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class BagsInventoryNeed1706538935172 implements MigrationInterface {
+export class BagsInventoryNeed1707664235751 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -18,7 +18,7 @@ export class BagsInventoryNeed1706538935172 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'bag_inventory_id',
+            name: 'bag_id',
             type: 'int',
           },
           {
@@ -37,9 +37,9 @@ export class BagsInventoryNeed1706538935172 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'bags_inventory_need',
       new TableForeignKey({
-        columnNames: ['bag_inventory_id'],
+        columnNames: ['bag_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'bags_inventory',
+        referencedTableName: 'bags',
         onDelete: 'CASCADE',
       }),
     );

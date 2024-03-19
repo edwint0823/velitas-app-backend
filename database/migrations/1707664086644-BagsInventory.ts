@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class BagsInventoryMovements1706539476956 implements MigrationInterface {
+export class BagsInventory1707664086644 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bags_inventory_movements',
+        name: 'bags_inventory',
         columns: [
           {
             name: 'id',
@@ -18,47 +18,29 @@ export class BagsInventoryMovements1706539476956 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'bag_inventory_id',
+            name: 'bag_id',
             type: 'int',
           },
           {
             name: 'quantity',
             type: 'int',
           },
-          {
-            name: 'is_entry',
-            type: 'boolean',
-          },
-          {
-            name: 'is_out',
-            type: 'boolean',
-          },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'created_by',
-            type: 'int',
-          },
         ],
       }),
       true,
     );
-
     await queryRunner.createForeignKey(
-      'bags_inventory_movements',
+      'bags_inventory',
       new TableForeignKey({
-        columnNames: ['bag_inventory_id'],
+        columnNames: ['bag_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'bags_inventory',
+        referencedTableName: 'bags',
         onDelete: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('bags_inventory_movements');
+    await queryRunner.dropTable('bags_inventory');
   }
 }

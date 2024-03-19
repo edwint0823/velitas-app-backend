@@ -6,14 +6,9 @@ export class BagInventoryEntity {
   id: number;
 
   @Column({
-    type: 'varchar',
-  })
-  name: string;
-
-  @Column({
     type: 'int',
   })
-  capacity: number;
+  bag_id: number;
 
   @Column({
     type: 'int',

@@ -3,8 +3,8 @@ import {
   Column,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { CustomerEntity } from './Customer.entity';
 import { StatusEntity } from './Status.entity';
@@ -16,10 +16,10 @@ export class OrderEntity {
   id: number;
 
   @Column({
-    type: 'int',
+    type: 'varchar',
     unique: true,
   })
-  code: number;
+  code: string;
 
   @Column({
     type: 'float',
@@ -66,11 +66,11 @@ export class OrderEntity {
   })
   status_id: number;
 
-  @OneToOne(() => CustomerEntity)
+  @ManyToOne(() => CustomerEntity)
   @JoinColumn({ name: 'customer_id' })
   customer: CustomerEntity;
 
-  @OneToOne(() => StatusEntity)
+  @ManyToOne(() => StatusEntity)
   @JoinColumn({ name: 'status_id' })
   status: StatusEntity;
 
