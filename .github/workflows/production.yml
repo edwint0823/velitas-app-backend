@@ -1,0 +1,31 @@
+name: CI/CD Velitas Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ENV_FILE: ".env"
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      APP_VERSION: ${{ secrets.APP_VERSION }}
+      APP_PORT: ${{ secrets.APP_PORT }}
+      PG_APP_VELITAS_HOST: ${{ secrets.PG_APP_VELITAS_HOST }}
+      PG_APP_VELITAS_PORT: ${{ secrets.PG_APP_VELITAS_PORT }}
+      PG_APP_VELITAS_USERNAME: ${{ secrets.PG_APP_VELITAS_USERNAME }}
+      PG_APP_VELITAS_PASSWORD: ${{ secrets.PG_APP_VELITAS_PASSWORD }}
+      PG_APP_VELITAS_DATABASE: ${{ secrets.PG_APP_VELITAS_DATABASE }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
