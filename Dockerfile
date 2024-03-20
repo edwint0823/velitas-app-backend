@@ -6,10 +6,7 @@ WORKDIR /home/node
 
 COPY . /home/node
 
-RUN rm -rf node_modules
-
-RUN npm cache clean --force \
-    && npm install \
+RUN npm ci \
     && chown -R node:node /home/node \
     && npm run build \
 
