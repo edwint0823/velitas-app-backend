@@ -19,8 +19,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d database/migrations/config/database.config.ts",
-    "migrate-undo": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d database/migrations/config/database.config.ts"
+    "migrate:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d database/migrations/config/database.config.ts",
+    "migrate-undo:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d database/migrations/config/database.config.ts",
+    "migrate:prod": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d dist/database/migrations/config/database.config.ts",
+    "migrate-undo:prod": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d dist/database/migrations/config/database.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
