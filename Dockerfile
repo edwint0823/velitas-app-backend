@@ -8,7 +8,7 @@ COPY . /home/node
 
 RUN npm ci \
     && chown -R node:node /home/node \
-    && npm run build \
+    && npm run build
 
 # ---
 
