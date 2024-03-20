@@ -19,3 +19,16 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
+
+  migrate:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      # Ejecutar migraciones después del despliegue
+      - name: Run migrations on Heroku
+        run: |
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+          heroku login -i
+          heroku run --app ${HEROKU_APP_NAME} npm run migrate
