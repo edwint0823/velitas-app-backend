@@ -8,6 +8,9 @@ export default new DataSource({
   ...config[process.env.NODE_ENV],
   entities: [],
   migrationsTableName: 'migrations',
-  migrations: ['./database/migrations/*.ts', './database/migrations/*.js'],
+  migrations:
+    process.env.NODE_ENV === 'production'
+      ? ['./dist/database/migrations/*{.ts,.js}']
+      : ['./database/migrations/*{.ts,.js}'],
   // ssl: { rejectUnauthorized: false },
 });
