@@ -11,8 +11,8 @@ export const config = {
   },
   production: {
     url: process.env.DATABASE_URL,
-    extra: {
-      ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
     },
   },
 };
