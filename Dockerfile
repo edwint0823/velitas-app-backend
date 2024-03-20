@@ -26,4 +26,4 @@ COPY --from=builder /home/node/node_modules/ /home/node/node_modules/
 COPY --from=builder /home/node/dist/ /home/node/dist/
 
 
-CMD ["node", "dist/src/main.js"]
+CMD npm run migrate && node dist/src/main.js
