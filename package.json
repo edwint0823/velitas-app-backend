@@ -21,8 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d database/migrations/config/database.config.ts",
     "migrate-undo:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d database/migrations/config/database.config.ts",
-    "migrate:prod": "node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d dist/database/migrations/config/database.config.js",
-    "migrate-undo:prod": "node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d dist/database/migrations/config/database.config.js"
+    "migrate:prod": "node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js migration:run -c dist/database/migrations/config/database.config.js",
+    "migrate-undo:prod": "node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js migration:revert -c dist/database/migrations/config/database.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
