@@ -6,8 +6,8 @@ WORKDIR /home/node
 
 COPY . /home/node
 
-RUN npm ci  \
-    && npm install --save-dev tsconfig-paths\
+RUN npm cache clean --force \
+    && npm ci  \
     && chown -R node:node /home/node \
     && npm run build \
     && npm prune --production
