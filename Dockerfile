@@ -9,7 +9,7 @@ COPY . /home/node
 RUN rm -rf node_modules
 
 RUN npm cache clean --force \
-    && npm install  \
+    && npm install \
     && chown -R node:node /home/node \
     && npm run build \
 
