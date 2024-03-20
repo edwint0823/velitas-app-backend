@@ -12,7 +12,6 @@ RUN npm cache clean --force \
     && npm install  \
     && chown -R node:node /home/node \
     && npm run build \
-    && npm prune --production
 
 # ---
 
