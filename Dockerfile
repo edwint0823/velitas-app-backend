@@ -8,8 +8,7 @@ COPY . /home/node
 
 RUN npm ci \
     && chown -R node:node /home/node \
-    && npm run build \
-    && npm prune --production
+    && npm run build
 
 # ---
 
@@ -21,8 +20,9 @@ USER node
 WORKDIR /home/node
 
 COPY --from=builder /home/node/package*.json /home/node/
+COPY --from=builder /home/node/tsconfig*.json /home/node/
 COPY --from=builder /home/node/node_modules/ /home/node/node_modules/
 COPY --from=builder /home/node/dist/ /home/node/dist/
 
 
-CMD ["node", "dist/src/main.js"]
+CMD npm run migrate:prod && node dist/src/main.js

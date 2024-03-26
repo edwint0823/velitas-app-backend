@@ -25,28 +25,20 @@ import { PackNameEntity } from '../database/entities/PackName.entity';
 import { PaymentEntity } from '../database/entities/Payment.entity';
 import { StatusEntity } from '../database/entities/Status.entity';
 import { BagEntity } from '../database/entities/Bag.entity';
+import { config } from '../database/config-database';
 
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 console.log({
-  host: process.env.PG_APP_VELITAS_HOST,
-  port: parseInt(process.env.PG_APP_VELITAS_PORT),
-  username: process.env.PG_APP_VELITAS_USERNAME,
-  password: process.env.PG_APP_VELITAS_PASSWORD,
-  database: process.env.PG_APP_VELITAS_DATABASE,
+  ...config[process.env.NODE_ENV],
 });
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.PG_APP_VELITAS_HOST,
-      port: parseInt(process.env.PG_APP_VELITAS_PORT),
-      username: process.env.PG_APP_VELITAS_USERNAME,
-      password: process.env.PG_APP_VELITAS_PASSWORD,
-      database: process.env.PG_APP_VELITAS_DATABASE,
-      extra: process.env.NODE_ENV === 'production' ? { ssl: true } : {},
+      ...config[process.env.NODE_ENV],
       entities: [
         CustomerEntity,
         BagEntity,

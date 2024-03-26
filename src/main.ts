@@ -10,8 +10,7 @@ dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.APP_PORT || 3000;
-  console.log(`listening on ${port}`);
+  const port = process.env.PORT || 3000;
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new QueryExceptionFilter());
@@ -32,7 +31,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0', () => {
+    console.log(`listening on ${port}`);
+  });
 }
 
 bootstrap();

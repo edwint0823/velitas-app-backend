@@ -1,16 +1,16 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { config } from '../../config-database';
 
 dotenv.config();
 export default new DataSource({
   type: 'postgres',
-  host: process.env.DEV_PG_APP_VELITAS_HOST,
-  port: parseInt(process.env.DEV_PG_APP_VELITAS_PORT),
-  username: process.env.DEV_PG_APP_VELITAS_USERNAME,
-  password: process.env.DEV_PG_APP_VELITAS_PASSWORD,
-  database: process.env.DEV_PG_APP_VELITAS_DATABASE,
+  ...config[process.env.NODE_ENV],
   entities: [],
   migrationsTableName: 'migrations',
-  migrations: ['./database/migrations/*.ts'],
+  migrations:
+    process.env.NODE_ENV === 'production'
+      ? ['./dist/database/migrations/*{.ts,.js}']
+      : ['./database/migrations/*{.ts,.js}'],
   // ssl: { rejectUnauthorized: false },
 });
