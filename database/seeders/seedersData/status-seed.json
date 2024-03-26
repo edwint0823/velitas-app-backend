@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Cancelado",
+    "public_name": "Cancelado",
+    "order": 0
+  },
+  {
+    "name": "Creado",
+    "public_name": "Creado",
+    "order": 1
+  },
+  {
+    "name": "Pendiente Corel",
+    "public_name": "En Producción",
+    "order": 2
+  },
+  {
+    "name": "En Corel",
+    "public_name": "En Producción",
+    "order": 3
+  },
+  {
+    "name": "Impreso",
+    "public_name": "En Producción",
+    "order": 4
+  },
+  {
+    "name": "En Proceso de marcado",
+    "public_name": "En Producción",
+    "order": 5
+  },
+  {
+    "name": "Marcado",
+    "public_name": "En Producción",
+    "order": 6
+  },
+  {
+    "name": "En Proceso de Empaquetado",
+    "public_name": "En Producción",
+    "order": 7
+  },
+  {
+    "name": "Empacado",
+    "public_name": "Listo para entrega",
+    "order": 8
+  },
+  {
+    "name": "Entregado",
+    "public_name": "Entregado",
+    "order": 9
+  }
+]
