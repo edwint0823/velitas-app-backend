@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
 import { FiltersListOrderDto } from '../model/filtersListOrder.dto';
 
 @ApiTags('order')
+@ApiBearerAuth()
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
