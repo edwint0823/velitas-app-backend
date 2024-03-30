@@ -10,11 +10,12 @@ export class AuthMiddleware implements NestMiddleware {
     if (!req.headers.authorization) throw new HttpException({ message: 'Token requerido' }, HttpStatus.UNAUTHORIZED);
 
     const token = req.headers.authorization.split(' ')[1];
-    const verify = jwt.verify(token, process.env.SECRET_KEY_JWT);
-
-    if (!verify) throw new HttpException({ message: 'Token invalido' }, HttpStatus.UNAUTHORIZED);
-
-    req.query.user = { ...verify.user, permissions: verify.permissions };
+    try {
+      const verify = jwt.verify(token, process.env.SECRET_KEY_JWT);
+      req.query.user = { ...verify.user, permissions: verify.permissions };
+    } catch (e) {
+      throw new HttpException({ message: 'Token invalido o expirado' }, HttpStatus.UNAUTHORIZED);
+    }
     next();
   }
 }

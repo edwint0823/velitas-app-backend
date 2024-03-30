@@ -32,7 +32,7 @@ export class OrderMapper {
 
   public static paginateOrder(repositoryResponse: { orders: OrderEntity[]; total: number }): PaginateOrderDomain {
     return {
-      order: repositoryResponse.orders.map((order) => {
+      orders: repositoryResponse.orders.map((order) => {
         return {
           code: order.code,
           total_price: order.total_price,

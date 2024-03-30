@@ -11,6 +11,6 @@ interface OrderInfo {
 }
 
 export interface PaginateOrderDomain {
-  order: OrderInfo[];
+  orders: OrderInfo[];
   total: number;
 }
