@@ -13,3 +13,13 @@ export const workingHours: number = 8;
 export const QUERYS = {
   callGetCodeOrderFunction: 'SELECT generate_order_code() as new_code',
 };
+
+export interface IAuthUser {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_superuser: boolean;
+  id: number;
+  permissions: string[];
+}

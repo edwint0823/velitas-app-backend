@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Query, ValidationPipe } from '@nest
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
-import { FiltersListOrderDto } from '../model/filtersListOrder.dto';
+import { QueryParamsListOrderDto } from '../model/queryParamsListOrder.dto';
 
 @ApiTags('order')
 @ApiBearerAuth()
@@ -112,8 +112,8 @@ export class OrderController {
         forbidNonWhitelisted: true,
       }),
     )
-    filters?: FiltersListOrderDto,
+    query?: QueryParamsListOrderDto,
   ) {
-    return await this.orderService.getPaginateListOrders(pageSize, pageNumber, filters);
+    return await this.orderService.getPaginateListOrders(pageSize, pageNumber, query.filters);
   }
 }

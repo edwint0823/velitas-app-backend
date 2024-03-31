@@ -23,7 +23,7 @@ import {
   timeZoneDayjs,
   workingHours,
 } from '../../../../core/constants';
-import { FiltersListOrderDto } from '../../adapters/model/filtersListOrder.dto';
+import { FiltersDto, QueryParamsListOrderDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { Between, In, Like, MoreThanOrEqual } from 'typeorm';
 
 dayjs.locale(timeZoneDayjs);
@@ -159,8 +159,7 @@ export class OrderService implements IOrderService {
     return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 
-  async getPaginateListOrders(pageSize: number, pageNumber: number, filters?: FiltersListOrderDto) {
-    console.log('filters', filters);
+  async getPaginateListOrders(pageSize: number, pageNumber: number, filters?: FiltersDto) {
     const whereOptions = {};
     if (filters) {
       if (filters.customer_name) {

@@ -1,19 +1,28 @@
-import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
-import { timeZoneDayjs } from '../../../../core/constants';
+import { IAuthUser, timeZoneDayjs } from '../../../../core/constants';
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 
 dayjs.locale(timeZoneDayjs);
 
-export class FiltersListOrderDto {
+export class FiltersDto {
   @IsOptional()
   @Transform(({ value }) => {
     const arrString = value.split(',');
     return arrString.map((x) => parseInt(x));
   })
-  @IsArray({ message: 'El listado de códigos de pedidos deben ser una lista' })
-  @ArrayNotEmpty({ message: 'El listado de códigos de pedido debe tener al menos un item' })
+  @IsArray({ message: 'El listado de Números de pedidos deben ser una lista' })
+  @ArrayNotEmpty({ message: 'El listado de Números de pedido debe tener al menos un item' })
   @IsNumber({}, { each: true, message: 'Todos los códigos de pedido deben ser números' })
   public orders_code?: number[];
 
@@ -42,4 +51,10 @@ export class FiltersListOrderDto {
   @IsOptional()
   @IsString({ message: 'El nombre del cliente debe ser una cadena de texto' })
   public customer_name?: string;
+}
+
+export class QueryParamsListOrderDto {
+  @ValidateNested()
+  filters: FiltersDto;
+  user: IAuthUser;
 }
