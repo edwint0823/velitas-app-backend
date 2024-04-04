@@ -23,3 +23,8 @@ export interface IAuthUser {
   id: number;
   permissions: string[];
 }
+
+export const maxStatusToCancel = {
+  name: 'impreso',
+  order: 4,
+};

@@ -28,6 +28,7 @@ import { BagEntity } from '../database/entities/Bag.entity';
 import { config } from '../database/config-database';
 
 import * as dotenv from 'dotenv';
+import { StatusModule } from './status/status.module';
 
 dotenv.config();
 
@@ -69,6 +70,7 @@ dotenv.config();
     ConfigurationModule,
     BagModule,
     OrderModule,
+    StatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
