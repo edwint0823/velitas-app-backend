@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from '../../database/entities/Order.entity';
 import { OrderController } from './adapters/driving/Order.controller';
@@ -19,6 +19,7 @@ import { IOrderDetailRepository } from '../orderDetail/domain/outboundPorts/IOrd
 import { OrderDetailRepository } from '../orderDetail/adapters/driven/OrderDetail.repository';
 import { IBagInventoryNeedRepository } from '../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/BagInventoryNeed.repository';
+import { AuthMiddleware } from '../../middlewares/auth.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderEntity])],
@@ -38,4 +39,8 @@ import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/
     },
   ],
 })
-export class OrderModule {}
+export class OrderModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('order/paginate_list/:page_size/:page_number');
+  }
+}

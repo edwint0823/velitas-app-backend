@@ -8,10 +8,7 @@ import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/ou
 import { QUERYS } from '../../../../core/constants';
 
 @Injectable()
-export class OrderRepository
-  extends Repository<OrderEntity>
-  implements IOrderRepository
-{
+export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
   constructor(
     public readonly dataSource: DataSource,
     @Inject(IOrderDetailRepository)
@@ -31,45 +28,37 @@ export class OrderRepository
   }
 
   async createOrder(orderInfo: ICreateOrderInfoDomain): Promise<OrderEntity> {
-    return await this.dataSource.transaction(
-      async (entityManager: EntityManager): Promise<OrderEntity> => {
-        try {
-          const newOrder = new OrderEntity();
-          Object.assign(newOrder, orderInfo.order);
-          const orderSaved = await entityManager.save(newOrder);
+    return await this.dataSource.transaction(async (entityManager: EntityManager): Promise<OrderEntity> => {
+      try {
+        const newOrder = new OrderEntity();
+        Object.assign(newOrder, orderInfo.order);
+        const orderSaved = await entityManager.save(newOrder);
 
-          const orderDetailPromise = [];
-          for (const orderDetail of orderInfo.orderDetails) {
-            orderDetail.order_id = orderSaved.id;
-            orderDetailPromise.push(
-              this.orderDetailsRepository.createOrderDetailByTransactionId(
-                orderDetail,
-                entityManager,
-              ),
-            );
-          }
-          await Promise.all(orderDetailPromise);
-
-          const bagNeededPromise = [];
-          for (const bagNeed of orderInfo.bagInventoryNeed) {
-            bagNeed.order_id = orderSaved.id;
-            bagNeededPromise.push(
-              this.bagInventoryNeedRepository.createBagInventoryNeedByTransaction(
-                bagNeed,
-                entityManager,
-              ),
-            );
-          }
-          await Promise.all(bagNeededPromise);
-          return orderSaved;
-        } catch (err) {
-          throw new Error(err);
+        const orderDetailPromise = [];
+        for (const orderDetail of orderInfo.orderDetails) {
+          orderDetail.order_id = orderSaved.id;
+          orderDetailPromise.push(
+            this.orderDetailsRepository.createOrderDetailByTransactionId(orderDetail, entityManager),
+          );
         }
-      },
-    );
+        await Promise.all(orderDetailPromise);
+
+        const bagNeededPromise = [];
+        for (const bagNeed of orderInfo.bagInventoryNeed) {
+          bagNeed.order_id = orderSaved.id;
+          bagNeededPromise.push(
+            this.bagInventoryNeedRepository.createBagInventoryNeedByTransaction(bagNeed, entityManager),
+          );
+        }
+        await Promise.all(bagNeededPromise);
+        return orderSaved;
+      } catch (err) {
+        throw new Error(err);
+      }
+    });
   }
 
-  getOrderAndDetailsByCode(code: string): Promise<OrderEntity> {
+  async getOrderAndDetailsByCode(code: string): Promise<OrderEntity> {
     return this.findOne({
       relations: {
         orders_details: {
@@ -82,5 +71,27 @@ export class OrderRepository
         code: code,
       },
     });
+  }
+
+  async listOrdersPaginated(
+    skip: number,
+    take: number,
+    whereOptions,
+  ): Promise<{
+    orders: OrderEntity[];
+    total: number;
+  }> {
+    const orders = await this.find({
+      where: { ...whereOptions },
+      relations: {
+        customer: true,
+        status: true,
+      },
+      skip: skip,
+      take: take,
+    });
+
+    const total = await this.count();
+    return { orders, total };
   }
 }

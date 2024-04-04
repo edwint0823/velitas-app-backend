@@ -30,9 +30,6 @@ import { config } from '../database/config-database';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-console.log({
-  ...config[process.env.NODE_ENV],
-});
 
 @Module({
   imports: [
