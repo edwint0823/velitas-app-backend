@@ -43,6 +43,7 @@ export class OrderMapper {
           customer_price_type: order.customer.price_type,
           status_name: order.status.name,
           status_public_name: order.status.public_name,
+          status_order: order.status.order,
         };
       }),
       total: repositoryResponse.total,

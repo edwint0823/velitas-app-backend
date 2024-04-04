@@ -23,7 +23,7 @@ import {
   timeZoneDayjs,
   workingHours,
 } from '../../../../core/constants';
-import { FiltersDto, QueryParamsListOrderDto } from '../../adapters/model/queryParamsListOrder.dto';
+import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { Between, In, Like, MoreThanOrEqual } from 'typeorm';
 
 dayjs.locale(timeZoneDayjs);
