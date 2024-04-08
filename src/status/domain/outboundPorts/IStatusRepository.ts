@@ -5,6 +5,8 @@ export interface IStatusRepository {
   findStatusIdByName(name: string): Promise<StatusEntity | null>;
 
   listStatus(whereOptions: WhereOptionsListStatus): Promise<StatusEntity[]>;
+
+  findStatusById(id: number): Promise<StatusEntity | null>;
 }
 
 export const IStatusRepository = Symbol('IStatusRepository');

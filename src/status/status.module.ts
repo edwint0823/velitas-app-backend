@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatusEntity } from '../../database/entities/Status.entity';
 import { StatusController } from './adapters/driving/Status.controller';
 import { StatusService } from './domain/inboundPorts/Status.service';
-import { IStatusRepository } from './domain/outhboundPorts/IStatusRepository';
+import { IStatusRepository } from './domain/outboundPorts/IStatusRepository';
 import { StatusRepository } from './adapters/driven/Status.repository';
 
 @Module({

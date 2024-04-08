@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IStatusRepository } from '../outhboundPorts/IStatusRepository';
+import { IStatusRepository } from '../outboundPorts/IStatusRepository';
 import { IStatusService } from './IStatusService';
 import { maxStatusToCancel } from '../../../../core/constants';
 import { MoreThanOrEqual } from 'typeorm';
