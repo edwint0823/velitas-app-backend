@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags }
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
 import { QueryParamsListOrderDto } from '../model/queryParamsListOrder.dto';
-import { IAuthUser } from '../../../../core/constants';
+import { commonStatusErrorMessages, IAuthUser, orderDocumentationLabels } from '../../../../core/constants';
 
 @ApiTags('order')
 @ApiBearerAuth()
@@ -12,24 +12,24 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post('/create')
-  @ApiOperation({ summary: 'Crear pedido con su detalle y bolsas a necesitar' })
-  @ApiResponse({ status: 201, description: 'Pedido creada' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiOperation({ summary: orderDocumentationLabels.createOperation.summary })
+  @ApiResponse({ status: 201, description: orderDocumentationLabels.createOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
   async createOrder(@Body() orderData: createOrderDto) {
     return await this.orderService.create(orderData);
   }
 
   @Get('/find_by_code/:code')
   @ApiOperation({
-    summary: 'Buscar un pedido y su detalle por el codigo de pedido',
+    summary: orderDocumentationLabels.findByCodeOperation.summary,
   })
-  @ApiResponse({ status: 200, description: 'Pedido encontrado' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.findByCodeOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
   @ApiParam({
     name: 'code',
-    description: 'codigo del pedido',
+    description: orderDocumentationLabels.findByCodeOperation.codeParamDescription,
     required: true,
     type: 'string',
     example: '123456',
@@ -40,65 +40,65 @@ export class OrderController {
 
   @Get('/paginate_list/:page_size/:page_number')
   @ApiOperation({
-    summary: 'Listado paginado de pedidos',
+    summary: orderDocumentationLabels.paginateListOperation.summary,
   })
-  @ApiResponse({ status: 200, description: 'Pedido encontrado' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 401, description: 'Usuario no autorizado' })
-  @ApiResponse({ status: 403, description: 'No tiene permiso para realizar la acción' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.paginateListOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
   @ApiParam({
     name: 'page_size',
-    description: 'Cantidad de items por pagina',
+    description: orderDocumentationLabels.paginateListOperation.pageSizeParamDescription,
     required: true,
     type: 'number',
     example: 10,
   })
   @ApiParam({
     name: 'page_number',
-    description: 'Número de pagina',
+    description: orderDocumentationLabels.paginateListOperation.pageNumberParamDescription,
     required: true,
     type: 'number',
     example: 1,
   })
   @ApiQuery({
     name: 'orders_code',
-    description: 'Listado de códigos de pedido',
+    description: orderDocumentationLabels.paginateListOperation.ordersCodeParamDescription,
     required: false,
     example: '123456,122334',
     type: 'string',
   })
   @ApiQuery({
     name: 'delivery_date_begin',
-    description: 'Fecha inicial de fecha estimada de entrega',
+    description: orderDocumentationLabels.paginateListOperation.deliveryDateBeginParamDescription,
     required: false,
     type: 'string',
     example: '2024-03-23',
   })
   @ApiQuery({
     name: 'delivery_date_end',
-    description: 'Fecha final de fecha estimada de entrega',
+    description: orderDocumentationLabels.paginateListOperation.deliveryDateEndParamDescription,
     required: false,
     type: 'string',
     example: '2024-03-24',
   })
   @ApiQuery({
     name: 'created_at_begin',
-    description: 'Fecha inicial para fecha de creación del pedido',
+    description: orderDocumentationLabels.paginateListOperation.createAtBeginParamDescription,
     required: false,
     type: 'date',
     example: '2024-03-23',
   })
   @ApiQuery({
     name: 'created_at_end',
-    description: 'Fecha final para fecha de creación del pedido',
+    description: orderDocumentationLabels.paginateListOperation.createdAtEndParamDescription,
     required: false,
     type: 'date',
     example: '2024-03-23',
   })
   @ApiQuery({
     name: 'customer_name',
-    description: 'Nombre del cliente',
+    description: orderDocumentationLabels.paginateListOperation.customerNameParamDescription,
     required: false,
     example: 'EDWIN',
     type: 'string',
@@ -119,22 +119,22 @@ export class OrderController {
   }
 
   @Patch('/update_status/:order_code/:new_status_id')
-  @ApiOperation({ summary: 'Actualizar el estado de un pedido en especifico' })
-  @ApiResponse({ status: 200, description: 'Estado del pedido actualizado' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 401, description: 'Usuario no autorizado' })
-  @ApiResponse({ status: 403, description: 'No tiene permiso para realizar la acción' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiOperation({ summary: orderDocumentationLabels.updateStatusOperation.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.updateStatusOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
   @ApiParam({
     name: 'order_code',
-    description: 'Código del pedido',
+    description: orderDocumentationLabels.updateStatusOperation.orderCodeParamDescription,
     required: true,
     type: 'string',
     example: '1234568',
   })
   @ApiParam({
     name: 'new_status_id',
-    description: 'Id del nuevo estado para el pedido',
+    description: orderDocumentationLabels.updateStatusOperation.newStatusIdParamDescription,
     required: true,
     type: 'number',
     example: 3,

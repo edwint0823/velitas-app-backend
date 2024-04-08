@@ -1,7 +1,7 @@
 import { OrderEntity } from '../../../../database/entities/Order.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import { QUERYS } from '../../../../core/constants';
+import { orderErrorMessages, QUERYS } from '../../../../core/constants';
 import { IOrderRepository } from '../../domain/outboundPorts/IOrderRepository';
 import { IOrderDetailRepository } from '../../../orderDetail/domain/outboundPorts/IOrderDetailRepository';
 // eslint-disable-next-line max-len
@@ -29,7 +29,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
     if (dbResult.length > 0 && dbResult[0] && dbResult[0].new_code) {
       return dbResult[0].new_code as string;
     }
-    throw new Error('Error al generar el código de la orden');
+    throw new Error(orderErrorMessages.repository.codeGenerate);
   }
 
   async createOrder(orderInfo: ICreateOrderInfoDomain): Promise<OrderEntity> {

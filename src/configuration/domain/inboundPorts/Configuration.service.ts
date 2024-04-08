@@ -4,6 +4,7 @@ import { IConfigurationRepository } from '../outboundPorts/IConfigurationReposit
 import { findParamByNameDomain } from '../model/findParamByNameDomain';
 import { ConfigurationMapper } from '../mappers/Configuration.mapper';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
+import { configurationErrorMessages } from '../../../../core/constants';
 
 @Injectable()
 export class ConfigurationService implements IConfigurationService {
@@ -14,14 +15,10 @@ export class ConfigurationService implements IConfigurationService {
 
   async findParamByName(name: string): Promise<findParamByNameDomain> {
     try {
-      const repositoryResponse =
-        await this.configurationRepository.findParamByName(name);
+      const repositoryResponse = await this.configurationRepository.findParamByName(name);
       return ConfigurationMapper.findParamByNameMapper(repositoryResponse);
     } catch (error) {
-      const { message, status } = getErrorParams(
-        error,
-        'Error al obtener el valor del parámetro seleccionado',
-      );
+      const { message, status } = getErrorParams(error, configurationErrorMessages.serviceErrors.findByName.default);
       throw new HttpException({ message }, status);
     }
   }

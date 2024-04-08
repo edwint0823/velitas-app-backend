@@ -23,6 +23,8 @@ import {
   minutesOfHour,
   monthMaxDelivery,
   orderCreateNameStatus,
+  orderErrorMessages,
+  orderSuccessMessages,
   timeToDoOneCandleNameParam,
   timeZoneDayjs,
   workingHours,
@@ -69,7 +71,7 @@ export class OrderService implements IOrderService {
 
       const statusInfo = await this.statusRepository.findStatusIdByName(orderCreateNameStatus);
       if (statusInfo === null) {
-        new Error('Ha ocurrido un error al crear la orden');
+        new Error(orderErrorMessages.service.create.default);
       }
 
       const bagsInDb = await this.bagRepository.listAllBagsAvailable();
@@ -144,14 +146,14 @@ export class OrderService implements IOrderService {
       }
       const orderCreated = await this.orderRepository.createOrder(createOrderInfo);
       return {
-        message: `Orden Nro ${orderCreated.code} creada exitosamente`,
+        message: `Pedido Nro ${orderCreated.code} creado exitosamente`,
         totalPrice: orderCreated.total_price,
         totalQuantity: orderCreated.total_quantity,
         estimatedDelivered: orderCreated.delivery_date,
         orderCode: orderCreated.code,
       };
     } catch (error) {
-      const { message, status } = getErrorParams(error, 'Error al crear el pedido');
+      const { message, status } = getErrorParams(error, orderErrorMessages.service.create.default);
       throw new HttpException({ message }, status);
     }
   }
@@ -192,7 +194,10 @@ export class OrderService implements IOrderService {
 
   async updateOrderStatus(order_code: string, newStatusId: number, user: IAuthUser): Promise<{ message: string }> {
     if (!user.is_superuser) {
-      throw new HttpException({ message: 'No tiene permisos para realizar esta acción' }, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        { message: orderErrorMessages.service.updateStatus.isNotSuperuser },
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     try {
       const orderInfo = await this.orderRepository.getOrderByCode(order_code);
@@ -201,20 +206,20 @@ export class OrderService implements IOrderService {
 
       if (oldStatusInfo.order === 0) {
         throw new HttpException(
-          { message: 'No se puede actualizar el estado del pedido si ya ha sido cancelado' },
+          { message: orderErrorMessages.service.updateStatus.orderAlreadyCanceled },
           HttpStatus.BAD_REQUEST,
         );
       }
 
       if (newStatusInfo.order === 0 && oldStatusInfo.order >= maxStatusToCancel.order) {
         throw new HttpException(
-          { message: 'El pedido no se puede cancelar ya que esta producción' },
+          { message: orderErrorMessages.service.updateStatus.orderAlreadyInProduction },
           HttpStatus.BAD_REQUEST,
         );
       }
       if (newStatusInfo.order !== 0 && oldStatusInfo.order > newStatusInfo.order) {
         throw new HttpException(
-          { message: 'No se puede cambiar el estado del pedido a uno anterior ' },
+          { message: orderErrorMessages.service.updateStatus.notAbleToUpdateUnderStatus },
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -225,9 +230,9 @@ export class OrderService implements IOrderService {
         created_by: user.id,
       };
       await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
-      return { message: 'Pedido actualizado con éxito' };
+      return { message: orderSuccessMessages.service.updateStatus.default };
     } catch (error) {
-      const { message, status } = getErrorParams(error, 'Error al actualizar el estado del pedido');
+      const { message, status } = getErrorParams(error, orderErrorMessages.service.updateStatus.default);
       throw new HttpException({ message }, status);
     }
   }
