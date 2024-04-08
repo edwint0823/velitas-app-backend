@@ -1,20 +1,24 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
+import { Between, In, Like, MoreThanOrEqual } from 'typeorm';
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { IOrderService } from './IOrderService';
 import { createOrderDto } from '../../adapters/model/orderCreate.dto';
-import { IOrderRepository } from '../outboundPorts/IOrderRepository';
-import { IConfigurationService } from '../../../configuration/domain/inboundPorts/IConfigurationService';
-import { ICustomerRepository } from '../../../customer/domain/outboundPorts/ICustomerRepository';
-import { IStatusRepository } from '../../../status/domain/outhboundPorts/IStatusRepository';
-import { IBagRepository } from '../../../bag/domain/outboundPorts/IBagRepository';
+import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { IBagInventoryNeed, ICreateOrderInfoDomain } from '../model/in/createOrderInfoDomain';
 import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
+import { IOrderRepository } from '../outboundPorts/IOrderRepository';
+import { ICustomerRepository } from '../../../customer/domain/outboundPorts/ICustomerRepository';
+import { IStatusRepository } from '../../../status/domain/outboundPorts/IStatusRepository';
+import { IBagRepository } from '../../../bag/domain/outboundPorts/IBagRepository';
+import { IConfigurationService } from '../../../configuration/domain/inboundPorts/IConfigurationService';
 import { OrderMapper } from '../mappers/Order.mapper';
 import {
   dayMaxDelivery,
+  IAuthUser,
+  maxStatusToCancel,
   minimumDaysToDoOrder,
   minutesOfHour,
   monthMaxDelivery,
@@ -23,8 +27,6 @@ import {
   timeZoneDayjs,
   workingHours,
 } from '../../../../core/constants';
-import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
-import { Between, In, Like, MoreThanOrEqual } from 'typeorm';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -150,7 +152,7 @@ export class OrderService implements IOrderService {
       };
     } catch (error) {
       const { message, status } = getErrorParams(error, 'Error al crear el pedido');
-      throw new HttpException(message, status);
+      throw new HttpException({ message }, status);
     }
   }
 
@@ -188,10 +190,52 @@ export class OrderService implements IOrderService {
     return OrderMapper.paginateOrder(paginatedData);
   }
 
+  async updateOrderStatus(order_code: string, newStatusId: number, user: IAuthUser): Promise<{ message: string }> {
+    if (!user.is_superuser) {
+      throw new HttpException({ message: 'No tiene permisos para realizar esta acción' }, HttpStatus.UNAUTHORIZED);
+    }
+    try {
+      const orderInfo = await this.orderRepository.getOrderByCode(order_code);
+      const oldStatusInfo = orderInfo.status;
+      const newStatusInfo = await this.statusRepository.findStatusById(newStatusId);
+
+      if (oldStatusInfo.order === 0) {
+        throw new HttpException(
+          { message: 'No se puede actualizar el estado del pedido si ya ha sido cancelado' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (newStatusInfo.order === 0 && oldStatusInfo.order >= maxStatusToCancel.order) {
+        throw new HttpException(
+          { message: 'El pedido no se puede cancelar ya que esta producción' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (newStatusInfo.order !== 0 && oldStatusInfo.order > newStatusInfo.order) {
+        throw new HttpException(
+          { message: 'No se puede cambiar el estado del pedido a uno anterior ' },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      const statusLogPayload = {
+        order_id: orderInfo.id,
+        old_status_id: oldStatusInfo.id,
+        new_status_id: newStatusId,
+        created_by: user.id,
+      };
+      await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
+      return { message: 'Pedido actualizado con éxito' };
+    } catch (error) {
+      const { message, status } = getErrorParams(error, 'Error al actualizar el estado del pedido');
+      throw new HttpException({ message }, status);
+    }
+  }
+
   // PROCESO PARA AFECTAR EL INVENTRIO CUANDO SE CAMBIE A ESTADO DESEADO
-  //    cuando se actulize un pedido debe realizar nuevamente el calculo de cantidades de bolsas a necesitar y buscar los registros de bolsas necesitadas
-  //    comparar cada tipo de bolsa si la cantidad es la misma , si no lo es debe tomar el id del tipo de bolsa y la cantidad que uso (tabla de need) calcular la diferencian entre ambas
-  //    y la diferencia debe sumarla o restarla inventario y despues de actualizar el registro bolsas necesitadas con el nuevo calculo
-  //    verificar si esto es realmente necesario ya que se podria dejar solo el inventario de bolsas a necesitar de manera informativa para cuando se cambie de estado a empaquetar hacer una salida
-  //    con las bolsas que marca los registros del pedido   al igual que para el inventario de velas
+  //    cuando se actualice un pedido debe realizar nuevamente el cálculo de cantidades de bolsas a necesitar y buscar los registros de bolsas necesitadas
+  //    comparar cada tipo de bolsa si la cantidad es la misma, si no lo es debe tomar el ID del tipo de bolsa y la cantidad que uso (tabla de need) calcular la diferencian entre ambas
+  //    y la diferencia debe sumarla o restarla inventario y después de actualizar el registro bolsas necesitadas con el nuevo cálculo
+  //    verificar si esto es realmente necesario, ya que se podría dejar solo el inventario de bolsas a necesitar de manera informativa para cuando se cambie de estado a empaquetar hacer una salida
+  //    con las bolsas que marca los registros del pedido al igual que para el inventario de velas
 }

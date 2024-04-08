@@ -29,6 +29,7 @@ import { config } from '../database/config-database';
 
 import * as dotenv from 'dotenv';
 import { StatusModule } from './status/status.module';
+import { OrderStatusChangeLogEntity } from '../database/entities/OrderStatusChangeLogs.entity';
 
 dotenv.config();
 
@@ -55,6 +56,7 @@ dotenv.config();
         PackNameEntity,
         PaymentEntity,
         StatusEntity,
+        OrderStatusChangeLogEntity,
       ],
       // ssl: { rejectUnauthorized: false },
       // logging: true,
