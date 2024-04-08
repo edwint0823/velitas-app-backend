@@ -28,11 +28,8 @@ export class CandleOptionService implements ICandleOptionService {
         configService,
       );
     } catch (error) {
-      const { message, status } = getErrorParams(
-        error,
-        'Error al obtener el listado de opciones',
-      );
-      throw new HttpException(message, status);
+      const { message, status } = getErrorParams(error, 'Error al obtener el listado de opciones');
+      throw new HttpException({ message }, status);
     }
   }
 }

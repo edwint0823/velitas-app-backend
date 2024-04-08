@@ -22,7 +22,7 @@ export class ConfigurationService implements IConfigurationService {
         error,
         'Error al obtener el valor del parámetro seleccionado',
       );
-      throw new HttpException(message, status);
+      throw new HttpException({ message }, status);
     }
   }
 }

@@ -17,11 +17,8 @@ export class BagService implements IBagService {
       const BagRepo = await this.bagRepository.listAllBagsAvailable();
       return BagMapper.listBagsMapper(BagRepo);
     } catch (error) {
-      const { message, status } = getErrorParams(
-        error,
-        'Error al obtener el listado de bolsas',
-      );
-      throw new HttpException(message, status);
+      const { message, status } = getErrorParams(error, 'Error al obtener el listado de bolsas');
+      throw new HttpException({ message }, status);
     }
   }
 }
