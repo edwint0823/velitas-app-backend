@@ -1,11 +1,14 @@
 import { OrderEntity } from '../../../../database/entities/Order.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import { IOrderRepository } from '../../domain/outboundPorts/IOrderRepository';
-import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDomain';
-import { IOrderDetailRepository } from '../../../orderDetail/domain/outboundPorts/IOrderDetailRepository';
-import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 import { QUERYS } from '../../../../core/constants';
+import { IOrderRepository } from '../../domain/outboundPorts/IOrderRepository';
+import { IOrderDetailRepository } from '../../../orderDetail/domain/outboundPorts/IOrderDetailRepository';
+// eslint-disable-next-line max-len
+import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
+import { IOrderStatusRepository } from '../../../orderStatus/domain/outboundPorts/IOrderStatusRepository';
+import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDomain';
+import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
@@ -15,6 +18,8 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
     private readonly orderDetailsRepository: IOrderDetailRepository,
     @Inject(IBagInventoryNeedRepository)
     private readonly bagInventoryNeedRepository: IBagInventoryNeedRepository,
+    @Inject(IOrderStatusRepository)
+    private readonly orderStatusLogRepository: IOrderStatusRepository,
   ) {
     super(OrderEntity, dataSource.createEntityManager());
   }
@@ -93,5 +98,19 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
 
     const total = await this.count();
     return { orders, total };
+  }
+
+  async getOrderByCode(code: string): Promise<OrderEntity> {
+    return await this.findOne({ relations: { status: true }, where: { code: code } });
+  }
+
+  async updateStatusOrder(orderId: number, orderStatusPayload: CreateOrderStatusLogDomain): Promise<OrderEntity> {
+    return await this.dataSource.transaction(async (entityManager: EntityManager): Promise<OrderEntity> => {
+      const order = await this.findOneBy({ id: orderId });
+      order.status_id = orderStatusPayload.new_status_id;
+      await entityManager.save(order);
+      await this.orderStatusLogRepository.createOrderStatusLogByTransaction(orderStatusPayload, entityManager);
+      return order;
+    });
   }
 }

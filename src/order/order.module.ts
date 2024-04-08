@@ -11,7 +11,7 @@ import { IConfigurationRepository } from '../configuration/domain/outboundPorts/
 import { ConfigurationRepository } from '../configuration/adapters/driven/Configuration.repository';
 import { ICustomerRepository } from '../customer/domain/outboundPorts/ICustomerRepository';
 import { CustomerRepository } from '../customer/adapters/driven/Customer.repository';
-import { IStatusRepository } from '../status/domain/outhboundPorts/IStatusRepository';
+import { IStatusRepository } from '../status/domain/outboundPorts/IStatusRepository';
 import { StatusRepository } from '../status/adapters/driven/Status.repository';
 import { IBagRepository } from '../bag/domain/outboundPorts/IBagRepository';
 import { BagRepository } from '../bag/adapters/driven/Bag.repository';
@@ -20,6 +20,8 @@ import { OrderDetailRepository } from '../orderDetail/adapters/driven/OrderDetai
 import { IBagInventoryNeedRepository } from '../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/BagInventoryNeed.repository';
 import { AuthMiddleware } from '../../middlewares/auth.middleware';
+import { IOrderStatusRepository } from '../orderStatus/domain/outboundPorts/IOrderStatusRepository';
+import { OrderStatusRepository } from '../orderStatus/adapters/driven/OrderStatus.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderEntity])],
@@ -37,10 +39,16 @@ import { AuthMiddleware } from '../../middlewares/auth.middleware';
       provide: IBagInventoryNeedRepository,
       useClass: BagInventoryNeedRepository,
     },
+    {
+      provide: IOrderStatusRepository,
+      useClass: OrderStatusRepository,
+    },
   ],
 })
 export class OrderModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('order/paginate_list/:page_size/:page_number');
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('order/paginate_list/:page_size/:page_number', 'order/update_status/:order_code/:new_status_id');
   }
 }

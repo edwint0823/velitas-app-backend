@@ -30,11 +30,8 @@ export class CustomerService implements ICustomerService {
         email: customerCreated.email,
       };
     } catch (error) {
-      const { message, status } = getErrorParams(
-        error,
-        'Error al crear el cliente',
-      );
-      throw new HttpException(message, status);
+      const { message, status } = getErrorParams(error, 'Error al crear el cliente');
+      throw new HttpException({ message }, status);
     }
   }
 }

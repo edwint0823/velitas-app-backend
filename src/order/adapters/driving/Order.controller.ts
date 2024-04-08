@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
 import { QueryParamsListOrderDto } from '../model/queryParamsListOrder.dto';
+import { IAuthUser } from '../../../../core/constants';
 
 @ApiTags('order')
 @ApiBearerAuth()
@@ -115,5 +116,34 @@ export class OrderController {
     query?: QueryParamsListOrderDto,
   ) {
     return await this.orderService.getPaginateListOrders(pageSize, pageNumber, query.filters);
+  }
+
+  @Patch('/update_status/:order_code/:new_status_id')
+  @ApiOperation({ summary: 'Actualizar el estado de un pedido en especifico' })
+  @ApiResponse({ status: 200, description: 'Estado del pedido actualizado' })
+  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
+  @ApiResponse({ status: 401, description: 'Usuario no autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permiso para realizar la acción' })
+  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiParam({
+    name: 'order_code',
+    description: 'Código del pedido',
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  @ApiParam({
+    name: 'new_status_id',
+    description: 'Id del nuevo estado para el pedido',
+    required: true,
+    type: 'number',
+    example: 3,
+  })
+  async updateOrderStatus(
+    @Param('order_code') order_code: string,
+    @Param('new_status_id') newStatusId: number,
+    @Query('user') user: IAuthUser,
+  ) {
+    return await this.orderService.updateOrderStatus(order_code, newStatusId, user);
   }
 }

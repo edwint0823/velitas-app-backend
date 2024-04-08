@@ -6,6 +6,7 @@ interface OrderInfo {
   created_at: string;
   customer_name: string;
   customer_price_type: string;
+  status_id: number;
   status_name: string;
   status_public_name: string;
   status_order: number;
