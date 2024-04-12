@@ -219,6 +219,14 @@ export const statusDocumentationLabels = {
   },
 };
 
+export const paymentDocumentationLabels = {
+  getPaymentsByOrderCode: {
+    summary: 'Listar los pagos realizados ha un pedido',
+    success: 'Listado de pagos',
+    orderCodeParamDescription: 'Código del pedido',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

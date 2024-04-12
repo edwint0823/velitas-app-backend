@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class CashMovements1706540342010 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -20,6 +15,10 @@ export class CashMovements1706540342010 implements MigrationInterface {
           {
             name: 'amount',
             type: 'float',
+          },
+          {
+            name: 'concept',
+            type: 'text',
           },
           {
             name: 'bank_entity_id',

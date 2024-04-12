@@ -30,6 +30,7 @@ import { config } from '../database/config-database';
 import * as dotenv from 'dotenv';
 import { StatusModule } from './status/status.module';
 import { OrderStatusChangeLogEntity } from '../database/entities/OrderStatusChangeLogs.entity';
+import { PaymentModule } from './payment/payment.module';
 
 dotenv.config();
 
@@ -73,6 +74,7 @@ dotenv.config();
     BagModule,
     OrderModule,
     StatusModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

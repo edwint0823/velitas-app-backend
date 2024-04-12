@@ -27,6 +27,7 @@ async function bootstrap() {
     .addTag('candle_options')
     .addTag('configuration')
     .addTag('bag')
+    .addTag('payment')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
