@@ -227,6 +227,13 @@ export const paymentDocumentationLabels = {
   },
 };
 
+export const bankEntityDocumentationLabels = {
+  listOperation: {
+    summary: 'Obtener listado de entidades bancarias disponibles',
+    success: 'Listado de entidades bancarias',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
