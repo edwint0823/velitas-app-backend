@@ -18,7 +18,7 @@ export interface IOrderRepository {
     total: number;
   }>;
 
-  getOrderByCode(code: string): Promise<OrderEntity>;
+  getOrderAndStatusByCode(code: string): Promise<OrderEntity>;
 
   updateStatusOrder(orderId: number, orderStatusPayload: CreateOrderStatusLogDomain): Promise<OrderEntity>;
 }

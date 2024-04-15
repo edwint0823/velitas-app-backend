@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { CashMovementEntity } from './CashMovement.entity';
+import { OrderEntity } from './Order.entity';
 
 @Entity('payments')
 export class PaymentEntity {
@@ -19,4 +21,12 @@ export class PaymentEntity {
     type: 'int',
   })
   order_id: number;
+
+  @OneToOne(() => CashMovementEntity)
+  @JoinColumn({ name: 'movement_id' })
+  movement: CashMovementEntity;
+
+  @ManyToOne(() => OrderEntity)
+  @JoinColumn({ name: 'order_id' })
+  order: OrderEntity;
 }
