@@ -200,7 +200,7 @@ export class OrderService implements IOrderService {
       );
     }
     try {
-      const orderInfo = await this.orderRepository.getOrderByCode(order_code);
+      const orderInfo = await this.orderRepository.getOrderAndStatusByCode(order_code);
       const oldStatusInfo = orderInfo.status;
       const newStatusInfo = await this.statusRepository.findStatusById(newStatusId);
 

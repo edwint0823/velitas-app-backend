@@ -100,7 +100,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
     return { orders, total };
   }
 
-  async getOrderByCode(code: string): Promise<OrderEntity> {
+  async getOrderAndStatusByCode(code: string): Promise<OrderEntity> {
     return await this.findOne({ relations: { status: true }, where: { code: code } });
   }
 
