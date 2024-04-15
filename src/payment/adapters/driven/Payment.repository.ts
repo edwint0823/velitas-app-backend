@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { PaymentEntity } from '../../../../database/entities/Payment.entity';
 import { IPaymentRepository } from '../../domain/outboundPorts/IPaymentRepository';
+import { CreatePaymentDomain } from '../../domain/model/in/CreatePaymentDomain';
 
 @Injectable()
 export class PaymentRepository extends Repository<PaymentEntity> implements IPaymentRepository {
@@ -27,5 +28,11 @@ export class PaymentRepository extends Repository<PaymentEntity> implements IPay
         },
       },
     });
+  }
+
+  createPaymentByTransaction(payment: CreatePaymentDomain, transaction: EntityManager): Promise<PaymentEntity> {
+    const newPayment = new PaymentEntity();
+    Object.assign(newPayment, payment);
+    return transaction.save(newPayment);
   }
 }

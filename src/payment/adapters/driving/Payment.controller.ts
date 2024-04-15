@@ -1,7 +1,8 @@
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PaymentService } from '../../domain/inboundPorts/Payment.service';
-import { commonStatusErrorMessages, paymentDocumentationLabels } from '../../../../core/constants';
+import { commonStatusErrorMessages, IAuthUser, paymentDocumentationLabels } from '../../../../core/constants';
+import { CreatePaymentDto } from '../model/createPaymentDto';
 
 @ApiTags('payment')
 @ApiBearerAuth()
@@ -25,5 +26,16 @@ export class PaymentController {
   })
   getPaymentsByOrderCode(@Param('order_code') order_code: string) {
     return this.paymentService.getPaymentsByOrderCode(order_code);
+  }
+
+  @Post('/create')
+  @ApiOperation({ summary: paymentDocumentationLabels.createOperation.summary })
+  @ApiResponse({ status: 200, description: paymentDocumentationLabels.createOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  addPaymentToOrder(@Body() payment: CreatePaymentDto, @Query('user') user: IAuthUser) {
+    return this.paymentService.createPaymentForOrder(payment, user);
   }
 }

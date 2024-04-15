@@ -225,8 +225,45 @@ export const paymentDocumentationLabels = {
     success: 'Listado de pagos',
     orderCodeParamDescription: 'Código del pedido',
   },
+  createOperation: {
+    summary: 'Agregar un pago a un pedido',
+    success: 'Pago creado correctamente',
+
+    orderCodeParamDescription: 'Código del pedido',
+    amountParamDescription: 'Valor del pago',
+    bankEntityIDParamDescription: 'Id de la entidad bancaria donde se hizo el pago',
+  },
+};
+export const paymentValidationMessages = {
+  createOperation: {
+    orderCodeRequired: 'El código del pedido es requerido',
+    orderCodeIsString: 'El código del pedido debe ser una cadena de texto',
+
+    amountIsNumber: 'El valor del pago debe ser un número',
+    amountRequired: 'El valor del pago es requerido',
+    amountIsPositive: 'El valor del pago debe ser un número positivo',
+
+    bankEntityIdIsInt: 'El id del banco debe ser un número entero',
+    bankEntityIdRequired: 'El id del banco es requerido',
+  },
+};
+export const paymentErrorMessages = {
+  service: {
+    create: {
+      unauthorized: 'No tiene permiso para realizar esta acción',
+      orderNotFound: 'No se encontró el pedido con el numero proporcionado',
+      paymentExceed: 'El valor del pago a registrar excede el faltante por pagar',
+    },
+  },
 };
 
+export const paymentSuccessMessages = {
+  service: {
+    create: {
+      default: 'Pago registrado con éxito',
+    },
+  },
+};
 export const bankEntityDocumentationLabels = {
   listOperation: {
     summary: 'Obtener listado de entidades bancarias disponibles',
