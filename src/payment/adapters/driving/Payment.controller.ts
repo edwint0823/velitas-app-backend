@@ -2,7 +2,7 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@ne
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PaymentService } from '../../domain/inboundPorts/Payment.service';
 import { commonStatusErrorMessages, IAuthUser, paymentDocumentationLabels } from '../../../../core/constants';
-import { CreatePaymentDto } from '../model/createPaymentDto';
+import { CreatePaymentDto } from '../model/createPayment.dto';
 
 @ApiTags('payment')
 @ApiBearerAuth()

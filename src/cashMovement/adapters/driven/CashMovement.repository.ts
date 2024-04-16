@@ -10,7 +10,7 @@ export class CashMovementRepository extends Repository<CashMovementEntity> imple
   constructor(
     public readonly dataSource: DataSource,
     @Inject(IPaymentRepository)
-    public readonly paymentRepository: IPaymentRepository,
+    private readonly paymentRepository: IPaymentRepository,
   ) {
     super(CashMovementEntity, dataSource.createEntityManager());
   }
