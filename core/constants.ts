@@ -271,6 +271,49 @@ export const bankEntityDocumentationLabels = {
   },
 };
 
+export const bagInventoryDocumentationLabels = {
+  updateInventoryQuantityOperation: {
+    summary: 'Aumentar o disminuir la cantidad de inventario de una bolsa',
+    success: 'Cantidad actualizada con éxito',
+    bagIdParamDescription: 'id de la bolsa la cual se quiere modificar la cantidad de inventario',
+    quantityParamDescription: 'Candida de inventario a aumentar o disminuir',
+    isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
+    observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la bolsa',
+  },
+};
+
+export const bagInventoryValidationMessages = {
+  updateInventoryQuantityOperation: {
+    quantityRequired: 'La cantidad que se desea agregar o quitar es requerida',
+    quantityIsInt: 'La cantidad debe ser un número entero',
+    quantityIsPositive: 'La cantidad de ser un número entero',
+
+    isEntryRequired: 'Debe definir si el movimiento de inventario es para adicionar o substraer',
+    isEntryIsBoolean: 'Si es una entrada de inventario o no debe ser un booleano',
+
+    observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
+    observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres ',
+  },
+};
+
+export const bagInventoryErrorMessages = {
+  service: {
+    addOrRemoveBagInventory: {
+      default: 'Error al agregar o quitar inventario de la bolsa',
+      unauthorized: 'No tiene permiso para modificar el inventario de la bolsa',
+      bagNotFound: 'La bolsa proporcionada no existe',
+    },
+  },
+};
+
+export const bagInventorySuccessMessages = {
+  service: {
+    addOrRemoveBagInventory: {
+      default: 'La modificación al inventario de la bolsa se ha realizado correctamente',
+    },
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
@@ -284,4 +327,9 @@ export interface IAuthUser {
 export const maxStatusToCancel = {
   name: 'impreso',
   order: 4,
+};
+
+export const statusCanceled = {
+  name: 'Cancelado',
+  order: 0,
 };
