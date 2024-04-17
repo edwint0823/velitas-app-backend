@@ -15,6 +15,7 @@ import { OrderDetailEntity } from '../entities/OrderDetail.entity';
 import { BagEntity } from '../entities/Bag.entity';
 import { BagInventoryEntity } from '../entities/BagInventory.entity';
 import { CashMovementEntity } from '../entities/CashMovement.entity';
+import { CandleInventoryEntity } from '../entities/CandleInventory.entity';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ async function seed() {
         CashMovementEntity,
         CandleOptionEntity,
         CandleTypeEntity,
+        CandleInventoryEntity,
         ConfigurationEntity,
         PackNameEntity,
         StatusEntity,
@@ -84,6 +86,10 @@ async function seed() {
         let candleType = await manager.getRepository(CandleTypeEntity).findOne({ where: { name: candle.name } });
         if (candleType === null) {
           candleType = await manager.getRepository(CandleTypeEntity).save(candle);
+
+          /* CANDLE INVENTORY SEED */
+          candle.candle_inventory.candle_type_id = candleType.id;
+          await manager.getRepository(CandleInventoryEntity).save(candle.candle_inventory);
         }
 
         /* CANDLE OPTIONS SEED */

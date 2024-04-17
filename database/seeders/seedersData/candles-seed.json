@@ -1,6 +1,10 @@
 [
   {
     "name": "Velas blancas",
+    "candle_inventory": {
+      "candle_type_id": null,
+      "quantity": 0
+    },
     "candle_options": [
       {
         "name": "Vela blanca letra negra cursiva",
@@ -77,6 +81,10 @@
   },
   {
     "name": "Velas de colores",
+    "candle_inventory": {
+      "candle_type_id": null,
+      "quantity": 0
+    },
     "candle_options": [
       {
         "name": "Vela de colores letra negra cursiva",
