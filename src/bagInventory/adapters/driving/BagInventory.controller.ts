@@ -24,11 +24,11 @@ export class BagInventoryController {
     type: 'number',
     example: 1,
   })
-  addOrRemoveInventory(
+  async addOrRemoveInventory(
     @Param('bag_id') bagId: number,
     @Body() inventoryInfo: UpdateInventoryQuantityDto,
     @Query('user') user: IAuthUser,
   ) {
-    return this.bagInventoryService.addOrRemoveBagInventory(bagId, inventoryInfo, user);
+    return await this.bagInventoryService.addOrRemoveBagInventory(bagId, inventoryInfo, user);
   }
 }

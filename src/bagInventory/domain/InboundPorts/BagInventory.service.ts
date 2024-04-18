@@ -50,7 +50,7 @@ export class BagInventoryService implements IBagInventoryService {
       } else {
         await this.bagInventoryMovementRepository.createOutInventoryMovement(payloadToInventoryMovement);
       }
-      return Promise.resolve({ message: bagInventorySuccessMessages.service.addOrRemoveBagInventory.default });
+      return { message: bagInventorySuccessMessages.service.addOrRemoveBagInventory.default };
     } catch (error) {
       const { message, status } = getErrorParams(
         error,

@@ -276,7 +276,7 @@ export const bagInventoryDocumentationLabels = {
     summary: 'Aumentar o disminuir la cantidad de inventario de una bolsa',
     success: 'Cantidad actualizada con éxito',
     bagIdParamDescription: 'id de la bolsa la cual se quiere modificar la cantidad de inventario',
-    quantityParamDescription: 'Candida de inventario a aumentar o disminuir',
+    quantityParamDescription: 'Cantidad de inventario a aumentar o disminuir',
     isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
     observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la bolsa',
   },
@@ -286,7 +286,7 @@ export const bagInventoryValidationMessages = {
   updateInventoryQuantityOperation: {
     quantityRequired: 'La cantidad que se desea agregar o quitar es requerida',
     quantityIsInt: 'La cantidad debe ser un número entero',
-    quantityIsPositive: 'La cantidad de ser un número entero',
+    quantityIsPositive: 'La cantidad debe ser un número positivo',
 
     isEntryRequired: 'Debe definir si el movimiento de inventario es para adicionar o substraer',
     isEntryIsBoolean: 'Si es una entrada de inventario o no debe ser un booleano',
@@ -310,6 +310,49 @@ export const bagInventorySuccessMessages = {
   service: {
     addOrRemoveBagInventory: {
       default: 'La modificación al inventario de la bolsa se ha realizado correctamente',
+    },
+  },
+};
+
+export const candleInventoryDocumentationLabels = {
+  addOrRemoveInventoryOperation: {
+    summary: 'Aumentar o disminuir la cantidad de inventario de una vela',
+    success: 'Cantidad actualizada con éxito',
+    candleTypeIdParamDescription: 'id de la vela la cual se quiere modificar la cantidad de inventario',
+    quantityParamDescription: 'Cantidad de inventario a aumentar o disminuir',
+    isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
+    observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la vela',
+  },
+};
+
+export const candleInventoryValidationMessages = {
+  addOrRemoveInventoryOperation: {
+    quantityRequired: 'La cantidad que se desea agregar o quitar es requerida',
+    quantityIsInt: 'La cantidad debe ser un número entero',
+    quantityIsPositive: 'La cantidad debe ser un número positivo',
+
+    isEntryRequired: 'Debe definir si el movimiento de inventario es para adicionar o substraer',
+    isEntryIsBoolean: 'Si es una entrada de inventario o no debe ser un booleano',
+
+    observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
+    observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres',
+  },
+};
+
+export const candleInventoryErrorMessages = {
+  service: {
+    addOrRemoveCandleInventory: {
+      default: 'Error al agregar o quitar inventario de la vela',
+      unauthorized: 'No tiene permiso para modificar el inventario de la vela',
+      candleNotFound: 'La vela proporcionada no existe',
+    },
+  },
+};
+
+export const candleInventorySuccessMessages = {
+  service: {
+    addOrRemoveCandleInventory: {
+      default: 'La modificación al inventario de la vela se ha realizado correctamente',
     },
   },
 };

@@ -33,6 +33,7 @@ import { OrderStatusChangeLogEntity } from '../database/entities/OrderStatusChan
 import { PaymentModule } from './payment/payment.module';
 import { BankEntityModule } from './bankEntity/bankEntity.module';
 import { BagInventoryModule } from './bagInventory/bagInventory.module';
+import { CandleInventoryModule } from './candleInventory/candleInventory.module';
 
 dotenv.config();
 
@@ -79,6 +80,7 @@ dotenv.config();
     PaymentModule,
     BankEntityModule,
     BagInventoryModule,
+    CandleInventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
