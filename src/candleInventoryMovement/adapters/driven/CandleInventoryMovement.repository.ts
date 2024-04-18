@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { CandleInventoryMovementEntity } from '../../../../database/entities/CandleInventoryMovement.entity';
 import { ICandleInventoryMovementRepository } from '../../domain/outboundPorts/ICandleInventoryMovementRepository';
+// eslint-disable-next-line max-len
 import { CreateEntryCandleInventoryMovementDomain } from '../../domain/model/in/createEntryCandleInventoryMovementDomain';
 import { CreateOutCandleInventoryMovementDomain } from '../../domain/model/in/createOutCandleInventoryMovementDomain';
 import { ICandleInventoryRepository } from '../../../candleInventory/domain/outboundPorts/ICandleInventoryRepository';

@@ -4,6 +4,7 @@ import { candleInventoryErrorMessages, candleInventorySuccessMessages, IAuthUser
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { UpdateCandleInventoryQuantityDto } from '../../adapters/model/updateCandleInventoryQuantity.dto';
 import { ICandleInventoryRepository } from '../outboundPorts/ICandleInventoryRepository';
+// eslint-disable-next-line max-len
 import { ICandleInventoryMovementRepository } from '../../../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
 
 @Injectable()
