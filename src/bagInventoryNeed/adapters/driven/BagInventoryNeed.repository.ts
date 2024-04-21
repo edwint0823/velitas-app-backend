@@ -21,4 +21,17 @@ export class BagInventoryNeedRepository
     Object.assign(newBagInventoryNeed, bagInventoryNeedInfo);
     return transaction.save(newBagInventoryNeed);
   }
+
+  async getBagInventoryNeedForOrderByOrderCode(orderCode: string): Promise<BagInventoryNeedEntity[]> {
+    return await this.find({
+      relations: {
+        order: true,
+      },
+      where: {
+        order: {
+          code: orderCode,
+        },
+      },
+    });
+  }
 }

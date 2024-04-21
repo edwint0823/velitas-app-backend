@@ -1,14 +1,8 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  OneToMany,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
 import { CustomerEntity } from './Customer.entity';
 import { StatusEntity } from './Status.entity';
 import { OrderDetailEntity } from './OrderDetail.entity';
+import { BagInventoryNeedEntity } from './BagInventoryNeed.entity';
 
 @Entity('orders')
 export class OrderEntity {
@@ -77,4 +71,8 @@ export class OrderEntity {
   @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order)
   @JoinColumn({ name: 'id' })
   orders_details: OrderDetailEntity[];
+
+  @OneToMany(() => BagInventoryNeedEntity, (bagInventoryNeed) => bagInventoryNeed.order)
+  @JoinColumn({ name: 'id' })
+  bag_inventory_needs: BagInventoryNeedEntity[];
 }

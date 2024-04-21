@@ -7,8 +7,8 @@ export interface IBagInventoryNeedRepository {
     bagInventoryNeedInfo: CreateBagInventoryNeedDomain,
     transaction: EntityManager,
   ): Promise<BagInventoryNeedEntity>;
+
+  getBagInventoryNeedForOrderByOrderCode(orderCode: string): Promise<BagInventoryNeedEntity[]>;
 }
 
-export const IBagInventoryNeedRepository = Symbol(
-  'IBagInventoryNeedRepository',
-);
+export const IBagInventoryNeedRepository = Symbol('IBagInventoryNeedRepository');

@@ -199,6 +199,7 @@ export const orderErrorMessages = {
       orderAlreadyCanceled: 'No se puede actualizar el estado del pedido si ya ha sido cancelado',
       orderAlreadyInProduction: 'El pedido no se puede cancelar ya que esta producción',
       notAbleToUpdateUnderStatus: 'No se puede cambiar el estado del pedido a uno anterior ',
+      orderNotFound: 'No se encontró el pedido con el código proporcionado',
       default: 'Error al actualizar el estado del pedido',
     },
   },
@@ -375,4 +376,14 @@ export const maxStatusToCancel = {
 export const statusCanceled = {
   name: 'Cancelado',
   order: 0,
+};
+
+export const statusForCandleInventoryMovement = {
+  name: 'En Proceso de marcado',
+  order: 5,
+};
+
+export const statusForBagInventoryMovement = {
+  name: 'En Proceso de Empaquetado',
+  order: 7,
 };

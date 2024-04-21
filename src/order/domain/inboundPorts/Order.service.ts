@@ -25,10 +25,21 @@ import {
   orderCreateNameStatus,
   orderErrorMessages,
   orderSuccessMessages,
+  statusCanceled,
+  statusForBagInventoryMovement,
+  statusForCandleInventoryMovement,
   timeToDoOneCandleNameParam,
   timeZoneDayjs,
   workingHours,
 } from '../../../../core/constants';
+import { OrderUpdateDto } from '../../adapters/model/orderUpdate.dto';
+import { OrderEntity } from '../../../../database/entities/Order.entity';
+// eslint-disable-next-line max-len
+import { ICandleInventoryMovementRepository } from '../../../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
+// eslint-disable-next-line max-len
+import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
+// eslint-disable-next-line max-len
+import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -45,6 +56,12 @@ export class OrderService implements IOrderService {
     private readonly statusRepository: IStatusRepository,
     @Inject(IBagRepository)
     private readonly bagRepository: IBagRepository,
+    @Inject(ICandleInventoryMovementRepository)
+    private readonly candleInventoryMovementRepository: ICandleInventoryMovementRepository,
+    @Inject(IBagInventoryNeedRepository)
+    private readonly bagInventoryNeedRepository: IBagInventoryNeedRepository,
+    @Inject(IBagInventoryMovementRepository)
+    private readonly bagInventoryMovementRepository: IBagInventoryMovementRepository,
   ) {}
 
   async create(orderInfo: createOrderDto): Promise<createOrderResponseDomain> {
@@ -200,9 +217,20 @@ export class OrderService implements IOrderService {
       );
     }
     try {
-      const orderInfo = await this.orderRepository.getOrderAndStatusByCode(order_code);
-      const oldStatusInfo = orderInfo.status;
       const newStatusInfo = await this.statusRepository.findStatusById(newStatusId);
+
+      let orderInfo: OrderEntity;
+      if (newStatusInfo.name === statusForCandleInventoryMovement.name) {
+        orderInfo = await this.orderRepository.getOrderAndDetailsByCode(order_code);
+      } else {
+        orderInfo = await this.orderRepository.getOrderAndStatusByCode(order_code);
+      }
+
+      if (!orderInfo) {
+        throw new HttpException(orderErrorMessages.service.updateStatus.orderNotFound, HttpStatus.BAD_REQUEST);
+      }
+
+      const oldStatusInfo = orderInfo.status;
 
       if (oldStatusInfo.order === 0) {
         throw new HttpException(
@@ -217,19 +245,70 @@ export class OrderService implements IOrderService {
           HttpStatus.BAD_REQUEST,
         );
       }
+
       if (newStatusInfo.order !== 0 && oldStatusInfo.order > newStatusInfo.order) {
         throw new HttpException(
           { message: orderErrorMessages.service.updateStatus.notAbleToUpdateUnderStatus },
           HttpStatus.BAD_REQUEST,
         );
       }
+
       const statusLogPayload = {
         order_id: orderInfo.id,
         old_status_id: oldStatusInfo.id,
-        new_status_id: newStatusId,
+        new_status_id: Number(newStatusId),
         created_by: user.id,
       };
       await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
+
+      if (
+        oldStatusInfo.order < statusForCandleInventoryMovement.order &&
+        newStatusInfo.order >= statusForCandleInventoryMovement.order
+      ) {
+        const candlesAndQuantityKeyValue: { [candleTypeId: number]: number } = {};
+
+        for (const orderDetail of orderInfo.orders_details) {
+          const candleTypeId: number = orderDetail.candle_option.candle_type_id;
+          const quantity: number = Number(orderDetail.quantity);
+          if (candlesAndQuantityKeyValue[candleTypeId]) {
+            candlesAndQuantityKeyValue[candleTypeId] += quantity;
+          } else {
+            candlesAndQuantityKeyValue[candleTypeId] = quantity;
+          }
+        }
+        const candlesAndQuantity = Object.entries(candlesAndQuantityKeyValue).map(([candleTypeId, quantity]) => ({
+          candle_type_id: parseInt(candleTypeId),
+          quantity: quantity,
+          is_entry: false,
+          is_out: true,
+          // eslint-disable-next-line max-len
+          observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
+          created_by: user.id,
+        }));
+        for (const candle of candlesAndQuantity) {
+          await this.candleInventoryMovementRepository.createOutCandleInventoryMovement(candle);
+        }
+      }
+
+      if (
+        oldStatusInfo.order < statusForBagInventoryMovement.order &&
+        newStatusInfo.order >= statusForBagInventoryMovement.order
+      ) {
+        const bagsNeed = await this.bagInventoryNeedRepository.getBagInventoryNeedForOrderByOrderCode(orderInfo.code);
+        for (const bagNeed of bagsNeed) {
+          const payload = {
+            bag_id: bagNeed.bag_id,
+            quantity: bagNeed.quantity,
+            is_entry: false,
+            is_out: true,
+            // eslint-disable-next-line max-len
+            observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
+            created_by: user.id,
+          };
+          await this.bagInventoryMovementRepository.createOutInventoryMovement(payload);
+        }
+      }
+
       return { message: orderSuccessMessages.service.updateStatus.default };
     } catch (error) {
       const { message, status } = getErrorParams(error, orderErrorMessages.service.updateStatus.default);

@@ -16,6 +16,11 @@ import { BagEntity } from '../entities/Bag.entity';
 import { BagInventoryEntity } from '../entities/BagInventory.entity';
 import { CashMovementEntity } from '../entities/CashMovement.entity';
 import { CandleInventoryEntity } from '../entities/CandleInventory.entity';
+import { BagInventoryMovementEntity } from '../entities/BagInventoryMovement.entity';
+import { BagInventoryNeedEntity } from '../entities/BagInventoryNeed.entity';
+import { CandleInventoryMovementEntity } from '../entities/CandleInventoryMovement.entity';
+import { PaymentEntity } from '../entities/Payment.entity';
+import { OrderStatusChangeLogEntity } from '../entities/OrderStatusChangeLogs.entity';
 
 dotenv.config();
 
@@ -25,19 +30,24 @@ async function seed() {
       type: 'postgres',
       ...config[process.env.NODE_ENV],
       entities: [
-        BankEntityEntity,
-        CashMovementEntity,
-        CandleOptionEntity,
-        CandleTypeEntity,
-        CandleInventoryEntity,
-        ConfigurationEntity,
-        PackNameEntity,
-        StatusEntity,
-        OrderEntity,
         CustomerEntity,
-        OrderDetailEntity,
         BagEntity,
         BagInventoryEntity,
+        BagInventoryMovementEntity,
+        BagInventoryNeedEntity,
+        BankEntityEntity,
+        CandleInventoryEntity,
+        CandleInventoryMovementEntity,
+        CandleOptionEntity,
+        CandleTypeEntity,
+        CashMovementEntity,
+        ConfigurationEntity,
+        OrderEntity,
+        OrderDetailEntity,
+        PackNameEntity,
+        PaymentEntity,
+        StatusEntity,
+        OrderStatusChangeLogEntity,
       ],
     });
     await connection.initialize();

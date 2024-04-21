@@ -22,6 +22,18 @@ import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/
 import { AuthMiddleware } from '../../middlewares/auth.middleware';
 import { IOrderStatusRepository } from '../orderStatus/domain/outboundPorts/IOrderStatusRepository';
 import { OrderStatusRepository } from '../orderStatus/adapters/driven/OrderStatus.repository';
+// eslint-disable-next-line max-len
+import { ICandleInventoryMovementRepository } from '../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
+// eslint-disable-next-line max-len
+import { CandleInventoryMovementRepository } from '../candleInventoryMovement/adapters/driven/CandleInventoryMovement.repository';
+import { ICandleInventoryRepository } from '../candleInventory/domain/outboundPorts/ICandleInventoryRepository';
+import { CandleInventoryRepository } from '../candleInventory/adapters/driven/CandleInventory.repository';
+// eslint-disable-next-line max-len
+import { IBagInventoryMovementRepository } from '../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
+// eslint-disable-next-line max-len
+import { BagInventoryMovementRepository } from '../bagInventoryMovement/adapters/driven/BagInventoryMovement.repository';
+import { IBagInventoryRepository } from '../bagInventory/domain/outboundPorts/IBagInventoryRepository';
+import { BagInventoryRepository } from '../bagInventory/adapters/driven/BagInventory.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderEntity])],
@@ -43,6 +55,11 @@ import { OrderStatusRepository } from '../orderStatus/adapters/driven/OrderStatu
       provide: IOrderStatusRepository,
       useClass: OrderStatusRepository,
     },
+    { provide: ICandleInventoryRepository, useClass: CandleInventoryRepository },
+    { provide: ICandleInventoryMovementRepository, useClass: CandleInventoryMovementRepository },
+    { provide: IBagInventoryNeedRepository, useClass: BagInventoryNeedRepository },
+    { provide: IBagInventoryMovementRepository, useClass: BagInventoryMovementRepository },
+    { provide: IBagInventoryRepository, useClass: BagInventoryRepository },
   ],
 })
 export class OrderModule {
