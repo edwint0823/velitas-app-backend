@@ -5,6 +5,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   ValidateNested,
@@ -102,6 +103,24 @@ class CandleObj {
 }
 
 export class OrderUpdateDto {
+  @ApiProperty({
+    type: 'string',
+    required: true,
+    description: orderDocumentationLabels.updateOrderAndDetailOperation.deliveryAddressParamDescription,
+  })
+  @IsNotEmpty({ message: orderValidationMessages.updateOrderAndDetailOperation.deliveryAddressIsRequired })
+  @IsString({ message: orderValidationMessages.updateOrderAndDetailOperation.deliveryAddressIsString })
+  delivery_address: string;
+
+  @ApiProperty({
+    type: 'string',
+    required: false,
+    description: orderDocumentationLabels.updateOrderAndDetailOperation.additionalInfoParamDescription,
+  })
+  @IsOptional()
+  @IsString({ message: orderValidationMessages.updateOrderAndDetailOperation.additionalInfoIsString })
+  additional_info: string | null;
+
   @ApiProperty({
     type: [CandleObj],
     description: orderDocumentationLabels.updateOrderAndDetailOperation.candlesParamDescription,

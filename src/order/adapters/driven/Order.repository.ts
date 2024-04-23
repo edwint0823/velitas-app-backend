@@ -131,6 +131,8 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       order.delivery_date = orderAndDetailsInfo.order.delivery_date;
       order.updated_by = orderAndDetailsInfo.order.updated_by;
       order.updated_at = orderAndDetailsInfo.order.updated_at;
+      order.delivery_address = orderAndDetailsInfo.order.delivery_address;
+      order.additional_info = orderAndDetailsInfo.order.additional_info;
       const orderSaved = await entityManager.save(order);
 
       await this.orderDetailsRepository.deleteDetailsByOrderIdWithTransaction(order.id, entityManager);

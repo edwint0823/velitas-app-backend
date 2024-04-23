@@ -104,6 +104,8 @@ export class OrderService implements IOrderService {
           delivery_date: deliveryDate.toDate(),
           customer_id: customer.id,
           status_id: statusInfo.id,
+          delivery_address: orderInfo.delivery_address,
+          additional_info: orderInfo.additional_info,
         },
         bagInventoryNeed: [
           {
@@ -372,6 +374,8 @@ export class OrderService implements IOrderService {
           delivery_date: deliveryDate.toDate(),
           updated_at: dayjs().toDate(),
           updated_by: user.id,
+          delivery_address: orderData.delivery_address,
+          additional_info: orderData.additional_info,
         },
         orderDetails: orderData.candles.map((candle) => {
           return {

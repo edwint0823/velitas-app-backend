@@ -124,6 +124,8 @@ export const orderDocumentationLabels = {
     quantityCandleParamDescription: 'Cantidad de velas',
     observationCandleParamDescription: 'Observación de la vela o nombres',
     customerParamDescription: 'Información del cliente ',
+    deliveryAddressParamDescription: 'Dirección de entrega del pedido ',
+    additionalInfoParamDescription: 'Información adicional del pedido',
     candlesParamDescription: 'Lista de velas',
   },
   findByCodeOperation: {
@@ -166,6 +168,8 @@ export const orderDocumentationLabels = {
     quantityCandleParamDescription: 'Cantidad de velas',
     observationCandleParamDescription: 'Observación de la vela o nombres',
     candlesParamDescription: 'Lista de velas',
+    deliveryAddressParamDescription: 'Dirección de entrega del pedido ',
+    additionalInfoParamDescription: 'Información adicional del pedido',
   },
 };
 export const orderValidationMessages = {
@@ -190,6 +194,11 @@ export const orderValidationMessages = {
     quantityCandleRequired: 'La cantidad de velas es requerido',
     observationCandleIsString: 'La Observación debe ser un string ',
     candleNotEmpty: 'Debe agregar al menos una vela al pedido',
+
+    deliveryAddressIsRequired: 'La dirección de entrega del pedido es obligatoria',
+    deliveryAddressIsString: 'La dirección de entrega del pedido debe ser una cadena de caracteres',
+
+    additionalInfoIsString: 'La información adicional del pedido debe ser una cadena de caracteres',
   },
   paginateListOperation: {
     orderCodeIsArray: 'El listado de Números de pedidos deben ser una lista',
@@ -221,6 +230,11 @@ export const orderValidationMessages = {
     quantityCandleRequired: 'La cantidad de velas es requerido',
     observationCandleIsString: 'La Observación debe ser un string ',
     candleNotEmpty: 'El pedido debe tener al menos una vela',
+
+    deliveryAddressIsRequired: 'La dirección de entrega del pedido es obligatoria',
+    deliveryAddressIsString: 'La dirección de entrega del pedido debe ser una cadena de caracteres',
+
+    additionalInfoIsString: 'La información adicional del pedido debe ser una cadena de caracteres',
   },
 };
 export const orderErrorMessages = {

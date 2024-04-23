@@ -31,6 +31,18 @@ export class OrderEntity {
   delivery_date: Date;
 
   @Column({
+    type: 'varchar',
+  })
+  delivery_address: string;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+    default: null,
+  })
+  additional_info: string | null;
+
+  @Column({
     type: 'timestamp',
     default: 'now()',
   })

@@ -5,6 +5,8 @@ interface Order {
   delivery_date: Date;
   updated_by: number;
   updated_at: Date;
+  delivery_address: string;
+  additional_info: string | null;
 }
 
 interface OrderDetail {
