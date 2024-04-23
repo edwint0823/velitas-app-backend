@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { DataSource, DeleteResult, EntityManager, Repository } from 'typeorm';
 import { IBagInventoryNeedRepository } from '../../domain/outboundPorts/IBagInventoryNeedRepository';
 import { BagInventoryNeedEntity } from '../../../../database/entities/BagInventoryNeed.entity';
 import { CreateBagInventoryNeedDomain } from '../../domain/model/in/createBagInventoryNeedDomain';
@@ -33,5 +33,12 @@ export class BagInventoryNeedRepository
         },
       },
     });
+  }
+
+  async deleteBagsInventoryNeedByOrderIdWithTransaction(
+    orderId: number,
+    transaction: EntityManager,
+  ): Promise<DeleteResult> {
+    return await transaction.delete(BagInventoryNeedEntity, { order_id: orderId });
   }
 }

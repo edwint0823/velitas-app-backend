@@ -1,6 +1,7 @@
 import { CreateEntryCandleInventoryMovementDomain } from '../model/in/createEntryCandleInventoryMovementDomain';
 import { CandleInventoryMovementEntity } from '../../../../database/entities/CandleInventoryMovement.entity';
 import { CreateOutCandleInventoryMovementDomain } from '../model/in/createOutCandleInventoryMovementDomain';
+import { EntityManager } from 'typeorm';
 
 export interface ICandleInventoryMovementRepository {
   createEntryCandleInventoryMovement(
@@ -9,6 +10,16 @@ export interface ICandleInventoryMovementRepository {
 
   createOutCandleInventoryMovement(
     outData: CreateOutCandleInventoryMovementDomain,
+  ): Promise<CandleInventoryMovementEntity>;
+
+  createEntryCandleInventoryMovementByTransaction(
+    entryData: CreateEntryCandleInventoryMovementDomain,
+    transaction: EntityManager,
+  ): Promise<CandleInventoryMovementEntity>;
+
+  createOutCandleInventoryMovementByTransaction(
+    outData: CreateOutCandleInventoryMovementDomain,
+    transaction: EntityManager,
   ): Promise<CandleInventoryMovementEntity>;
 }
 

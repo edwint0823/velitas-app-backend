@@ -50,4 +50,32 @@ export class BagInventoryMovementRepository
       },
     );
   }
+
+  async createEntryInventoryMovementByTransaction(
+    entryData: CreateEntryInventoryMovementDomain,
+    transaction: EntityManager,
+  ): Promise<BagInventoryMovementEntity> {
+    await this.bagInventoryRepository.addQuantityToBagInventoryByTransaction(
+      entryData.bag_id,
+      entryData.quantity,
+      transaction,
+    );
+    const newEntryInventoryMovement = new BagInventoryMovementEntity();
+    Object.assign(newEntryInventoryMovement, entryData);
+    return await transaction.save(newEntryInventoryMovement);
+  }
+
+  async createOutInventoryMovementByTransaction(
+    outData: CreateOutInventoryMovementDomain,
+    transaction: EntityManager,
+  ): Promise<BagInventoryMovementEntity> {
+    await this.bagInventoryRepository.removeQuantityToBagInventoryByTransaction(
+      outData.bag_id,
+      outData.quantity,
+      transaction,
+    );
+    const newOutInventoryMovement = new BagInventoryMovementEntity();
+    Object.assign(newOutInventoryMovement, outData);
+    return await transaction.save(newOutInventoryMovement);
+  }
 }

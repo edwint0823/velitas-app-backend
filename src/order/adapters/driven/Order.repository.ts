@@ -7,8 +7,13 @@ import { IOrderDetailRepository } from '../../../orderDetail/domain/outboundPort
 // eslint-disable-next-line max-len
 import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 import { IOrderStatusRepository } from '../../../orderStatus/domain/outboundPorts/IOrderStatusRepository';
+// eslint-disable-next-line max-len
+import { ICandleInventoryMovementRepository } from '../../../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
+// eslint-disable-next-line max-len
+import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDomain';
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
+import { UpdateOrderAndDetailsDomain } from '../../domain/model/in/updateOrderAndDetailsDomain';
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
@@ -20,6 +25,10 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
     private readonly bagInventoryNeedRepository: IBagInventoryNeedRepository,
     @Inject(IOrderStatusRepository)
     private readonly orderStatusLogRepository: IOrderStatusRepository,
+    @Inject(ICandleInventoryMovementRepository)
+    private readonly candleInventoryMovementRepository: ICandleInventoryMovementRepository,
+    @Inject(IBagInventoryMovementRepository)
+    private readonly bagInventoryMovementRepository: IBagInventoryMovementRepository,
   ) {
     super(OrderEntity, dataSource.createEntityManager());
   }
@@ -43,7 +52,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
         for (const orderDetail of orderInfo.orderDetails) {
           orderDetail.order_id = orderSaved.id;
           orderDetailPromise.push(
-            this.orderDetailsRepository.createOrderDetailByTransactionId(orderDetail, entityManager),
+            this.orderDetailsRepository.createOrderDetailByTransaction(orderDetail, entityManager),
           );
         }
         await Promise.all(orderDetailPromise);
@@ -111,6 +120,72 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       await entityManager.save(order);
       await this.orderStatusLogRepository.createOrderStatusLogByTransaction(orderStatusPayload, entityManager);
       return order;
+    });
+  }
+
+  async updateOrderAndDetails(orderAndDetailsInfo: UpdateOrderAndDetailsDomain): Promise<OrderEntity> {
+    return await this.dataSource.transaction(async (entityManager: EntityManager): Promise<OrderEntity> => {
+      const order = await this.findOne({ where: { id: orderAndDetailsInfo.order.id } });
+      order.total_price = orderAndDetailsInfo.order.total_price;
+      order.total_quantity = orderAndDetailsInfo.order.total_quantity;
+      order.delivery_date = orderAndDetailsInfo.order.delivery_date;
+      order.updated_by = orderAndDetailsInfo.order.updated_by;
+      order.updated_at = orderAndDetailsInfo.order.updated_at;
+      const orderSaved = await entityManager.save(order);
+
+      await this.orderDetailsRepository.deleteDetailsByOrderIdWithTransaction(order.id, entityManager);
+      const orderDetailsPromise = [];
+      for (const detail of orderAndDetailsInfo.orderDetails) {
+        orderDetailsPromise.push(
+          await this.orderDetailsRepository.createOrderDetailByTransaction(detail, entityManager),
+        );
+      }
+      await Promise.all(orderDetailsPromise);
+
+      await this.bagInventoryNeedRepository.deleteBagsInventoryNeedByOrderIdWithTransaction(order.id, entityManager);
+      const bagInventoryNeedPromise = [];
+      for (const bagNeed of orderAndDetailsInfo.newBagInventoryNeed) {
+        bagInventoryNeedPromise.push(
+          await this.bagInventoryNeedRepository.createBagInventoryNeedByTransaction(bagNeed, entityManager),
+        );
+      }
+      await Promise.all(bagInventoryNeedPromise);
+
+      if (orderAndDetailsInfo.oldCandleInventoryMovement && orderAndDetailsInfo.oldCandleInventoryMovement.length > 0) {
+        for (const oldCandleInventoryMovement of orderAndDetailsInfo.oldCandleInventoryMovement) {
+          await this.candleInventoryMovementRepository.createEntryCandleInventoryMovementByTransaction(
+            oldCandleInventoryMovement,
+            entityManager,
+          );
+        }
+
+        for (const newCandleInventoryMovement of orderAndDetailsInfo.newCandleInventoryMovement) {
+          await this.candleInventoryMovementRepository.createOutCandleInventoryMovementByTransaction(
+            newCandleInventoryMovement,
+            entityManager,
+          );
+        }
+      }
+
+      if (
+        orderAndDetailsInfo.oldBagInventoryNeedMovement &&
+        orderAndDetailsInfo.oldBagInventoryNeedMovement.length > 0
+      ) {
+        for (const oldBagInventoryMovement of orderAndDetailsInfo.oldBagInventoryNeedMovement) {
+          await this.bagInventoryMovementRepository.createEntryInventoryMovementByTransaction(
+            oldBagInventoryMovement,
+            entityManager,
+          );
+        }
+
+        for (const newBagInventoryMovement of orderAndDetailsInfo.newBagInventoryNeedMovement) {
+          await this.bagInventoryMovementRepository.createOutInventoryMovementByTransaction(
+            newBagInventoryMovement,
+            entityManager,
+          );
+        }
+      }
+      return orderSaved;
     });
   }
 }

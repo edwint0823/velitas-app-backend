@@ -149,6 +149,24 @@ export const orderDocumentationLabels = {
     orderCodeParamDescription: 'Código del pedido',
     newStatusIdParamDescription: 'Id del nuevo estado para el pedido',
   },
+  updateOrderAndDetailOperation: {
+    summary: 'Actualizar información del pedido y sus detalles',
+    success: 'Pedido Actualizado correctamente',
+    orderCodeParamDescription: 'Código del pedido',
+
+    nameListNameParamDescription: 'Nombre de una vela',
+    packAloneNameListParamDescription: '¿Empacar en bolsa x1?',
+    deceasedNameListParamDescription: '¿Es difunto?',
+    petNameListParamDescription: '¿Es una mascota?',
+
+    candleOptionIdCandleParamDescription: 'ID de opción de vela',
+    candleTypeIdCandleParamDescription: 'ID del tipo de vela seleccionada',
+    nameListCandleParamDescription: 'Lista de nombres',
+    priceCandleParamDescription: 'Precio de la vela',
+    quantityCandleParamDescription: 'Cantidad de velas',
+    observationCandleParamDescription: 'Observación de la vela o nombres',
+    candlesParamDescription: 'Lista de velas',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {
@@ -185,6 +203,25 @@ export const orderValidationMessages = {
     createdAtEndIsDate: 'La fecha final de creación del pedido debe ser una fecha',
     customerNameIsString: 'El nombre del cliente debe ser una cadena de texto',
   },
+  updateOrderAndDetailOperation: {
+    nameNameListIsString: 'El nombre de la vela debe ser una cadena de caracteres',
+    nameNameListRequired: 'El nombre de la vela es requerido',
+    packAloneNameListIsBoolean: 'El empacado x1 debe ser un booleano',
+    deceasedNameListIsBoolean: 'Si es un difunto debe definirse con un booleano',
+    petNameListIsBoolean: 'Si es una mascota debe definirse con un booleano',
+
+    candleOptionIdCandleIsInt: 'La opción de vela seleccionada debe ser un número',
+    candleOptionIdCandleRequired: 'Debe seleccionar un diseño de vela',
+    candleTypeIdCandleIsInt: 'El tipo de vela de la opción seleccionada debe ser un número',
+    candleTypeIdCandleRequired: 'Debe seleccionar un tipo de vela',
+    priceCandleIsPositive: 'El precio de la vela debe ser un número positivo',
+    priceCandleRequired: 'El precio de la vela es requerido',
+    quantityCandleIsInt: 'La cantidad de velas debe ser un número entero',
+    quantityCandleIsPositive: 'La cantidad de velas debe ser un número positivo',
+    quantityCandleRequired: 'La cantidad de velas es requerido',
+    observationCandleIsString: 'La Observación debe ser un string ',
+    candleNotEmpty: 'El pedido debe tener al menos una vela',
+  },
 };
 export const orderErrorMessages = {
   repository: {
@@ -195,18 +232,27 @@ export const orderErrorMessages = {
       default: 'Error al crear el pedido',
     },
     updateStatus: {
-      isNotSuperuser: 'No tiene permisos para realizar esta acción',
+      isNotSuperuser: 'No tiene permisos para actualizar el estado del pedido',
       orderAlreadyCanceled: 'No se puede actualizar el estado del pedido si ya ha sido cancelado',
       orderAlreadyInProduction: 'El pedido no se puede cancelar ya que esta producción',
       notAbleToUpdateUnderStatus: 'No se puede cambiar el estado del pedido a uno anterior ',
       orderNotFound: 'No se encontró el pedido con el código proporcionado',
       default: 'Error al actualizar el estado del pedido',
     },
+    updateOrderAndDetails: {
+      isNotSuperuser: 'No tiene permisos para actualizar el contenido del pedido',
+      orderNotFound: 'Pedido no encontrado',
+      orderAlreadyCanceled: 'El pedido no se puede actualizar ya que esta cancelado',
+      default: 'Error al actualizar el pedido',
+    },
   },
 };
 export const orderSuccessMessages = {
   service: {
     updateStatus: {
+      default: 'Estado del pedido actualizado con éxito',
+    },
+    updateOrderAndDetails: {
       default: 'Pedido actualizado con éxito',
     },
   },

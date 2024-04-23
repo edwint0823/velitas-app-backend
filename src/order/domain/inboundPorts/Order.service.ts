@@ -40,6 +40,7 @@ import { ICandleInventoryMovementRepository } from '../../../candleInventoryMove
 import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 // eslint-disable-next-line max-len
 import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
+import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -220,7 +221,7 @@ export class OrderService implements IOrderService {
       const newStatusInfo = await this.statusRepository.findStatusById(newStatusId);
 
       let orderInfo: OrderEntity;
-      if (newStatusInfo.name === statusForCandleInventoryMovement.name) {
+      if (newStatusInfo.order >= statusForCandleInventoryMovement.order) {
         orderInfo = await this.orderRepository.getOrderAndDetailsByCode(order_code);
       } else {
         orderInfo = await this.orderRepository.getOrderAndStatusByCode(order_code);
@@ -316,10 +317,200 @@ export class OrderService implements IOrderService {
     }
   }
 
-  // PROCESO PARA AFECTAR EL INVENTRIO CUANDO SE CAMBIE A ESTADO DESEADO
-  //    cuando se actualice un pedido debe realizar nuevamente el cálculo de cantidades de bolsas a necesitar y buscar los registros de bolsas necesitadas
-  //    comparar cada tipo de bolsa si la cantidad es la misma, si no lo es debe tomar el ID del tipo de bolsa y la cantidad que uso (tabla de need) calcular la diferencian entre ambas
-  //    y la diferencia debe sumarla o restarla inventario y después de actualizar el registro bolsas necesitadas con el nuevo cálculo
-  //    verificar si esto es realmente necesario, ya que se podría dejar solo el inventario de bolsas a necesitar de manera informativa para cuando se cambie de estado a empaquetar hacer una salida
-  //    con las bolsas que marca los registros del pedido al igual que para el inventario de velas
+  async updateOrderAndDetail(
+    orderCode: string,
+    orderData: OrderUpdateDto,
+    user: IAuthUser,
+  ): Promise<{
+    message: string;
+  }> {
+    if (!user.is_superuser) {
+      throw new HttpException(
+        { message: orderErrorMessages.service.updateOrderAndDetails.isNotSuperuser },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    try {
+      const order = await this.orderRepository.getOrderAndDetailsByCode(orderCode);
+      if (!order) {
+        throw new HttpException(
+          { message: orderErrorMessages.service.updateOrderAndDetails.orderNotFound },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (order.status.order === statusCanceled.order) {
+        throw new HttpException(
+          { message: orderErrorMessages.service.updateOrderAndDetails.orderAlreadyCanceled },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      const totalPrice = orderData.candles.reduce((acc, candle) => acc + candle.price, 0);
+      const totalQuantity = orderData.candles.reduce((acc, candle) => acc + candle.quantity, 0);
+      const { value: timeToDoOneCandle } = await this.configurationService.findParamByName(timeToDoOneCandleNameParam);
+
+      const daysToDoCandles = Math.ceil(
+        Math.ceil((totalQuantity * Number(timeToDoOneCandle)) / minutesOfHour) / workingHours,
+      );
+
+      const maxDayToDelivery = dayjs().set('month', monthMaxDelivery).set('date', dayMaxDelivery);
+      let deliveryDate = dayjs(order.created_at).add(daysToDoCandles + minimumDaysToDoOrder, 'days');
+
+      if (deliveryDate.isAfter(maxDayToDelivery)) {
+        deliveryDate = maxDayToDelivery;
+      }
+
+      const bagsInDb = await this.bagRepository.listAllBagsAvailable();
+      const maxCapacityBag = bagsInDb.shift();
+      const individualBag = bagsInDb.pop();
+
+      const updateOrderPayload: UpdateOrderAndDetailsDomain = {
+        order: {
+          id: order.id,
+          total_price: totalPrice,
+          total_quantity: totalQuantity,
+          delivery_date: deliveryDate.toDate(),
+          updated_at: dayjs().toDate(),
+          updated_by: user.id,
+        },
+        orderDetails: orderData.candles.map((candle) => {
+          return {
+            name_list: JSON.stringify(candle.name_list),
+            price: candle.price,
+            quantity: candle.quantity,
+            observation: candle.observation,
+            candle_option_id: candle.candle_option_id,
+            order_id: order.id,
+          };
+        }),
+        newBagInventoryNeed: [
+          {
+            bag_id: maxCapacityBag.id,
+            quantity: Math.round(totalQuantity / maxCapacityBag.capacity),
+            order_id: order.id,
+          },
+        ],
+      };
+
+      const temporaryBagsNeed: BagInventoryNeed[] = [];
+      for (const detail of orderData.candles) {
+        let candleToPackAlone = detail.name_list.filter((name) => name.packAlone).length;
+        let RemindCandles = detail.quantity - candleToPackAlone;
+
+        for (const bagDb of bagsInDb) {
+          if (RemindCandles === 0) break;
+
+          const bagQuantity = RemindCandles / bagDb.capacity;
+          if (bagQuantity >= 1) {
+            temporaryBagsNeed.push({
+              bag_id: bagDb.id,
+              quantity: Math.floor(bagQuantity),
+              order_id: order.id,
+            });
+            RemindCandles -= Math.floor(bagQuantity) * bagDb.capacity;
+          }
+        }
+
+        if (RemindCandles > 0) candleToPackAlone += RemindCandles;
+
+        if (candleToPackAlone > 0) {
+          temporaryBagsNeed.push({
+            bag_id: individualBag.id,
+            quantity: candleToPackAlone,
+            order_id: order.id,
+          });
+        }
+      }
+      for (const bag of temporaryBagsNeed) {
+        const indexBagsInventoryNeed = updateOrderPayload.newBagInventoryNeed.findIndex((x) => x.bag_id === bag.bag_id);
+
+        if (indexBagsInventoryNeed !== -1) {
+          updateOrderPayload.newBagInventoryNeed[indexBagsInventoryNeed].quantity += bag.quantity;
+        } else {
+          updateOrderPayload.newBagInventoryNeed.push(bag);
+        }
+      }
+      if (order.status.order >= statusForCandleInventoryMovement.order) {
+        /* INGRESAR INVENTORIO DE VELAS ANTIGUO */
+        const oldCandlesAndQuantityKeyValue: { [candleTypeId: number]: number } = {};
+        for (const orderDetail of order.orders_details) {
+          const candleTypeId: number = orderDetail.candle_option.candle_type_id;
+          const quantity: number = Number(orderDetail.quantity);
+          if (oldCandlesAndQuantityKeyValue[candleTypeId]) {
+            oldCandlesAndQuantityKeyValue[candleTypeId] += quantity;
+          } else {
+            oldCandlesAndQuantityKeyValue[candleTypeId] = quantity;
+          }
+        }
+        updateOrderPayload.oldCandleInventoryMovement = Object.entries(oldCandlesAndQuantityKeyValue).map(
+          ([candleTypeId, quantity]) => ({
+            candle_type_id: parseInt(candleTypeId),
+            quantity: quantity,
+            is_entry: true,
+            is_out: false,
+            // eslint-disable-next-line max-len
+            observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
+            created_by: user.id,
+          }),
+        );
+
+        /* SACAR INVENTOARIO DE VELAS NUEVO */
+        const newCandlesAndQuantityKeyValue: { [candleTypeId: number]: number } = {};
+        for (const orderDetail of orderData.candles) {
+          const candleTypeId: number = orderDetail.candle_type_id;
+          const quantity: number = Number(orderDetail.quantity);
+          if (newCandlesAndQuantityKeyValue[candleTypeId]) {
+            newCandlesAndQuantityKeyValue[candleTypeId] += quantity;
+          } else {
+            newCandlesAndQuantityKeyValue[candleTypeId] = quantity;
+          }
+        }
+        updateOrderPayload.newCandleInventoryMovement = Object.entries(newCandlesAndQuantityKeyValue).map(
+          ([candleTypeId, quantity]) => ({
+            candle_type_id: parseInt(candleTypeId),
+            quantity: quantity,
+            is_entry: false,
+            is_out: true,
+            // eslint-disable-next-line max-len
+            observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
+            created_by: user.id,
+          }),
+        );
+      }
+
+      if (order.status.order >= statusForBagInventoryMovement.order) {
+        /* INGRESAR INVENTORIO DE BOLSAS ANTIGUO */
+        const bagsNeed = await this.bagInventoryNeedRepository.getBagInventoryNeedForOrderByOrderCode(order.code);
+        updateOrderPayload.oldBagInventoryNeedMovement = bagsNeed.map((bagNeed) => {
+          return {
+            bag_id: bagNeed.bag_id,
+            quantity: bagNeed.quantity,
+            is_entry: true,
+            is_out: false,
+            // eslint-disable-next-line max-len
+            observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
+            created_by: user.id,
+          };
+        });
+        /* SACAR INVENTOARIO DE VELAS NUEVO */
+        updateOrderPayload.newBagInventoryNeedMovement = updateOrderPayload.newBagInventoryNeed.map((bagNeed) => {
+          return {
+            bag_id: bagNeed.bag_id,
+            quantity: bagNeed.quantity,
+            is_entry: false,
+            is_out: true,
+            // eslint-disable-next-line max-len
+            observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
+            created_by: user.id,
+          };
+        });
+      }
+      // console.log('PAYLOAD FINAL', updateOrderPayload);
+      await this.orderRepository.updateOrderAndDetails(updateOrderPayload);
+      return { message: orderSuccessMessages.service.updateOrderAndDetails.default };
+    } catch (error) {
+      const { message, status } = getErrorParams(error, orderErrorMessages.service.updateOrderAndDetails.default);
+      throw new HttpException({ message }, status);
+    }
+  }
 }

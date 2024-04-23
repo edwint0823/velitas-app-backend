@@ -53,4 +53,32 @@ export class CandleInventoryMovementRepository
       },
     );
   }
+
+  async createEntryCandleInventoryMovementByTransaction(
+    entryData: CreateEntryCandleInventoryMovementDomain,
+    transaction: EntityManager,
+  ): Promise<CandleInventoryMovementEntity> {
+    await this.candleInventoryRepository.addQuantityToCandleInventoryByTransaction(
+      entryData.candle_type_id,
+      entryData.quantity,
+      transaction,
+    );
+    const newEntryCandleInventoryMovement = new CandleInventoryMovementEntity();
+    Object.assign(newEntryCandleInventoryMovement, entryData);
+    return await transaction.save(newEntryCandleInventoryMovement);
+  }
+
+  async createOutCandleInventoryMovementByTransaction(
+    outData: CreateOutCandleInventoryMovementDomain,
+    transaction: EntityManager,
+  ): Promise<CandleInventoryMovementEntity> {
+    await this.candleInventoryRepository.removeQuantityToCandleInventoryByTransaction(
+      outData.candle_type_id,
+      outData.quantity,
+      transaction,
+    );
+    const newOutCandleInventoryMovement = new CandleInventoryMovementEntity();
+    Object.assign(newOutCandleInventoryMovement, outData);
+    return await transaction.save(newOutCandleInventoryMovement);
+  }
 }
