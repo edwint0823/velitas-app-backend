@@ -14,7 +14,9 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
     quantity: number,
     transaction: EntityManager,
   ): Promise<CandleInventoryEntity> {
-    const findCandleInventory = await this.findCandleInventoryByCandleTypeId(candleTypeId);
+    const findCandleInventory = await transaction.findOne(CandleInventoryEntity, {
+      where: { candle_type_id: candleTypeId },
+    });
     findCandleInventory.quantity += quantity;
     return transaction.save(findCandleInventory);
   }
@@ -28,7 +30,9 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
     quantity: number,
     transaction: EntityManager,
   ): Promise<CandleInventoryEntity> {
-    const findCandleInventory = await this.findCandleInventoryByCandleTypeId(candleTypeId);
+    const findCandleInventory = await transaction.findOne(CandleInventoryEntity, {
+      where: { candle_type_id: candleTypeId },
+    });
     findCandleInventory.quantity -= quantity;
     return transaction.save(findCandleInventory);
   }

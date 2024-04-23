@@ -14,7 +14,7 @@ export class BagInventoryRepository extends Repository<BagInventoryEntity> imple
     quantity: number,
     transaction: EntityManager,
   ): Promise<BagInventoryEntity> {
-    const findBagInventory = await this.findBagInventoryByBagId(bagId);
+    const findBagInventory = await transaction.findOne(BagInventoryEntity, { where: { bag_id: bagId } });
     findBagInventory.quantity += quantity;
     return transaction.save(findBagInventory);
   }
@@ -24,7 +24,7 @@ export class BagInventoryRepository extends Repository<BagInventoryEntity> imple
     quantity: number,
     transaction: EntityManager,
   ): Promise<BagInventoryEntity> {
-    const findBagInventory = await this.findBagInventoryByBagId(bagId);
+    const findBagInventory = await transaction.findOne(BagInventoryEntity, { where: { bag_id: bagId } });
     findBagInventory.quantity -= quantity;
     return transaction.save(findBagInventory);
   }
