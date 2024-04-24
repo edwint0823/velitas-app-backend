@@ -119,7 +119,17 @@ export class OrderUpdateDto {
   })
   @IsOptional()
   @IsString({ message: orderValidationMessages.updateOrderAndDetailOperation.additionalInfoIsString })
-  additional_info: string | null;
+  additional_info: string | undefined;
+
+  @ApiProperty({
+    type: 'number',
+    required: false,
+    description: orderDocumentationLabels.updateOrderAndDetailOperation.deliveryPriceParamDescription,
+  })
+  @IsOptional()
+  @IsNumber({}, { message: orderValidationMessages.updateOrderAndDetailOperation.deliveryPriceIsNumber })
+  @IsPositive({ message: orderValidationMessages.updateOrderAndDetailOperation.deliveryPriceIsPositive })
+  delivery_price: number | undefined;
 
   @ApiProperty({
     type: [CandleObj],

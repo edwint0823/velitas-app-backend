@@ -36,6 +36,13 @@ export class OrderEntity {
   delivery_address: string;
 
   @Column({
+    type: 'float',
+    nullable: true,
+    default: null,
+  })
+  delivery_price: number | null;
+
+  @Column({
     type: 'text',
     nullable: true,
     default: null,

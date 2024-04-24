@@ -170,6 +170,8 @@ export const orderDocumentationLabels = {
     candlesParamDescription: 'Lista de velas',
     deliveryAddressParamDescription: 'Dirección de entrega del pedido ',
     additionalInfoParamDescription: 'Información adicional del pedido',
+
+    deliveryPriceParamDescription: 'Precio del domicilio',
   },
 };
 export const orderValidationMessages = {
@@ -235,6 +237,9 @@ export const orderValidationMessages = {
     deliveryAddressIsString: 'La dirección de entrega del pedido debe ser una cadena de caracteres',
 
     additionalInfoIsString: 'La información adicional del pedido debe ser una cadena de caracteres',
+
+    deliveryPriceIsNumber: 'El precio del domicilio debe ser un numero',
+    deliveryPriceIsPositive: 'El precio del domicilio debe ser un numero positivo',
   },
 };
 export const orderErrorMessages = {

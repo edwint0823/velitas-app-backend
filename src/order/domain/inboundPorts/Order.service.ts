@@ -376,6 +376,7 @@ export class OrderService implements IOrderService {
           updated_by: user.id,
           delivery_address: orderData.delivery_address,
           additional_info: orderData.additional_info,
+          delivery_price: orderData.delivery_price,
         },
         orderDetails: orderData.candles.map((candle) => {
           return {

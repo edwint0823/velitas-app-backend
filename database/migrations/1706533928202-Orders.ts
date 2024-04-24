@@ -34,6 +34,11 @@ export class Orders1706533928202 implements MigrationInterface {
             type: 'varchar(100)',
           },
           {
+            name: 'delivery_price',
+            type: 'float',
+            isNullable: true,
+          },
+          {
             name: 'additional_info',
             type: 'text',
             isNullable: true,

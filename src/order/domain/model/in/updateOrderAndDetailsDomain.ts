@@ -6,7 +6,8 @@ interface Order {
   updated_by: number;
   updated_at: Date;
   delivery_address: string;
-  additional_info: string | null;
+  additional_info?: string;
+  delivery_price?: number;
 }
 
 interface OrderDetail {
