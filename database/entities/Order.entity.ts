@@ -3,6 +3,7 @@ import { CustomerEntity } from './Customer.entity';
 import { StatusEntity } from './Status.entity';
 import { OrderDetailEntity } from './OrderDetail.entity';
 import { BagInventoryNeedEntity } from './BagInventoryNeed.entity';
+import { PaymentEntity } from './Payment.entity';
 
 @Entity('orders')
 export class OrderEntity {
@@ -94,4 +95,8 @@ export class OrderEntity {
   @OneToMany(() => BagInventoryNeedEntity, (bagInventoryNeed) => bagInventoryNeed.order)
   @JoinColumn({ name: 'id' })
   bag_inventory_needs: BagInventoryNeedEntity[];
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.order)
+  @JoinColumn({ name: 'id' })
+  payments: PaymentEntity[];
 }

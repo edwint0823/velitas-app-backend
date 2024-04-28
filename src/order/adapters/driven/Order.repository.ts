@@ -14,6 +14,7 @@ import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/d
 import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDomain';
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 import { UpdateOrderAndDetailsDomain } from '../../domain/model/in/updateOrderAndDetailsDomain';
+import { skip, take } from 'rxjs';
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
@@ -193,6 +194,29 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
         }
       }
       return orderSaved;
+    });
+  }
+
+  async getAllOrderInfoAndBagsByCode(code: string): Promise<OrderEntity> {
+    return await this.findOne({
+      relations: {
+        customer: true,
+        orders_details: {
+          candle_option: true,
+        },
+        status: true,
+        bag_inventory_needs: {
+          bag: true,
+        },
+        payments: {
+          movement: {
+            bank_entity: true,
+          },
+        },
+      },
+      where: {
+        code: code,
+      },
     });
   }
 }

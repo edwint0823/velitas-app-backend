@@ -173,6 +173,12 @@ export const orderDocumentationLabels = {
 
     deliveryPriceParamDescription: 'Precio del domicilio',
   },
+  getOrderDetailsAndBagsOperation: {
+    summary:
+      'Obtener la información del pedido , su detalle , los pagos realizados y la cantidad de bolsas a necesitar',
+    success: 'Información del pedido y la cantidad de bolsas a necesitar',
+    orderCodeParamDescription: 'Código del pedido',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {

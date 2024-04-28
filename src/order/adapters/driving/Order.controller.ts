@@ -169,4 +169,22 @@ export class OrderController {
   ) {
     return await this.orderService.updateOrderAndDetail(orderCode, orderData, user);
   }
+
+  @Get('/get_details_and_bags/:order_code')
+  @ApiOperation({ summary: orderDocumentationLabels.getOrderDetailsAndBagsOperation.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.getOrderDetailsAndBagsOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'order_code',
+    description: orderDocumentationLabels.getOrderDetailsAndBagsOperation.orderCodeParamDescription,
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  async getOrderDeTailsAndBags(@Param('order_code') orderCode: string) {
+    return this.orderService.getOrderDetailsAndBagsByCode(orderCode);
+  }
 }

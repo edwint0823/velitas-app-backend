@@ -31,7 +31,7 @@ export class Orders1706533928202 implements MigrationInterface {
           },
           {
             name: 'delivery_address',
-            type: 'varchar(100)',
+            type: 'varchar(255)',
           },
           {
             name: 'delivery_price',

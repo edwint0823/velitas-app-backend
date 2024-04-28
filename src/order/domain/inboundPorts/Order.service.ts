@@ -41,6 +41,7 @@ import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/ou
 // eslint-disable-next-line max-len
 import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
+import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -517,5 +518,11 @@ export class OrderService implements IOrderService {
       const { message, status } = getErrorParams(error, orderErrorMessages.service.updateOrderAndDetails.default);
       throw new HttpException({ message }, status);
     }
+  }
+
+  async getOrderDetailsAndBagsByCode(orderCode: string): Promise<OrderDetailsAndBagsDomain> {
+    const repositoryResponse = await this.orderRepository.getAllOrderInfoAndBagsByCode(orderCode);
+    // TODO ADD PAYMENTS LIST FOR ORDER
+    return OrderMapper.orderDetailsAnBagsMapper(repositoryResponse);
   }
 }

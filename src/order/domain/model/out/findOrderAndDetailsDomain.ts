@@ -20,5 +20,8 @@ export interface FindOrderAndDetailsDomain {
   deliveryDate: Date;
   statusName: string;
   publicStatusName: string;
+  deliveryAddress: string;
+  deliveryPrice: number | null;
+  additionalInfo: string | null;
   orderDetails: OrderDetail[];
 }

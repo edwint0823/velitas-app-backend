@@ -3,6 +3,7 @@ import { OrderUpdateDto } from '../../adapters/model/orderUpdate.dto';
 import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
 import { IAuthUser } from '../../../../core/constants';
+import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 
 export interface IOrderService {
   create(orderInfo: createOrderDto): Promise<createOrderResponseDomain>;
@@ -12,4 +13,6 @@ export interface IOrderService {
   updateOrderStatus(order_code: string, newStatusId: number, user: IAuthUser): Promise<{ message: string }>;
 
   updateOrderAndDetail(orderCode: string, orderData: OrderUpdateDto, user: IAuthUser): Promise<{ message: string }>;
+
+  getOrderDetailsAndBagsByCode(orderCode: string): Promise<OrderDetailsAndBagsDomain>;
 }
