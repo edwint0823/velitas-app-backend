@@ -4,6 +4,7 @@ import { createOrderResponseDomain } from '../model/out/createOrderResponseDomai
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
 import { IAuthUser } from '../../../../core/constants';
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
+import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
 
 export interface IOrderService {
   create(orderInfo: createOrderDto): Promise<createOrderResponseDomain>;
@@ -15,4 +16,6 @@ export interface IOrderService {
   updateOrderAndDetail(orderCode: string, orderData: OrderUpdateDto, user: IAuthUser): Promise<{ message: string }>;
 
   getOrderDetailsAndBagsByCode(orderCode: string): Promise<OrderDetailsAndBagsDomain>;
+
+  editOrderByCode(orderCode: string): Promise<OrderAndDetailsDomain>;
 }

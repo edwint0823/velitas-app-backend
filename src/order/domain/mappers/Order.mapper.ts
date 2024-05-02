@@ -6,6 +6,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { timeZoneDayjs } from '../../../../core/constants';
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
+import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -93,6 +94,35 @@ export class OrderMapper {
           bankEntityName: payment.movement.bank_entity.name,
           concept: payment.movement.concept,
           createdAt: dayjs(payment.movement.created_at).format('YYYY-MM-DD'),
+        };
+      }),
+    };
+  }
+
+  public static editOrderMapper(order: OrderEntity): OrderAndDetailsDomain {
+    return {
+      code: order.code,
+      customerName: order.customer.name,
+      customerPriceType: order.customer.price_type,
+      statusName: order.status.name,
+      publicStatusName: order.status.public_name,
+      deliveryPrice: order.delivery_price ? order.delivery_price : 0,
+      deliveryAddress: order.delivery_address,
+      additionalInfo: order.additional_info ? order.additional_info : '',
+      details: order.orders_details.map((detail) => {
+        return {
+          id: detail.id,
+          nameList: JSON.parse(detail.name_list).map((item, index: number) => {
+            return {
+              idx: index,
+              ...item,
+            };
+          }),
+          price: detail.price,
+          quantity: detail.quantity,
+          observation: detail.observation,
+          candleOptionId: detail.candle_option_id,
+          nameToAdd: '',
         };
       }),
     };

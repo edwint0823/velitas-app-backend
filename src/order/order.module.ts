@@ -71,6 +71,7 @@ export class OrderModule {
         'order/update_status/:order_code/:new_status_id',
         'order/update_order_and_details/:order_code',
         'order/get_details_and_bags/:order_code',
+        'order/edit_order/:order_code',
       );
   }
 }

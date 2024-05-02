@@ -179,6 +179,11 @@ export const orderDocumentationLabels = {
     success: 'Información del pedido y la cantidad de bolsas a necesitar',
     orderCodeParamDescription: 'Código del pedido',
   },
+  editOrderAndDetailsOperations: {
+    summary: 'Obtener la información del pedido y su detalle para edición del pedido',
+    success: 'Información del pedido a editar',
+    orderCodeParamDescription: 'Código del pedido',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {

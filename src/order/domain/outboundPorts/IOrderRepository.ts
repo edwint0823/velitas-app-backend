@@ -26,6 +26,8 @@ export interface IOrderRepository {
   updateOrderAndDetails(orderAndDetailsInfo: UpdateOrderAndDetailsDomain): Promise<OrderEntity>;
 
   getAllOrderInfoAndBagsByCode(code: string): Promise<OrderEntity>;
+
+  getOrderWithOnlyDetailByCode(code: string): Promise<OrderEntity>;
 }
 
 export const IOrderRepository = Symbol('IOrderRepository');

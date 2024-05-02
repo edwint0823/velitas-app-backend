@@ -219,4 +219,11 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       },
     });
   }
+
+  async getOrderWithOnlyDetailByCode(code: string): Promise<OrderEntity> {
+    return await this.findOne({
+      relations: { orders_details: true, customer: true, status: true },
+      where: { code: code },
+    });
+  }
 }

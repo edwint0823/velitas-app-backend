@@ -42,6 +42,7 @@ import { IBagInventoryNeedRepository } from '../../../bagInventoryNeed/domain/ou
 import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
+import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -522,7 +523,11 @@ export class OrderService implements IOrderService {
 
   async getOrderDetailsAndBagsByCode(orderCode: string): Promise<OrderDetailsAndBagsDomain> {
     const repositoryResponse = await this.orderRepository.getAllOrderInfoAndBagsByCode(orderCode);
-    // TODO ADD PAYMENTS LIST FOR ORDER
     return OrderMapper.orderDetailsAnBagsMapper(repositoryResponse);
+  }
+
+  async editOrderByCode(orderCode: string): Promise<OrderAndDetailsDomain> {
+    const repositoryResponse = await this.orderRepository.getOrderWithOnlyDetailByCode(orderCode);
+    return OrderMapper.editOrderMapper(repositoryResponse);
   }
 }
