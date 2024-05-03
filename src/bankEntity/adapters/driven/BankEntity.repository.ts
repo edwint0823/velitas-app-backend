@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { BankEntityEntity } from '../../../../database/entities/BankEntity.entity';
 import { IBankEntityRepository } from '../../domain/outboundPorts/IBankEntityRepository';
 
@@ -10,6 +10,16 @@ export class BankEntityRepository extends Repository<BankEntityEntity> implement
   }
 
   listBankEntities(): Promise<BankEntityEntity[]> {
-    return this.find();
+    return this.find({ order: { name: 'ASC' } });
+  }
+
+  async addAmountToBankByTransaction(
+    bankEntityId: number,
+    amount: number,
+    transaction: EntityManager,
+  ): Promise<BankEntityEntity> {
+    const bankEntityFind = await transaction.findOne(BankEntityEntity, { where: { id: bankEntityId } });
+    bankEntityFind.amount += amount;
+    return transaction.save(bankEntityFind);
   }
 }

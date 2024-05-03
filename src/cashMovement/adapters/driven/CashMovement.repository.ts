@@ -4,6 +4,7 @@ import { CashMovementEntity } from '../../../../database/entities/CashMovement.e
 import { ICashMovementRepository } from '../../domain/outboundPorts/ICashMovementRepository';
 import { createEntryCashMovementDomain } from '../../domain/model/in/createEntryCashMovementDomain';
 import { IPaymentRepository } from '../../../payment/domain/outboundPorts/IPaymentRepository';
+import { IBankEntityRepository } from '../../../bankEntity/domain/outboundPorts/IBankEntityRepository';
 
 @Injectable()
 export class CashMovementRepository extends Repository<CashMovementEntity> implements ICashMovementRepository {
@@ -11,6 +12,8 @@ export class CashMovementRepository extends Repository<CashMovementEntity> imple
     public readonly dataSource: DataSource,
     @Inject(IPaymentRepository)
     private readonly paymentRepository: IPaymentRepository,
+    @Inject(IBankEntityRepository)
+    private readonly bankEntityRepository: IBankEntityRepository,
   ) {
     super(CashMovementEntity, dataSource.createEntityManager());
   }
@@ -23,6 +26,11 @@ export class CashMovementRepository extends Repository<CashMovementEntity> imple
       const movementSaved = await entityManager.save(newEntryCashMovement);
       payment.movement_id = movementSaved.id;
       await this.paymentRepository.createPaymentByTransaction(payment, entityManager);
+      await this.bankEntityRepository.addAmountToBankByTransaction(
+        movementInfo.bank_entity_id,
+        movement.amount,
+        entityManager,
+      );
       return movementSaved;
     });
   }

@@ -28,6 +28,8 @@ import { ICandleInventoryMovementRepository } from '../candleInventoryMovement/d
 import { IBagInventoryMovementRepository } from '../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 import { ICandleInventoryRepository } from '../candleInventory/domain/outboundPorts/ICandleInventoryRepository';
 import { IBagInventoryRepository } from '../bagInventory/domain/outboundPorts/IBagInventoryRepository';
+import { IBankEntityRepository } from '../bankEntity/domain/outboundPorts/IBankEntityRepository';
+import { BankEntityRepository } from '../bankEntity/adapters/driven/BankEntity.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PaymentEntity])],
@@ -47,6 +49,7 @@ import { IBagInventoryRepository } from '../bagInventory/domain/outboundPorts/IB
     { provide: ICandleInventoryRepository, useClass: CandleInventoryRepository },
     { provide: IBagInventoryMovementRepository, useClass: BagInventoryMovementRepository },
     { provide: IBagInventoryRepository, useClass: BagInventoryRepository },
+    { provide: IBankEntityRepository, useClass: BankEntityRepository },
   ],
 })
 export class PaymentModule {

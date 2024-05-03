@@ -11,6 +11,11 @@ export class BankEntityEntity {
   })
   name: string;
 
+  @Column({
+    type: 'float',
+  })
+  amount: number;
+
   @OneToMany(() => CashMovementEntity, (cashMovements) => cashMovements.bank_entity)
   @JoinColumn({ name: 'id' })
   cash_movements: CashMovementEntity[];
