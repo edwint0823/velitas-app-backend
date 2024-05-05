@@ -52,14 +52,17 @@ async function seed() {
     });
     await connection.initialize();
 
-    const statusJson = fs.readFileSync(path.join(__dirname, '../src/seedersData/status-seed.json'), 'utf8');
-    const bankEntitiesJson = fs.readFileSync(path.join(__dirname, '../src/seedersData/bankEntities-seed.json'), 'utf8');
-    const configurationJson = fs.readFileSync(
-      path.join(__dirname, '../src/seedersData/configurations-seed.json'),
+    const statusJson = fs.readFileSync(path.join(__dirname, '../../src/seedersData/status-seed.json'), 'utf8');
+    const bankEntitiesJson = fs.readFileSync(
+      path.join(__dirname, '../../src/seedersData/bankEntities-seed.json'),
       'utf8',
     );
-    const candlesJson = fs.readFileSync(path.join(__dirname, '../src/seedersData/candles-seed.json'), 'utf8');
-    const bagsJson = fs.readFileSync(path.join(__dirname, '../src/seedersData/bags-seed.json'), 'utf8');
+    const configurationJson = fs.readFileSync(
+      path.join(__dirname, '../../src/seedersData/configurations-seed.json'),
+      'utf8',
+    );
+    const candlesJson = fs.readFileSync(path.join(__dirname, '../../src/seedersData/candles-seed.json'), 'utf8');
+    const bagsJson = fs.readFileSync(path.join(__dirname, '../../src/seedersData/bags-seed.json'), 'utf8');
 
     const statusData = JSON.parse(statusJson);
     const bankEntitiesData = JSON.parse(bankEntitiesJson);
