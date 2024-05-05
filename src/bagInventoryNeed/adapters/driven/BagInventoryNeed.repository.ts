@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { IBagInventoryNeedRepository } from '../../domain/outboundPorts/IBagInventoryNeedRepository';
 import { BagInventoryNeedEntity } from '../../../../database/entities/BagInventoryNeed.entity';
 import { CreateBagInventoryNeedDomain } from '../../domain/model/in/createBagInventoryNeedDomain';
@@ -9,6 +9,10 @@ export class BagInventoryNeedRepository
   extends Repository<BagInventoryNeedEntity>
   implements IBagInventoryNeedRepository
 {
+  constructor(public readonly dataSource: DataSource) {
+    super(BagInventoryNeedEntity, dataSource.createEntityManager());
+  }
+
   async createBagInventoryNeedByTransaction(
     bagInventoryNeedInfo: CreateBagInventoryNeedDomain,
     transaction: EntityManager,

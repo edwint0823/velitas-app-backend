@@ -27,6 +27,9 @@ async function bootstrap() {
     .addTag('candle_options')
     .addTag('configuration')
     .addTag('bag')
+    .addTag('payment')
+    .addTag('bank_entity')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

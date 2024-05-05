@@ -11,73 +11,71 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { priceTypeOptions } from '../../../../core/constants';
+import { orderDocumentationLabels, orderValidationMessages, priceTypeOptions } from '../../../../core/constants';
 
 class customerInfoDto {
   @ApiProperty({
-    description: 'Correo electrónico del cliente',
+    description: orderDocumentationLabels.createOperation.emailCustomerParamDescription,
     example: 'example@example.com',
     required: true,
   })
   @IsString({
-    message:
-      'El correo electrónico del cliente debe ser una cadena de caracteres',
+    message: orderValidationMessages.createOperation.emailCustomerIsString,
   })
   @IsEmail()
   @IsNotEmpty({
-    message: 'El correo del cliente es requerido',
+    message: orderValidationMessages.createOperation.emailCustomerRequired,
   })
   email: string;
 
   @ApiProperty({
-    description: 'Nombre del cliente',
+    description: orderDocumentationLabels.createOperation.nameCustomerParamDescription,
     example: 'Juan Pérez',
     required: true,
   })
   @IsString({
-    message: 'El nombre del cliente debe ser una cadena de caracteres',
+    message: orderValidationMessages.createOperation.nameCustomerIsString,
   })
-  @IsNotEmpty({ message: 'El nombre del cliente es requerido' })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.nameCustomerRequired })
   name: string;
 
   @ApiProperty({
-    description: 'Número de teléfono del cliente',
+    description: orderDocumentationLabels.createOperation.phoneCustomerParamDescription,
     example: '312 250 4520',
     required: true,
   })
   @IsString({
-    message:
-      'El número telefónico del cliente debe ser una cadena de caracteres',
+    message: orderValidationMessages.createOperation.phoneCustomerIsString,
   })
-  @IsNotEmpty({ message: 'El número telefónico  del cliente es requerido' })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.phoneCustomerRequired })
   phone_number: string;
 
   @ApiProperty({
     example: 'detal',
-    description: 'Tipo de catalogo para precios',
+    description: orderDocumentationLabels.createOperation.priceTypeCustomerParamDescription,
     required: true,
     enum: priceTypeOptions,
   })
   @IsIn(priceTypeOptions, {
-    message: `El tipo de precio debe estar dentro de uno de los siguientes valores: ${priceTypeOptions.join(', ')}`,
+    message: `${orderValidationMessages.createOperation.priceTypeCustomerIsIn} ${priceTypeOptions.join(', ')}`,
   })
   price_type: string;
 }
 
 class NameList {
   @ApiProperty({
-    description: 'Nombre de una vela',
+    description: orderDocumentationLabels.createOperation.nameListNameParamDescription,
     example: 'Juan',
     required: true,
   })
   @IsString({
-    message: 'El nombre de la vela debe ser una cadena de caracteres',
+    message: orderValidationMessages.createOperation.nameNameListIsString,
   })
-  @IsNotEmpty({ message: 'El nombre de la vela es requerido' })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.nameNameListRequired })
   name: string;
 
   @ApiProperty({
-    description: '¿Empacar en bolsa x1?',
+    description: orderDocumentationLabels.createOperation.packAloneNameListParamDescription,
     example: true,
     required: true,
   })
@@ -85,7 +83,7 @@ class NameList {
   packAlone: boolean;
 
   @ApiProperty({
-    description: '¿Es difunto?',
+    description: orderDocumentationLabels.createOperation.deceasedNameListParamDescription,
     example: false,
     required: true,
   })
@@ -93,7 +91,7 @@ class NameList {
   deceased: boolean;
 
   @ApiProperty({
-    description: '¿Es una mascota?',
+    description: orderDocumentationLabels.createOperation.petNameListParamDescription,
     example: true,
     required: true,
   })
@@ -103,51 +101,55 @@ class NameList {
 
 class Candle {
   @ApiProperty({
-    description: 'ID de opción de vela',
+    description: orderDocumentationLabels.createOperation.candleOptionIdCandleParamDescription,
     example: 1,
     required: true,
   })
-  @IsInt({ message: 'La opción de vela seleccionada debe ser un número' })
-  @IsNotEmpty({ message: 'Debe seleccionar un diseño de vela' })
+  @IsInt({ message: orderValidationMessages.createOperation.candleOptionIdCandleIsInt })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.candleOptionIdCandleRequired })
   candle_option_id: number;
 
-  @ApiProperty({ type: [NameList], description: 'Lista de nombres' })
+  @ApiProperty({
+    type: [NameList],
+    description: orderDocumentationLabels.createOperation.nameListCandleParamDescription,
+  })
   @ValidateNested({ each: true })
   name_list: NameList[];
 
   @ApiProperty({
-    description: 'Precio de la vela',
-    example: 15000.5,
+    description: orderDocumentationLabels.createOperation.priceCandleParamDescription,
+    example: 15000,
     required: true,
   })
   @IsNumber()
-  @IsPositive({ message: 'El precio de la vela debe ser un número positivo' })
-  @IsNotEmpty({ message: 'El precio de la vela es requerido' })
+  @IsPositive({ message: orderValidationMessages.createOperation.priceCandleIsPositive })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.priceCandleRequired })
   price: number;
 
-  @ApiProperty({ description: 'Cantidad de velas', example: 1 })
-  @IsInt({ message: 'La cantidad de velas debe ser un número entero' })
-  @IsPositive({ message: 'La cantidad de velas debe ser un número positivo' })
-  @IsNotEmpty({ message: 'La cantidad de velas es requerido' })
+  @ApiProperty({ description: orderDocumentationLabels.createOperation.quantityCandleParamDescription, example: 1 })
+  @IsInt({ message: orderValidationMessages.createOperation.quantityCandleIsInt })
+  @IsPositive({ message: orderValidationMessages.createOperation.quantityCandleIsPositive })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.quantityCandleRequired })
   quantity: number;
+
   @ApiPropertyOptional({
-    description: 'Observación de la vela o nombres',
+    description: orderDocumentationLabels.createOperation.observationCandleParamDescription,
     example: 'Sin observaciones',
   })
-  @IsString({ message: 'La Observación debe ser un string ' })
+  @IsString({ message: orderValidationMessages.createOperation.observationCandleIsString })
   observation: string;
 }
 
 export class createOrderDto {
   @ApiProperty({
     type: customerInfoDto,
-    description: 'Información del cliente ',
+    description: orderDocumentationLabels.createOperation.customerParamDescription,
   })
   @ValidateNested()
   customer: customerInfoDto;
 
-  @ApiProperty({ type: [Candle], description: 'Lista de velas' })
-  @ArrayNotEmpty({ message: 'Debe agregar al menos una vela al pedido' })
+  @ApiProperty({ type: [Candle], description: orderDocumentationLabels.createOperation.candlesParamDescription })
+  @ArrayNotEmpty({ message: orderValidationMessages.createOperation.candleNotEmpty })
   @ValidateNested({ each: true })
   candles: Candle[];
 }

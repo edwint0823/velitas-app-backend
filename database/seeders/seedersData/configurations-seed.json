@@ -1,0 +1,10 @@
+[
+  {
+    "param": "minimum_size_bulk_price",
+    "value": "5"
+  },
+  {
+    "param": "time_to_do_one_candle",
+    "value": "10"
+  }
+]

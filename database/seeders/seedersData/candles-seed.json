@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Velas blancas",
+    "candle_options": [
+      {
+        "name": "Vela blanca letra negra cursiva",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/cwzfq9gli2v0zqfzitiv.jpg",
+        "bulk_price": 12000,
+        "retail_price": 14000,
+        "is_pack": false,
+        "is_vip_pack": false,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": []
+      },
+      {
+        "name": "Frases vela blanca letras de colores ST",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/ag0hpfvdkler2aiv0cqi.jpg",
+        "bulk_price": 13000,
+        "retail_price": 14000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
+            "name": "Paz",
+            "candle_option_id": null
+          },
+          {
+            "name": "Tranquilidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Riqueza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sabiduria",
+            "candle_option_id": null
+          },
+          {
+            "name": "Respeto",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Salud",
+            "candle_option_id": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Velas de colores",
+    "candle_options": [
+      {
+        "name": "Vela de colores letra negra cursiva",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/dzuvlindvf4n6vxwrb7k.jpg",
+        "bulk_price": 12000,
+        "retail_price": 14000,
+        "is_pack": false,
+        "is_vip_pack": false,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": []
+      }
+    ]
+  }
+]

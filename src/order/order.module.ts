@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderEntity } from '../../database/entities/Order.entity';
 import { OrderController } from './adapters/driving/Order.controller';
@@ -11,7 +11,7 @@ import { IConfigurationRepository } from '../configuration/domain/outboundPorts/
 import { ConfigurationRepository } from '../configuration/adapters/driven/Configuration.repository';
 import { ICustomerRepository } from '../customer/domain/outboundPorts/ICustomerRepository';
 import { CustomerRepository } from '../customer/adapters/driven/Customer.repository';
-import { IStatusRepository } from '../status/domain/outhboundPorts/IStatusRepository';
+import { IStatusRepository } from '../status/domain/outboundPorts/IStatusRepository';
 import { StatusRepository } from '../status/adapters/driven/Status.repository';
 import { IBagRepository } from '../bag/domain/outboundPorts/IBagRepository';
 import { BagRepository } from '../bag/adapters/driven/Bag.repository';
@@ -19,6 +19,9 @@ import { IOrderDetailRepository } from '../orderDetail/domain/outboundPorts/IOrd
 import { OrderDetailRepository } from '../orderDetail/adapters/driven/OrderDetail.repository';
 import { IBagInventoryNeedRepository } from '../bagInventoryNeed/domain/outboundPorts/IBagInventoryNeedRepository';
 import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/BagInventoryNeed.repository';
+import { AuthMiddleware } from '../../middlewares/auth.middleware';
+import { IOrderStatusRepository } from '../orderStatus/domain/outboundPorts/IOrderStatusRepository';
+import { OrderStatusRepository } from '../orderStatus/adapters/driven/OrderStatus.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([OrderEntity])],
@@ -36,6 +39,16 @@ import { BagInventoryNeedRepository } from '../bagInventoryNeed/adapters/driven/
       provide: IBagInventoryNeedRepository,
       useClass: BagInventoryNeedRepository,
     },
+    {
+      provide: IOrderStatusRepository,
+      useClass: OrderStatusRepository,
+    },
   ],
 })
-export class OrderModule {}
+export class OrderModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('order/paginate_list/:page_size/:page_number', 'order/update_status/:order_code/:new_status_id');
+  }
+}

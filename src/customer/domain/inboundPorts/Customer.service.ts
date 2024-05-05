@@ -5,6 +5,7 @@ import { customerMapper } from '../mappers/Customer.mapper';
 import { findByEmailDomain } from '../model/findByEmailDomain';
 import { createCustomerDomain } from '../model/createCustomerDomain';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
+import { customerErrorMessages, customerSuccessMessages } from '../../../../core/constants';
 
 @Injectable()
 export class CustomerService implements ICustomerService {
@@ -18,23 +19,17 @@ export class CustomerService implements ICustomerService {
     return customerMapper.findByEmailMapper(repositoryResponse);
   }
 
-  async create(
-    customer: createCustomerDomain,
-  ): Promise<{ message: string; id: number; email: string }> {
+  async create(customer: createCustomerDomain): Promise<{ message: string; id: number; email: string }> {
     try {
-      const customerCreated =
-        await this.customerRepository.createCustomer(customer);
+      const customerCreated = await this.customerRepository.createCustomer(customer);
       return {
-        message: 'cliente creado correctamente',
+        message: customerSuccessMessages.service.create,
         id: customerCreated.id,
         email: customerCreated.email,
       };
     } catch (error) {
-      const { message, status } = getErrorParams(
-        error,
-        'Error al crear el cliente',
-      );
-      throw new HttpException(message, status);
+      const { message, status } = getErrorParams(error, customerErrorMessages.serviceErrors.create.default);
+      throw new HttpException({ message }, status);
     }
   }
 }

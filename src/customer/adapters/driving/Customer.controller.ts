@@ -3,6 +3,7 @@ import { CustomerService } from '../../domain/inboundPorts/Customer.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { findByEmailDomain } from '../../domain/model/findByEmailDomain';
 import { createCustomerDto } from '../model/createCustomer.dto';
+import { commonStatusErrorMessages, customerDocumentationLabels } from '../../../../core/constants';
 
 @ApiTags('customer')
 @Controller('customer')
@@ -10,13 +11,13 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Get('/find/:email')
-  @ApiOperation({ summary: 'Buscar un cliente' })
-  @ApiResponse({ status: 200, description: 'Cliente encontrado' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
+  @ApiOperation({ summary: customerDocumentationLabels.findOperation.summary })
+  @ApiResponse({ status: 200, description: customerDocumentationLabels.findOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
   @ApiParam({
     name: 'email',
-    description: 'email del cliente ',
+    description: customerDocumentationLabels.findOperation.emailParamDescription,
     required: true,
     type: 'string',
     example: 'example@example.com',
@@ -26,13 +27,11 @@ export class CustomerController {
   }
 
   @Post('/create')
-  @ApiOperation({ summary: 'Crear un cliente' })
-  @ApiResponse({ status: 200, description: 'Cliente creado' })
-  @ApiResponse({ status: 400, description: 'Error de validación de campos' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  async create(
-    @Body() clienteData: createCustomerDto,
-  ): Promise<{ message: string }> {
+  @ApiOperation({ summary: customerDocumentationLabels.createOperation.summary })
+  @ApiResponse({ status: 200, description: customerDocumentationLabels.createOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  async create(@Body() clienteData: createCustomerDto): Promise<{ message: string }> {
     return await this.customerService.create(clienteData);
   }
 }

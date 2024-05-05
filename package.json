@@ -22,7 +22,9 @@
     "migrate:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:run -d database/migrations/config/database.config.ts",
     "migrate-undo:dev": "ts-node -r tsconfig-paths/register -P tsconfig.json ./node_modules/typeorm/cli.js migration:revert -d database/migrations/config/database.config.ts",
     "migrate:prod": "node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js migration:run -d dist/database/migrations/config/database.config.js",
-    "migrate-undo:prod": "node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js migration:revert -d dist/database/migrations/config/database.config.js"
+    "migrate-undo:prod": "node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js migration:revert -d dist/database/migrations/config/database.config.js",
+    "seeder:dev": "ts-node database/seeders/seeder.ts",
+    "seeder:prod": "node dist/database/seeders/seeder.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -35,6 +37,7 @@
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
