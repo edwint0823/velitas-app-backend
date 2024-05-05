@@ -16,6 +16,10 @@ export class BankEntities1706540157573 implements MigrationInterface {
             name: 'name',
             type: 'varchar(100)',
           },
+          {
+            name: 'amount',
+            type: 'float',
+          },
         ],
       }),
       true,

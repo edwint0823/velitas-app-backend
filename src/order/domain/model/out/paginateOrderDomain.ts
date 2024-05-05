@@ -3,6 +3,7 @@ interface OrderInfo {
   total_price: number;
   total_quantity: number;
   delivery_date: Date;
+  delivery_address: string;
   created_at: string;
   customer_name: string;
   customer_price_type: string;

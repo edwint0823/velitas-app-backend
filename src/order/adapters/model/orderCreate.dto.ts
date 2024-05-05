@@ -7,6 +7,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   ValidateNested,
@@ -147,6 +148,24 @@ export class createOrderDto {
   })
   @ValidateNested()
   customer: customerInfoDto;
+
+  @ApiProperty({
+    type: 'string',
+    required: true,
+    description: orderDocumentationLabels.createOperation.deliveryAddressParamDescription,
+  })
+  @IsNotEmpty({ message: orderValidationMessages.createOperation.deliveryAddressIsRequired })
+  @IsString({ message: orderValidationMessages.createOperation.deliveryAddressIsString })
+  delivery_address: string;
+
+  @ApiProperty({
+    type: 'string',
+    required: false,
+    description: orderDocumentationLabels.createOperation.additionalInfoParamDescription,
+  })
+  @IsOptional()
+  @IsString({ message: orderValidationMessages.createOperation.additionalInfoIsString })
+  additional_info: string | null;
 
   @ApiProperty({ type: [Candle], description: orderDocumentationLabels.createOperation.candlesParamDescription })
   @ArrayNotEmpty({ message: orderValidationMessages.createOperation.candleNotEmpty })

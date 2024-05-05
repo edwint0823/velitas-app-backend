@@ -5,6 +5,8 @@ interface IOrder {
   delivery_date: Date;
   customer_id: number;
   status_id: number;
+  delivery_address: string;
+  additional_info: string | null;
 }
 
 interface IOrderDetail {

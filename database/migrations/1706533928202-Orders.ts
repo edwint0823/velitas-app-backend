@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class Orders1706533928202 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -33,6 +28,20 @@ export class Orders1706533928202 implements MigrationInterface {
           {
             name: 'delivery_date',
             type: 'date',
+          },
+          {
+            name: 'delivery_address',
+            type: 'varchar(255)',
+          },
+          {
+            name: 'delivery_price',
+            type: 'float',
+            isNullable: true,
+          },
+          {
+            name: 'additional_info',
+            type: 'text',
+            isNullable: true,
           },
           {
             name: 'created_at',

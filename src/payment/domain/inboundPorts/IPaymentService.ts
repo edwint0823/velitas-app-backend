@@ -1,5 +1,5 @@
 import { ListPaymentsByOrderDomain } from '../model/out/ListPaymentsByOrderDomain';
-import { CreatePaymentDto } from '../../adapters/model/createPaymentDto';
+import { CreatePaymentDto } from '../../adapters/model/createPayment.dto';
 import { IAuthUser } from '../../../../core/constants';
 
 export interface IPaymentService {

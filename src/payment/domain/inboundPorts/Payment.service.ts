@@ -3,7 +3,7 @@ import { IPaymentService } from './IPaymentService';
 import { IPaymentRepository } from '../outboundPorts/IPaymentRepository';
 import { ListPaymentsByOrderDomain } from '../model/out/ListPaymentsByOrderDomain';
 import { PaymentMapper } from '../mappers/Payment.mapper';
-import { CreatePaymentDto } from '../../adapters/model/createPaymentDto';
+import { CreatePaymentDto } from '../../adapters/model/createPayment.dto';
 import { IAuthUser, paymentErrorMessages, paymentSuccessMessages } from '../../../../core/constants';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { IOrderRepository } from '../../../order/domain/outboundPorts/IOrderRepository';
@@ -27,20 +27,20 @@ export class PaymentService implements IPaymentService {
 
   async createPaymentForOrder(payment: CreatePaymentDto, user: IAuthUser): Promise<{ message: string }> {
     if (!user.is_superuser) {
-      throw new HttpException(paymentErrorMessages.service.create.unauthorized, HttpStatus.UNAUTHORIZED);
+      throw new HttpException({ message: paymentErrorMessages.service.create.unauthorized }, HttpStatus.UNAUTHORIZED);
     }
     try {
       const order = await this.orderRepository.getOrderAndStatusByCode(payment.order_code);
       if (!order) {
-        throw new HttpException(paymentErrorMessages.service.create.orderNotFound, HttpStatus.BAD_REQUEST);
+        throw new HttpException({ message: paymentErrorMessages.service.create.orderNotFound }, HttpStatus.BAD_REQUEST);
       }
 
       const payments = await this.paymentRepository.getPaymentsByOrderCode(payment.order_code);
 
-      const orderPaymentDeficiency = order.total_price - payments.reduce((acc, val) => (acc += val.movement.amount), 0);
+      const orderPaymentDeficiency = order.total_price - payments.reduce((acc, val) => acc + val.movement.amount, 0);
 
       if (orderPaymentDeficiency - payment.amount < 0) {
-        throw new HttpException(paymentErrorMessages.service.create.paymentExceed, HttpStatus.BAD_REQUEST);
+        throw new HttpException({ message: paymentErrorMessages.service.create.paymentExceed }, HttpStatus.BAD_REQUEST);
       }
 
       let paymentIsPartial = false;

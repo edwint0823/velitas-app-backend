@@ -4,10 +4,7 @@ import { CandleTypeEntity } from '../../../../database/entities/CandleType.entit
 import { ICandleOptionRepository } from '../../domain/outboundPorts/ICandleOptionRepository';
 
 @Injectable()
-export class CandleOptionRepository
-  extends Repository<CandleTypeEntity>
-  implements ICandleOptionRepository
-{
+export class CandleOptionRepository extends Repository<CandleTypeEntity> implements ICandleOptionRepository {
   constructor(public readonly dataSource: DataSource) {
     super(CandleTypeEntity, dataSource.createEntityManager());
   }
@@ -19,6 +16,7 @@ export class CandleOptionRepository
         candle_options: {
           id: true,
           name: true,
+          candle_type_id: true,
           url_image: true,
           is_vip_pack: true,
           is_pack: true,
