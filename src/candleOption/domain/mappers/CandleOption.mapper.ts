@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CandleTypeEntity } from '../../../../database/entities/CandleType.entity';
 import { defaultMinimumSizeBulkPrice } from '../../../../core/constants';
 import { findParamByNameDomain } from '../../../configuration/domain/model/findParamByNameDomain';
-import {
-  CandleOptionAndMinBulkPrice,
-  ICandleListOptions,
-} from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
+import { CandleOptionAndMinBulkPrice, ICandleListOptions } from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
 
 @Injectable()
 export class CandleOptionMapper {
@@ -13,9 +10,7 @@ export class CandleOptionMapper {
     candleTypeEntities: CandleTypeEntity[],
     configData: findParamByNameDomain,
   ): CandleOptionAndMinBulkPrice {
-    const configParam = configData.found
-      ? configData.value
-      : defaultMinimumSizeBulkPrice;
+    const configParam = configData.found ? configData.value : defaultMinimumSizeBulkPrice;
 
     const candleOptions: ICandleListOptions[] = [];
     for (const candleType of candleTypeEntities) {
@@ -24,6 +19,7 @@ export class CandleOptionMapper {
         items: candleType.candle_options.map((candle) => {
           return {
             id: candle.id,
+            candleTypeId: candle.candle_type_id,
             name: candle.name,
             urlImage: candle.url_image,
             isPack: candle.is_pack,

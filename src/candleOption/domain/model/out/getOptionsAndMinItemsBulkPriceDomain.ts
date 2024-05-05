@@ -1,5 +1,6 @@
 interface IItemOption {
   id: number;
+  candleTypeId: number;
   name: string;
   urlImage: string;
   isPack: boolean;

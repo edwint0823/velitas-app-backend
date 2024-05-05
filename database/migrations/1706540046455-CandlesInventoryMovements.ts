@@ -1,13 +1,6 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
-export class CandlesInventoryMovements1706540046455
-  implements MigrationInterface
-{
+export class CandlesInventoryMovements1706540046455 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -34,6 +27,12 @@ export class CandlesInventoryMovements1706540046455
           {
             name: 'is_out',
             type: 'boolean',
+          },
+          {
+            name: 'observation',
+            type: 'text',
+            isNullable: true,
+            default: "'Sin observaciones'",
           },
           {
             name: 'created_at',

@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Bolsa para empacar x12",
+    "capacity": 12,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  },
+  {
+    "name": "Bolsa para empacar x6",
+    "capacity": 6,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  },
+  {
+    "name": "Bolsa para empacar x5",
+    "capacity": 5,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  },
+  {
+    "name": "Bolsa para empacar x3",
+    "capacity": 3,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  },
+  {
+    "name": "Bolsa para empacar x2",
+    "capacity": 2,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  },
+  {
+    "name": "Bolsa para empacar x1",
+    "capacity": 1,
+    "available": true,
+    "bag_inventory": {
+      "bag_id": null,
+      "quantity": 0
+    }
+  }
+]

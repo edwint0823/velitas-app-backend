@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
 import { QueryParamsListOrderDto } from '../model/queryParamsListOrder.dto';
 import { commonStatusErrorMessages, IAuthUser, orderDocumentationLabels } from '../../../../core/constants';
+import { OrderUpdateDto } from '../model/orderUpdate.dto';
 
 @ApiTags('order')
 @ApiBearerAuth()
@@ -145,5 +146,63 @@ export class OrderController {
     @Query('user') user: IAuthUser,
   ) {
     return await this.orderService.updateOrderStatus(order_code, newStatusId, user);
+  }
+
+  @Put('/update_order_and_details/:order_code')
+  @ApiOperation({ summary: orderDocumentationLabels.updateOrderAndDetailOperation.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.updateOrderAndDetailOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'order_code',
+    description: orderDocumentationLabels.updateOrderAndDetailOperation.orderCodeParamDescription,
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  async updateOrderAndDetails(
+    @Param('order_code') orderCode: string,
+    @Body() orderData: OrderUpdateDto,
+    @Query('user') user: IAuthUser,
+  ) {
+    return await this.orderService.updateOrderAndDetail(orderCode, orderData, user);
+  }
+
+  @Get('/get_details_and_bags/:order_code')
+  @ApiOperation({ summary: orderDocumentationLabels.getOrderDetailsAndBagsOperation.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.getOrderDetailsAndBagsOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'order_code',
+    description: orderDocumentationLabels.getOrderDetailsAndBagsOperation.orderCodeParamDescription,
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  async getOrderDeTailsAndBags(@Param('order_code') orderCode: string) {
+    return this.orderService.getOrderDetailsAndBagsByCode(orderCode);
+  }
+
+  @Get('/edit_order/:order_code')
+  @ApiOperation({ summary: orderDocumentationLabels.editOrderAndDetailsOperations.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.editOrderAndDetailsOperations.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'order_code',
+    description: orderDocumentationLabels.editOrderAndDetailsOperations.orderCodeParamDescription,
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  async editOrderAndDetails(@Param('order_code') orderCode: string) {
+    return this.orderService.editOrderByCode(orderCode);
   }
 }

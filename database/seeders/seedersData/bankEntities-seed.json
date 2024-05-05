@@ -1,14 +1,22 @@
 [
   {
-    "name": "Dinero Físico"
+    "name": "Dinero Físico",
+    "amount": 0,
+    "cash_movements": []
   },
   {
-    "name": "Bancolombia"
+    "name": "Bancolombia",
+    "amount": 0,
+    "cash_movements": []
   },
   {
-    "name": "Nequi"
+    "name": "Nequi",
+    "amount": 0,
+    "cash_movements": []
   },
   {
-    "name": "Daviplata"
+    "name": "Daviplata",
+    "amount": 0,
+    "cash_movements": []
   }
 ]

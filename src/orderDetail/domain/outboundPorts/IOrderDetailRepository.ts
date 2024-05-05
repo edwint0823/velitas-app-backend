@@ -1,12 +1,11 @@
 import { IOrderDetail } from '../model/in/createOrderDetailDomain';
-import { EntityManager } from 'typeorm';
+import { DeleteResult, EntityManager } from 'typeorm';
 import { OrderDetailEntity } from '../../../../database/entities/OrderDetail.entity';
 
 export interface IOrderDetailRepository {
-  createOrderDetailByTransactionId(
-    orderDetail: IOrderDetail,
-    transaction: EntityManager,
-  ): Promise<OrderDetailEntity>;
+  createOrderDetailByTransaction(orderDetail: IOrderDetail, transaction: EntityManager): Promise<OrderDetailEntity>;
+
+  deleteDetailsByOrderIdWithTransaction(orderId: number, transaction: EntityManager): Promise<DeleteResult>;
 }
 
 export const IOrderDetailRepository = Symbol('IOrderDetailRepository');

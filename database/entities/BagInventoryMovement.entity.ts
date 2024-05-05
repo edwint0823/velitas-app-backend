@@ -26,6 +26,11 @@ export class BagInventoryMovementEntity {
   is_out: boolean;
 
   @Column({
+    type: 'varchar',
+  })
+  observation: string;
+
+  @Column({
     type: 'timestamp',
   })
   created_at: Date;
