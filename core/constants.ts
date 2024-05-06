@@ -184,6 +184,11 @@ export const orderDocumentationLabels = {
     success: 'Información del pedido a editar',
     orderCodeParamDescription: 'Código del pedido',
   },
+  exportExcelOperation: {
+    summary: 'Obtener la información del pedido en una hoja de calculo de excel',
+    success: 'Hoja de calculo de excel con información del pedido',
+    orderCodeParamDescription: 'Código del pedido',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {

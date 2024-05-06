@@ -43,6 +43,7 @@ import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/d
 import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
+import { Workbook } from 'exceljs';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -512,7 +513,6 @@ export class OrderService implements IOrderService {
           };
         });
       }
-      // console.log('PAYLOAD FINAL', updateOrderPayload);
       await this.orderRepository.updateOrderAndDetails(updateOrderPayload);
       return { message: orderSuccessMessages.service.updateOrderAndDetails.default };
     } catch (error) {
@@ -529,5 +529,135 @@ export class OrderService implements IOrderService {
   async editOrderByCode(orderCode: string): Promise<OrderAndDetailsDomain> {
     const repositoryResponse = await this.orderRepository.getOrderWithOnlyDetailByCode(orderCode);
     return OrderMapper.editOrderMapper(repositoryResponse);
+  }
+
+  async exportOrderToExcel(orderCode: string): Promise<{ buffer: any; fileName: string }> {
+    const orderInfo = await this.orderRepository.getOrderAndDetailsByCode(orderCode);
+
+    const orderWorkbook = new Workbook();
+    const orderWorkSheet = orderWorkbook.addWorksheet('Encabezado');
+    orderWorkSheet.columns = [
+      { header: 'Nro Pedido', key: 'code', width: 11 },
+      { header: 'Cliente', key: 'customerName', width: 28 },
+      { header: 'Tipo de cliente', key: 'customerType', width: 15 },
+      { header: 'Fecha de entrega', key: 'deliveryDate', width: 17 },
+      { header: 'Dirección de entrega', key: 'deliveryAddress', width: 41 },
+      { header: 'Cantidad total', key: 'totalQuantity', width: 14 },
+      { header: 'Precio total', key: 'totalPrice', width: 12 },
+      { header: 'Información adicional', key: 'additionalInfo', width: 22 },
+    ];
+    orderWorkSheet.getRow(1).eachCell((cell) => {
+      cell.font = {
+        bold: true,
+      };
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    orderWorkSheet.addRow({
+      code: orderInfo.code,
+      customerName: orderInfo.customer.name,
+      customerType: orderInfo.customer.price_type,
+      deliveryDate: orderInfo.delivery_date,
+      deliveryAddress: orderInfo.delivery_address,
+      totalQuantity: orderInfo.total_quantity,
+      totalPrice: orderInfo.total_price,
+      additionalInfo: orderInfo.additional_info === null ? '' : orderInfo.additional_info,
+    });
+    orderWorkSheet.getRow(2).eachCell((cell) => {
+      cell.alignment = {
+        wrapText: true,
+        shrinkToFit: true,
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    const detailsWorkSheet = orderWorkbook.addWorksheet('Detalles');
+    detailsWorkSheet.columns = [
+      { header: 'Tipo de vela', key: 'candleName', width: 38 },
+      { header: 'Nombre', key: 'itemName', width: 22 },
+      { header: 'Empacar solo', key: 'packAlone', width: 13 },
+      { header: 'Difunto', key: 'deceased', width: 8 },
+      { header: 'Mascota', key: 'pet', width: 9 },
+      { header: 'Observaciones', key: 'observations', width: 31 },
+      { header: 'Precio', key: 'price', width: 12 },
+      { header: 'Cantidad', key: 'quantity', width: 9 },
+    ];
+    detailsWorkSheet.getRow(1).eachCell((cell) => {
+      cell.font = {
+        bold: true,
+      };
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    let lastColumn = 0;
+    let rowCont = 2;
+    for (const [detailIndex, detail] of orderInfo.orders_details.entries()) {
+      const arrNameList: Array<{
+        name: string;
+        pack_alone: boolean;
+        deceased: boolean;
+        pet: boolean;
+      }> = JSON.parse(detail.name_list);
+
+      for (const [index, item] of arrNameList.entries()) {
+        detailsWorkSheet.addRow({
+          candleName: index === 0 ? detail.candle_option.name : '',
+          itemName: item.name,
+          packAlone: item.pack_alone ? 'Si' : 'No',
+          deceased: item.deceased ? 'Si' : 'No',
+          pet: item.pet ? 'Si' : 'No',
+          observations: index === 0 ? detail.observation : '',
+          price: index === 0 ? detail.price : '',
+          quantity: index === 0 ? detail.quantity : '',
+        });
+
+        detailsWorkSheet.getRow(rowCont).eachCell((cell) => {
+          cell.alignment = {
+            wrapText: true,
+            shrinkToFit: true,
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
+        rowCont++;
+      }
+
+      detailsWorkSheet.getRow(detailIndex === 0 ? detailIndex + 2 : lastColumn + 2).eachCell((cell) => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'e3b944' },
+        };
+      });
+      lastColumn += arrNameList.length;
+    }
+    const buffer = await orderWorkbook.xlsx.writeBuffer();
+    return { buffer: buffer, fileName: `Pedido-${orderInfo.code}-${orderInfo.customer.name}` };
   }
 }
