@@ -19,7 +19,7 @@ export class Customers1706533668023 implements MigrationInterface {
           },
           {
             name: 'name',
-            type: 'varchar(25)',
+            type: 'varchar(255)',
           },
           {
             name: 'phone_number',
