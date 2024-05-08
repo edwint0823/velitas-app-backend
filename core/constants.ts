@@ -266,6 +266,9 @@ export const orderErrorMessages = {
     create: {
       default: 'Error al crear el pedido',
     },
+    findByCode: {
+      orderNotFound: 'No se encontró la pedido con el código proporcionado',
+    },
     updateStatus: {
       isNotSuperuser: 'No tiene permisos para actualizar el estado del pedido',
       orderAlreadyCanceled: 'No se puede actualizar el estado del pedido si ya ha sido cancelado',

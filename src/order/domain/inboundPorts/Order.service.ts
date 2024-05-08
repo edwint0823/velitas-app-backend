@@ -183,6 +183,9 @@ export class OrderService implements IOrderService {
 
   async findByCode(code: string): Promise<FindOrderAndDetailsDomain> {
     const findOrder = await this.orderRepository.getOrderAndDetailsByCode(code);
+    if (!findOrder) {
+      throw new HttpException({ message: orderErrorMessages.service.findByCode.orderNotFound }, HttpStatus.BAD_REQUEST);
+    }
     return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 

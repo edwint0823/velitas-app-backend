@@ -104,6 +104,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       },
       skip: skip,
       take: take,
+      order: { created_at: 'ASC', status: { order: 'ASC' } },
     });
 
     const total = await this.count();
