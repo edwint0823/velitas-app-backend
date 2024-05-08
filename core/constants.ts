@@ -184,6 +184,11 @@ export const orderDocumentationLabels = {
     success: 'Información del pedido a editar',
     orderCodeParamDescription: 'Código del pedido',
   },
+  exportExcelOperation: {
+    summary: 'Obtener la información del pedido en una hoja de calculo de excel',
+    success: 'Hoja de calculo de excel con información del pedido',
+    orderCodeParamDescription: 'Código del pedido',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {
@@ -260,6 +265,9 @@ export const orderErrorMessages = {
   service: {
     create: {
       default: 'Error al crear el pedido',
+    },
+    findByCode: {
+      orderNotFound: 'No se encontró la pedido con el código proporcionado',
     },
     updateStatus: {
       isNotSuperuser: 'No tiene permisos para actualizar el estado del pedido',

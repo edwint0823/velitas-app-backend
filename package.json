@@ -37,6 +37,7 @@
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",
+    "exceljs": "^4.4.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",

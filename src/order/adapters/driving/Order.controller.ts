@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, Res, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { createOrderDto } from '../model/orderCreate.dto';
 import { OrderService } from '../../domain/inboundPorts/Order.service';
 import { QueryParamsListOrderDto } from '../model/queryParamsListOrder.dto';
@@ -204,5 +205,24 @@ export class OrderController {
   })
   async editOrderAndDetails(@Param('order_code') orderCode: string) {
     return this.orderService.editOrderByCode(orderCode);
+  }
+
+  @Get('export_to_excel/:order_code')
+  @ApiOperation({ summary: orderDocumentationLabels.exportExcelOperation.summary })
+  @ApiResponse({ status: 200, description: orderDocumentationLabels.exportExcelOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'order_code',
+    description: orderDocumentationLabels.exportExcelOperation.orderCodeParamDescription,
+    required: true,
+    type: 'string',
+    example: '1234568',
+  })
+  async exportOrderToExcel(@Param('order_code') orderCode: string, @Res() res: Response) {
+    const { buffer, fileName } = await this.orderService.exportOrderToExcel(orderCode);
+    res.header('Content-disposition', `attachment; filename=${fileName}.xlsx`);
+    res.type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    return res.send(buffer);
   }
 }

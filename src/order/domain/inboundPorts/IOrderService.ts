@@ -18,4 +18,6 @@ export interface IOrderService {
   getOrderDetailsAndBagsByCode(orderCode: string): Promise<OrderDetailsAndBagsDomain>;
 
   editOrderByCode(orderCode: string): Promise<OrderAndDetailsDomain>;
+
+  exportOrderToExcel(orderCode: string): Promise<{ buffer: any; fileName: string }>;
 }
