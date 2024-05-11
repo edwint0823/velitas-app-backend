@@ -479,3 +479,5 @@ export const statusForBagInventoryMovement = {
   name: 'En Proceso de Empaquetado',
   order: 7,
 };
+
+export const quantityInventoryLowStock = 300;
