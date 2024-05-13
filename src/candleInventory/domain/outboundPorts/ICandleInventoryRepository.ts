@@ -15,6 +15,8 @@ export interface ICandleInventoryRepository {
     quantity: number,
     transaction: EntityManager,
   ): Promise<CandleInventoryEntity>;
+
+  listCandleInventoryWithNames(whereOptions): Promise<CandleInventoryEntity[]>;
 }
 
 export const ICandleInventoryRepository = Symbol('ICandleInventoryRepository');

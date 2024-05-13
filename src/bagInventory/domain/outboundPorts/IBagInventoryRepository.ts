@@ -15,6 +15,8 @@ export interface IBagInventoryRepository {
     quantity: number,
     transaction: EntityManager,
   ): Promise<BagInventoryEntity>;
+
+  listAvailableBags(whereOptions): Promise<BagInventoryEntity[]>;
 }
 
 export const IBagInventoryRepository = Symbol('IBagInventoryRepository');

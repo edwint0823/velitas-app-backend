@@ -6,6 +6,10 @@ import { UpdateCandleInventoryQuantityDto } from '../../adapters/model/updateCan
 import { ICandleInventoryRepository } from '../outboundPorts/ICandleInventoryRepository';
 // eslint-disable-next-line max-len
 import { ICandleInventoryMovementRepository } from '../../../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
+import { ListCandleInventoryDto } from '../../adapters/model/listCandleInventory.dto';
+import { ListInventoryDomain } from '../model/out/listInventoryDomain';
+import { Like } from 'typeorm';
+import { CandleInventoryMapper } from '../mappers/CandleInventory.mapper';
 
 @Injectable()
 export class CandleInventoryService implements ICandleInventoryService {
@@ -60,5 +64,16 @@ export class CandleInventoryService implements ICandleInventoryService {
       );
       throw new HttpException({ message }, status);
     }
+  }
+
+  async listInventory(query: ListCandleInventoryDto): Promise<ListInventoryDomain[]> {
+    const whereOptions = {};
+    if (query.name) {
+      whereOptions['candle'] = {
+        name: Like(`%${query.name}%`),
+      };
+    }
+    const repositoryResponse = await this.candleInventoryRepository.listCandleInventoryWithNames(whereOptions);
+    return CandleInventoryMapper.listCandleInventory(repositoryResponse);
   }
 }

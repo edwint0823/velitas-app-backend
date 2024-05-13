@@ -36,4 +36,14 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
     findCandleInventory.quantity -= quantity;
     return transaction.save(findCandleInventory);
   }
+
+  listCandleInventoryWithNames(whereOptions): Promise<CandleInventoryEntity[]> {
+    return this.find({
+      relations: {
+        candle: true,
+      },
+      where: { ...whereOptions },
+      order: { candle: { name: 'ASC' } },
+    });
+  }
 }

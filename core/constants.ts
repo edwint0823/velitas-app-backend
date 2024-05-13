@@ -365,6 +365,11 @@ export const bagInventoryDocumentationLabels = {
     isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
     observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la bolsa',
   },
+  listInventory: {
+    summary: 'Listar el inventario bolsas',
+    success: 'Listado de inventario de bolsas',
+    nameParamDescription: 'Nombre de una bolsa a filtrar',
+  },
 };
 
 export const bagInventoryValidationMessages = {
@@ -378,6 +383,9 @@ export const bagInventoryValidationMessages = {
 
     observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
     observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres ',
+  },
+  listInventory: {
+    nameIsString: 'El nombre de la vela debe ser una cadena de caracteres',
   },
 };
 
@@ -408,6 +416,11 @@ export const candleInventoryDocumentationLabels = {
     isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
     observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la vela',
   },
+  listOperation: {
+    summary: 'Obtener el listado de velas con el inventario actual',
+    success: 'Listado de velas y su inventario',
+    nameParamDescription: 'Nombre de la vela a buscar',
+  },
 };
 
 export const candleInventoryValidationMessages = {
@@ -421,6 +434,9 @@ export const candleInventoryValidationMessages = {
 
     observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
     observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres',
+  },
+  listOperation: {
+    nameIsString: 'El nombre a buscar debe ser una cadena de caracteres',
   },
 };
 
@@ -470,4 +486,12 @@ export const statusForCandleInventoryMovement = {
 export const statusForBagInventoryMovement = {
   name: 'En Proceso de Empaquetado',
   order: 7,
+};
+
+export const quantityCandleInventoryLowStock = 300;
+export const quantityBagInventoryLowStock = 100;
+export const inventoryStatusNames = {
+  lowStock: 'STOCK BAJO',
+  inStock: 'EN STOCK',
+  outOfStock: 'AGOTADO',
 };
