@@ -45,7 +45,7 @@ export class CandleInventoryController {
     description: candleInventoryDocumentationLabels.listOperation.nameParamDescription,
     required: false,
     type: 'string',
-    example: 'Vela blanca',
+    example: 'Velas blanca',
   })
   async listCandleInventory(
     @Query(

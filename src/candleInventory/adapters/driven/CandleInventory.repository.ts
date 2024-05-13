@@ -43,6 +43,7 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
         candle: true,
       },
       where: { ...whereOptions },
+      order: { candle: { name: 'ASC' } },
     });
   }
 }

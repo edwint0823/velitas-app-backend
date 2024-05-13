@@ -32,4 +32,19 @@ export class BagInventoryRepository extends Repository<BagInventoryEntity> imple
   async findBagInventoryByBagId(bagId: number): Promise<BagInventoryEntity> {
     return await this.findOne({ where: { bag_id: bagId } });
   }
+
+  listAvailableBags(whereOptions): Promise<BagInventoryEntity[]> {
+    return this.find({
+      relations: {
+        bag: true,
+      },
+      where: {
+        ...whereOptions,
+        bag: {
+          available: true,
+        },
+      },
+      order: { bag: { name: 'ASC' } },
+    });
+  }
 }
