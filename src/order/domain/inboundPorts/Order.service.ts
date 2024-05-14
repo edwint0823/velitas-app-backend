@@ -5,7 +5,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { IOrderService } from './IOrderService';
 import { createOrderDto } from '../../adapters/model/orderCreate.dto';
-import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
+import { QueryParamsListOrderDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { IBagInventoryNeed, ICreateOrderInfoDomain } from '../model/in/createOrderInfoDomain';
 import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
@@ -44,6 +44,7 @@ import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updat
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
 import { Workbook } from 'exceljs';
+import { PaginateOrderDomain } from '../model/out/paginateOrderDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -189,30 +190,33 @@ export class OrderService implements IOrderService {
     return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 
-  async getPaginateListOrders(pageSize: number, pageNumber: number, filters?: FiltersDto) {
+  async getPaginateListOrders(
+    pageSize: number,
+    pageNumber: number,
+    query?: QueryParamsListOrderDto,
+  ): Promise<PaginateOrderDomain> {
     const whereOptions = {};
-    if (filters) {
-      if (filters.customer_name) {
-        whereOptions['customer'] = {
-          name: Like(`%${filters.customer_name.toUpperCase()}%`),
-        };
-      }
-      if (filters.orders_code) {
-        whereOptions['code'] = In(filters.orders_code);
-      }
-
-      if (filters.delivery_date_end) {
-        whereOptions['delivery_date'] = Between(filters.delivery_date_begin, filters.delivery_date_end);
-      } else if (filters.delivery_date_begin) {
-        whereOptions['delivery_date'] = MoreThanOrEqual(filters.delivery_date_begin);
-      }
-
-      if (filters.created_at_end) {
-        whereOptions['created_at'] = Between(filters.created_at_begin, filters.created_at_end);
-      } else if (filters.created_at_begin) {
-        whereOptions['created_at'] = MoreThanOrEqual(filters.created_at_begin);
-      }
+    if (query.customer_name) {
+      whereOptions['customer'] = {
+        name: Like(`%${query.customer_name.toUpperCase()}%`),
+      };
     }
+    if (query.orders_code) {
+      whereOptions['code'] = In(query.orders_code);
+    }
+
+    if (query.delivery_date_end) {
+      whereOptions['delivery_date'] = Between(query.delivery_date_begin, query.delivery_date_end);
+    } else if (query.delivery_date_begin) {
+      whereOptions['delivery_date'] = MoreThanOrEqual(query.delivery_date_begin);
+    }
+
+    if (query.created_at_end) {
+      whereOptions['created_at'] = Between(query.created_at_begin, query.created_at_end);
+    } else if (query.created_at_begin) {
+      whereOptions['created_at'] = MoreThanOrEqual(query.created_at_begin);
+    }
+
     const skip = (pageNumber - 1) * pageSize;
     const paginatedData = await this.orderRepository.listOrdersPaginated(skip, pageSize, whereOptions);
     return OrderMapper.paginateOrder(paginatedData);

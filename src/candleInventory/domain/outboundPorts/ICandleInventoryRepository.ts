@@ -1,5 +1,6 @@
 import { CandleInventoryEntity } from '../../../../database/entities/CandleInventory.entity';
 import { EntityManager } from 'typeorm';
+import { ListCandleFiltersDomain } from '../model/in/ListCandleFiltersDomain';
 
 export interface ICandleInventoryRepository {
   findCandleInventoryByCandleTypeId(candleTypeId: number): Promise<CandleInventoryEntity>;
@@ -16,7 +17,7 @@ export interface ICandleInventoryRepository {
     transaction: EntityManager,
   ): Promise<CandleInventoryEntity>;
 
-  listCandleInventoryWithNames(whereOptions): Promise<CandleInventoryEntity[]>;
+  listCandleInventoryWithNames(whereOptions: ListCandleFiltersDomain): Promise<CandleInventoryEntity[]>;
 }
 
 export const ICandleInventoryRepository = Symbol('ICandleInventoryRepository');

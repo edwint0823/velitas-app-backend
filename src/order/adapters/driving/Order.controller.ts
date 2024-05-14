@@ -117,7 +117,7 @@ export class OrderController {
     )
     query?: QueryParamsListOrderDto,
   ) {
-    return await this.orderService.getPaginateListOrders(pageSize, pageNumber, query.filters);
+    return await this.orderService.getPaginateListOrders(pageSize, pageNumber, query);
   }
 
   @Patch('/update_status/:order_code/:new_status_id')

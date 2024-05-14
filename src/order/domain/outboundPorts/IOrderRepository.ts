@@ -2,6 +2,7 @@ import { ICreateOrderInfoDomain } from '../model/in/createOrderInfoDomain';
 import { OrderEntity } from '../../../../database/entities/Order.entity';
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 import { UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
+import { PaginateOrderFiltersDomain } from '../model/in/paginateOrderFiltersDomain';
 
 export interface IOrderRepository {
   getCodeOrder(): Promise<string>;
@@ -13,7 +14,7 @@ export interface IOrderRepository {
   listOrdersPaginated(
     skip: number,
     take: number,
-    whereOptions,
+    whereOptions: PaginateOrderFiltersDomain,
   ): Promise<{
     orders: OrderEntity[];
     total: number;
