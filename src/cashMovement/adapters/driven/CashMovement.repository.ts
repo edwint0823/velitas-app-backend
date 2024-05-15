@@ -5,6 +5,7 @@ import { ICashMovementRepository } from '../../domain/outboundPorts/ICashMovemen
 import { createEntryCashMovementDomain } from '../../domain/model/in/createEntryCashMovementDomain';
 import { IPaymentRepository } from '../../../payment/domain/outboundPorts/IPaymentRepository';
 import { IBankEntityRepository } from '../../../bankEntity/domain/outboundPorts/IBankEntityRepository';
+import { ListFilterOptionsDomain } from '../../domain/model/in/listFilterOptionsDomain';
 
 @Injectable()
 export class CashMovementRepository extends Repository<CashMovementEntity> implements ICashMovementRepository {
@@ -33,5 +34,27 @@ export class CashMovementRepository extends Repository<CashMovementEntity> imple
       );
       return movementSaved;
     });
+  }
+
+  async paginateCashMovements(
+    skip: number,
+    take: number,
+    whereOptions: ListFilterOptionsDomain,
+  ): Promise<{ movements: CashMovementEntity[]; total: number }> {
+    const movements = await this.find({
+      relations: {
+        bank_entity: true,
+        payment: {
+          order: true,
+        },
+      },
+      where: { ...whereOptions },
+      skip: skip,
+      take: take,
+      order: { created_at: 'ASC' },
+    });
+
+    const total = await this.count({ where: { ...whereOptions } });
+    return { movements, total };
   }
 }

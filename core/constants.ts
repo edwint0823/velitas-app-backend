@@ -458,6 +458,34 @@ export const candleInventorySuccessMessages = {
   },
 };
 
+export const cashMovementsDocumentationsLabels = {
+  listAllOperations: {
+    summary: 'listar todos los movimientos de dinero que se han realizado',
+    success: 'Listado de los movimientos de dinero',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    bankEntityIdParamDescription: 'Filtrar por id de banco',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    ordersCodeParamDescription: 'Listado de código de pedido de movimiento separado por ,',
+  },
+};
+
+export const cashMovementsValidationsMessages = {
+  listAllOperations: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bankEntityIdIsNumber: 'El identificador del banco debe ser un número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    ordersCodeIsArray: 'El listado de Números de pedidos deben ser una lista',
+    orderCodeRequired: 'El listado de Números de pedido debe tener al menos un item',
+    orderCodeIsStringNumber: 'Todos los códigos de pedido deben ser números',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
