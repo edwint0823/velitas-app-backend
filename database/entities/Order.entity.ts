@@ -64,11 +64,11 @@ export class OrderEntity {
   updated_at: Date;
 
   @Column({
-    type: 'int',
+    type: 'text',
     nullable: true,
     default: 'null',
   })
-  updated_by: number;
+  updated_by: string;
 
   @Column({
     type: 'int',

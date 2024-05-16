@@ -47,7 +47,12 @@ export class BagInventoryService implements IBagInventoryService {
         is_entry: inventoryInfo.is_entry,
         is_out: !inventoryInfo.is_entry,
         observation: inventoryInfo.observation,
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       if (inventoryInfo.is_entry) {
         await this.bagInventoryMovementRepository.createEntryInventoryMovement(payloadToInventoryMovement);

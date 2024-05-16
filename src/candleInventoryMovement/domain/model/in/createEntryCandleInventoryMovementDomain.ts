@@ -4,5 +4,5 @@ export interface CreateEntryCandleInventoryMovementDomain {
   is_entry: boolean;
   is_out: boolean;
   observation: string;
-  created_by: number;
+  created_by: string;
 }

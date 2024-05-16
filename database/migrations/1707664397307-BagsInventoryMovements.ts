@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class BagsInventoryMovements1707664397307 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -46,7 +41,7 @@ export class BagsInventoryMovements1707664397307 implements MigrationInterface {
           },
           {
             name: 'created_by',
-            type: 'int',
+            type: 'text',
           },
         ],
       }),

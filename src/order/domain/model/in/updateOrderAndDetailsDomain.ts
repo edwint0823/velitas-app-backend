@@ -3,7 +3,7 @@ interface Order {
   total_price: number;
   total_quantity: number;
   delivery_date: Date;
-  updated_by: number;
+  updated_by: string;
   updated_at: Date;
   delivery_address: string;
   additional_info?: string;
@@ -31,7 +31,7 @@ interface CandleInventory {
   is_entry: boolean;
   is_out: boolean;
   observation: string;
-  created_by: number;
+  created_by: string;
 }
 
 interface BagInventoryMovement {
@@ -40,7 +40,7 @@ interface BagInventoryMovement {
   is_entry: boolean;
   is_out: boolean;
   observation: string;
-  created_by: number;
+  created_by: string;
 }
 
 export interface UpdateOrderAndDetailsDomain {

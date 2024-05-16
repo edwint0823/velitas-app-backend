@@ -38,9 +38,9 @@ export class CashMovementEntity {
   created_at: Date;
 
   @Column({
-    type: 'int',
+    type: 'text',
   })
-  created_by: number;
+  created_by: string;
 
   @ManyToOne(() => BankEntityEntity)
   @JoinColumn({ name: 'bank_entity_id' })

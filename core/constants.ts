@@ -496,6 +496,13 @@ export interface IAuthUser {
   permissions: string[];
 }
 
+export interface IUserInfoInDb {
+  email: string;
+  first_name: string;
+  last_name: string;
+  id: number;
+}
+
 export const maxStatusToCancel = {
   name: 'impreso',
   order: 4,

@@ -55,7 +55,7 @@ export class Orders1706533928202 implements MigrationInterface {
           },
           {
             name: 'updated_by',
-            type: 'int',
+            type: 'text',
             isNullable: true,
           },
           {

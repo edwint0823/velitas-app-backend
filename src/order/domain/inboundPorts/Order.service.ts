@@ -270,7 +270,12 @@ export class OrderService implements IOrderService {
         order_id: orderInfo.id,
         old_status_id: oldStatusInfo.id,
         new_status_id: Number(newStatusId),
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
 
@@ -296,7 +301,12 @@ export class OrderService implements IOrderService {
           is_out: true,
           // eslint-disable-next-line max-len
           observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-          created_by: user.id,
+          created_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
         }));
         for (const candle of candlesAndQuantity) {
           await this.candleInventoryMovementRepository.createOutCandleInventoryMovement(candle);
@@ -316,7 +326,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
           await this.bagInventoryMovementRepository.createOutInventoryMovement(payload);
         }
@@ -383,7 +398,12 @@ export class OrderService implements IOrderService {
           total_quantity: totalQuantity,
           delivery_date: deliveryDate.toDate(),
           updated_at: dayjs().toDate(),
-          updated_by: user.id,
+          updated_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
           delivery_address: orderData.delivery_address,
           additional_info: orderData.additional_info,
           delivery_price: orderData.delivery_price,
@@ -465,7 +485,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
 
@@ -488,7 +513,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
       }
@@ -504,7 +534,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
         /* SACAR INVENTOARIO DE VELAS NUEVO */
@@ -516,7 +551,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
       }
