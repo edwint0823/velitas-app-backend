@@ -1,8 +1,9 @@
 import { CashMovementService } from '../../domain/inboundPorts/CashMovement.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Query, ValidationPipe } from '@nestjs/common';
-import { cashMovementsDocumentationsLabels, commonStatusErrorMessages } from '../../../../core/constants';
+import { Body, Controller, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { cashMovementsDocumentationsLabels, commonStatusErrorMessages, IAuthUser } from '../../../../core/constants';
 import { ListCashMovementDto } from '../model/listCashMovement.dto';
+import { CreateOutMovementDto } from '../model/createOutMovement.dto';
 
 @ApiTags('cash_movements')
 @ApiBearerAuth()
@@ -86,5 +87,16 @@ export class CashMovementController {
     query?: ListCashMovementDto,
   ) {
     return this.cashMovementService.listAllCashMovements(pageSize, pageNumber, query);
+  }
+
+  @Post('/create_out_movement')
+  @ApiOperation({ summary: cashMovementsDocumentationsLabels.createOutMovementOperation.summary })
+  @ApiResponse({ status: 200, description: cashMovementsDocumentationsLabels.createOutMovementOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  async createOutMovement(@Body() outMovementParam: CreateOutMovementDto, @Query('user') user: IAuthUser) {
+    return await this.cashMovementService.createOutMovement(outMovementParam, user);
   }
 }

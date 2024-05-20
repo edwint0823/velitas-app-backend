@@ -471,6 +471,13 @@ export const cashMovementsDocumentationsLabels = {
     createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
     ordersCodeParamDescription: 'Listado de código de pedido de movimiento separado por ,',
   },
+  createOutMovementOperation: {
+    summary: 'Crear un gasto sobre un banco especifico',
+    success: 'Gasto creado con éxito',
+    bankIdParamDescription: 'ID del banco al cual se le registrará el gasto',
+    amountParamDescription: 'Valor del gasto a registrar',
+    conceptParamDescription: 'Concepto del gasto a registrar',
+  },
 };
 
 export const cashMovementsValidationsMessages = {
@@ -483,6 +490,31 @@ export const cashMovementsValidationsMessages = {
     ordersCodeIsArray: 'El listado de Números de pedidos deben ser una lista',
     orderCodeRequired: 'El listado de Números de pedido debe tener al menos un item',
     orderCodeIsStringNumber: 'Todos los códigos de pedido deben ser números',
+  },
+  createOutMovementOperation: {
+    bankEntityIdIsRequired: 'EL identificador del banco es requerido',
+    bankEntityIdIsInt: 'El identificador del banco debe ser un número entero',
+    amountIsRequired: 'El monto a registrar es requerido',
+    amountIsNumber: 'El monto a registrar debe ser un número',
+    conceptIsRequired: 'El concepto a registrar para el gasto requerido',
+    conceptIsString: 'El concepto a registrar debe ser una cadena de caracteres',
+  },
+};
+
+export const cashMovementsErrorMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Error al crear el gasto',
+      bankDoesNotExist: 'EL banco proporcionado no existe',
+    },
+  },
+};
+
+export const cashMovementsSuccessMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Gasto registrado con éxito',
+    },
   },
 };
 
