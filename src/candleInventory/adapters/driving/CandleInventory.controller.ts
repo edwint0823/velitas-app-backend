@@ -55,7 +55,7 @@ export class CandleInventoryController {
         forbidNonWhitelisted: true,
       }),
     )
-    query: ListCandleInventoryDto,
+    query?: ListCandleInventoryDto,
   ) {
     return await this.candleInventoryService.listInventory(query);
   }

@@ -518,6 +518,56 @@ export const cashMovementsSuccessMessages = {
   },
 };
 
+export const cashInventoryDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar el inventario de dinero físico',
+    success: 'Listado de inventario de dinero físico',
+    nameParamDescription: 'Nombre del item a buscar',
+  },
+  findOperation: {
+    summary: 'Buscar por id un item de inventario de dinero físico',
+    success: 'Información del item obtenida',
+    idParamDescription: 'Id del item a actualizar',
+  },
+  updateQuantityOperation: {
+    summary: 'Actualizar la cantidad de inventario de dinero físico',
+    success: 'Cantidad actualizada con éxito',
+    idParamDescription: 'Id del item a actualizar',
+    quantityParamDescription: 'Cantidad de inventario a actualizar',
+  },
+};
+
+export const cashInventoryValidationMessages = {
+  listOperation: {
+    nameIsString: 'El nombre debe ser una cadena de texto',
+  },
+  updateQuantityOperation: {
+    quantityRequired: 'La cantidad a actualizar es requerida',
+    quantityIsInt: 'La cantidad deber ser un número entero',
+    quantityIsPositive: 'La cantidad debe ser un número positivo',
+  },
+};
+
+export const cashInventoryErrorMessages = {
+  service: {
+    findCashInventory: {
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+    updateQuantity: {
+      default: 'Error al actualizar la cantidad',
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+  },
+};
+
+export const cashInventorySuccessMessages = {
+  service: {
+    updateQuantity: {
+      default: 'Cantidad actualizada con éxito',
+    },
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

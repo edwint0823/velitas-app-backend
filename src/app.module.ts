@@ -35,6 +35,8 @@ import { BankEntityModule } from './bankEntity/bankEntity.module';
 import { BagInventoryModule } from './bagInventory/bagInventory.module';
 import { CandleInventoryModule } from './candleInventory/candleInventory.module';
 import { CashMovementsModule } from './cashMovement/cashMovements.module';
+import { CashInventoryEntity } from '../database/entities/CashInventory.entity';
+import { CashInventoryModule } from './cashInventory/cashInventory.module';
 
 dotenv.config();
 
@@ -62,6 +64,7 @@ dotenv.config();
         PaymentEntity,
         StatusEntity,
         OrderStatusChangeLogEntity,
+        CashInventoryEntity,
       ],
       // ssl: { rejectUnauthorized: false },
       // logging: true,
@@ -83,6 +86,7 @@ dotenv.config();
     BagInventoryModule,
     CandleInventoryModule,
     CashMovementsModule,
+    CashInventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
