@@ -354,6 +354,10 @@ export const bankEntityDocumentationLabels = {
     summary: 'Obtener listado de entidades bancarias disponibles',
     success: 'Listado de entidades bancarias',
   },
+  listWithAmount: {
+    summary: 'Listar los bancos junto con el monto de dinero que tienen registrado',
+    success: 'Listado de bancos y sus montos',
+  },
 };
 
 export const bagInventoryDocumentationLabels = {
@@ -458,6 +462,116 @@ export const candleInventorySuccessMessages = {
   },
 };
 
+export const cashMovementsDocumentationsLabels = {
+  listAllOperations: {
+    summary: 'listar todos los movimientos de dinero que se han realizado',
+    success: 'Listado de los movimientos de dinero',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    bankEntityIdParamDescription: 'Filtrar por id de banco',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    ordersCodeParamDescription: 'Listado de código de pedido de movimiento separado por ,',
+  },
+  createOutMovementOperation: {
+    summary: 'Crear un gasto sobre un banco especifico',
+    success: 'Gasto creado con éxito',
+    bankIdParamDescription: 'ID del banco al cual se le registrará el gasto',
+    amountParamDescription: 'Valor del gasto a registrar',
+    conceptParamDescription: 'Concepto del gasto a registrar',
+  },
+};
+
+export const cashMovementsValidationsMessages = {
+  listAllOperations: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bankEntityIdIsNumber: 'El identificador del banco debe ser un número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    ordersCodeIsArray: 'El listado de Números de pedidos deben ser una lista',
+    orderCodeRequired: 'El listado de Números de pedido debe tener al menos un item',
+    orderCodeIsStringNumber: 'Todos los códigos de pedido deben ser números',
+  },
+  createOutMovementOperation: {
+    bankEntityIdIsRequired: 'EL identificador del banco es requerido',
+    bankEntityIdIsInt: 'El identificador del banco debe ser un número entero',
+    amountIsRequired: 'El monto a registrar es requerido',
+    amountIsNumber: 'El monto a registrar debe ser un número',
+    conceptIsRequired: 'El concepto a registrar para el gasto requerido',
+    conceptIsString: 'El concepto a registrar debe ser una cadena de caracteres',
+  },
+};
+
+export const cashMovementsErrorMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Error al crear el gasto',
+      bankDoesNotExist: 'EL banco proporcionado no existe',
+    },
+  },
+};
+
+export const cashMovementsSuccessMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Gasto registrado con éxito',
+    },
+  },
+};
+
+export const cashInventoryDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar el inventario de dinero físico',
+    success: 'Listado de inventario de dinero físico',
+    nameParamDescription: 'Nombre del item a buscar',
+  },
+  findOperation: {
+    summary: 'Buscar por id un item de inventario de dinero físico',
+    success: 'Información del item obtenida',
+    idParamDescription: 'Id del item a actualizar',
+  },
+  updateQuantityOperation: {
+    summary: 'Actualizar la cantidad de inventario de dinero físico',
+    success: 'Cantidad actualizada con éxito',
+    idParamDescription: 'Id del item a actualizar',
+    quantityParamDescription: 'Cantidad de inventario a actualizar',
+  },
+};
+
+export const cashInventoryValidationMessages = {
+  listOperation: {
+    nameIsString: 'El nombre debe ser una cadena de texto',
+  },
+  updateQuantityOperation: {
+    quantityRequired: 'La cantidad a actualizar es requerida',
+    quantityIsInt: 'La cantidad deber ser un número entero',
+    quantityIsPositive: 'La cantidad debe ser un número positivo',
+  },
+};
+
+export const cashInventoryErrorMessages = {
+  service: {
+    findCashInventory: {
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+    updateQuantity: {
+      default: 'Error al actualizar la cantidad',
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+  },
+};
+
+export const cashInventorySuccessMessages = {
+  service: {
+    updateQuantity: {
+      default: 'Cantidad actualizada con éxito',
+    },
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
@@ -466,6 +580,13 @@ export interface IAuthUser {
   is_superuser: boolean;
   id: number;
   permissions: string[];
+}
+
+export interface IUserInfoInDb {
+  email: string;
+  first_name: string;
+  last_name: string;
+  id: number;
 }
 
 export const maxStatusToCancel = {

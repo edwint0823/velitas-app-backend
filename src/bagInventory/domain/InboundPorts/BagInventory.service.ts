@@ -8,7 +8,7 @@ import { IBagInventoryRepository } from '../outboundPorts/IBagInventoryRepositor
 import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/domain/outboundPorts/IBagInventoryMovementRepository';
 import { listBagInventoryDto } from '../../adapters/model/listBagInventory.dto';
 import { ListBagInventoryDomain } from '../model/out/listBagInventoryDomain';
-import { Like } from 'typeorm';
+import { Equal, Like } from 'typeorm';
 import { BagInventoryMapper } from '../mappers/BagInventory.mapper';
 
 @Injectable()
@@ -47,7 +47,12 @@ export class BagInventoryService implements IBagInventoryService {
         is_entry: inventoryInfo.is_entry,
         is_out: !inventoryInfo.is_entry,
         observation: inventoryInfo.observation,
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       if (inventoryInfo.is_entry) {
         await this.bagInventoryMovementRepository.createEntryInventoryMovement(payloadToInventoryMovement);
@@ -65,12 +70,15 @@ export class BagInventoryService implements IBagInventoryService {
   }
 
   async listBagInventory(query: listBagInventoryDto): Promise<ListBagInventoryDomain[]> {
-    const whereOptions = {};
+    const whereOptions = {
+      bag: {
+        available: Equal(true),
+      },
+    };
     if (query.name) {
-      whereOptions['candle'] = {
-        name: Like(`%${query.name}%`),
-      };
+      whereOptions['bag']['name'] = Like(`%${query.name}%`);
     }
+    console.log(whereOptions);
     const repositoryResponse = await this.bagInventoryRepository.listAvailableBags(whereOptions);
     return BagInventoryMapper.listBagInventoryMapper(repositoryResponse);
   }

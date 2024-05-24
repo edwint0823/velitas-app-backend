@@ -36,7 +36,7 @@ export class CandleInventoryMovementEntity {
   created_at: Date;
 
   @Column({
-    type: 'int',
+    type: 'text',
   })
-  created_by: number;
+  created_by: string;
 }

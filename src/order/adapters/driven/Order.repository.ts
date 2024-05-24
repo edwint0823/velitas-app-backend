@@ -14,7 +14,7 @@ import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/d
 import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDomain';
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 import { UpdateOrderAndDetailsDomain } from '../../domain/model/in/updateOrderAndDetailsDomain';
-import { skip, take } from 'rxjs';
+import { PaginateOrderFiltersDomain } from '../../domain/model/in/paginateOrderFiltersDomain';
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
@@ -91,7 +91,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
   async listOrdersPaginated(
     skip: number,
     take: number,
-    whereOptions,
+    whereOptions: PaginateOrderFiltersDomain,
   ): Promise<{
     orders: OrderEntity[];
     total: number;

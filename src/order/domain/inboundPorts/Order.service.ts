@@ -5,7 +5,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { IOrderService } from './IOrderService';
 import { createOrderDto } from '../../adapters/model/orderCreate.dto';
-import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
+import { QueryParamsListOrderDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { IBagInventoryNeed, ICreateOrderInfoDomain } from '../model/in/createOrderInfoDomain';
 import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
@@ -44,6 +44,7 @@ import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updat
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
 import { Workbook } from 'exceljs';
+import { PaginateOrderDomain } from '../model/out/paginateOrderDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -189,30 +190,33 @@ export class OrderService implements IOrderService {
     return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 
-  async getPaginateListOrders(pageSize: number, pageNumber: number, filters?: FiltersDto) {
+  async getPaginateListOrders(
+    pageSize: number,
+    pageNumber: number,
+    query?: QueryParamsListOrderDto,
+  ): Promise<PaginateOrderDomain> {
     const whereOptions = {};
-    if (filters) {
-      if (filters.customer_name) {
-        whereOptions['customer'] = {
-          name: Like(`%${filters.customer_name.toUpperCase()}%`),
-        };
-      }
-      if (filters.orders_code) {
-        whereOptions['code'] = In(filters.orders_code);
-      }
-
-      if (filters.delivery_date_end) {
-        whereOptions['delivery_date'] = Between(filters.delivery_date_begin, filters.delivery_date_end);
-      } else if (filters.delivery_date_begin) {
-        whereOptions['delivery_date'] = MoreThanOrEqual(filters.delivery_date_begin);
-      }
-
-      if (filters.created_at_end) {
-        whereOptions['created_at'] = Between(filters.created_at_begin, filters.created_at_end);
-      } else if (filters.created_at_begin) {
-        whereOptions['created_at'] = MoreThanOrEqual(filters.created_at_begin);
-      }
+    if (query.customer_name) {
+      whereOptions['customer'] = {
+        name: Like(`%${query.customer_name.toUpperCase()}%`),
+      };
     }
+    if (query.orders_code) {
+      whereOptions['code'] = In(query.orders_code);
+    }
+
+    if (query.delivery_date_end) {
+      whereOptions['delivery_date'] = Between(query.delivery_date_begin, query.delivery_date_end);
+    } else if (query.delivery_date_begin) {
+      whereOptions['delivery_date'] = MoreThanOrEqual(query.delivery_date_begin);
+    }
+
+    if (query.created_at_end) {
+      whereOptions['created_at'] = Between(query.created_at_begin, query.created_at_end);
+    } else if (query.created_at_begin) {
+      whereOptions['created_at'] = MoreThanOrEqual(query.created_at_begin);
+    }
+
     const skip = (pageNumber - 1) * pageSize;
     const paginatedData = await this.orderRepository.listOrdersPaginated(skip, pageSize, whereOptions);
     return OrderMapper.paginateOrder(paginatedData);
@@ -266,7 +270,12 @@ export class OrderService implements IOrderService {
         order_id: orderInfo.id,
         old_status_id: oldStatusInfo.id,
         new_status_id: Number(newStatusId),
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
 
@@ -292,7 +301,12 @@ export class OrderService implements IOrderService {
           is_out: true,
           // eslint-disable-next-line max-len
           observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-          created_by: user.id,
+          created_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
         }));
         for (const candle of candlesAndQuantity) {
           await this.candleInventoryMovementRepository.createOutCandleInventoryMovement(candle);
@@ -312,7 +326,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
           await this.bagInventoryMovementRepository.createOutInventoryMovement(payload);
         }
@@ -379,7 +398,12 @@ export class OrderService implements IOrderService {
           total_quantity: totalQuantity,
           delivery_date: deliveryDate.toDate(),
           updated_at: dayjs().toDate(),
-          updated_by: user.id,
+          updated_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
           delivery_address: orderData.delivery_address,
           additional_info: orderData.additional_info,
           delivery_price: orderData.delivery_price,
@@ -461,7 +485,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
 
@@ -484,7 +513,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
       }
@@ -500,7 +534,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
         /* SACAR INVENTOARIO DE VELAS NUEVO */
@@ -512,7 +551,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
       }

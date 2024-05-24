@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { BankEntityEntity } from './BankEntity.entity';
+import { PaymentEntity } from './Payment.entity';
 
 @Entity('cash_movements')
 export class CashMovementEntity {
@@ -37,11 +38,15 @@ export class CashMovementEntity {
   created_at: Date;
 
   @Column({
-    type: 'int',
+    type: 'text',
   })
-  created_by: number;
+  created_by: string;
 
   @ManyToOne(() => BankEntityEntity)
   @JoinColumn({ name: 'bank_entity_id' })
   bank_entity: BankEntityEntity;
+
+  @OneToOne(() => PaymentEntity)
+  @JoinColumn({ name: 'id', referencedColumnName: 'movement_id' })
+  payment: PaymentEntity;
 }

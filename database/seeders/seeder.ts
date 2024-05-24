@@ -21,6 +21,7 @@ import { BagInventoryNeedEntity } from '../entities/BagInventoryNeed.entity';
 import { CandleInventoryMovementEntity } from '../entities/CandleInventoryMovement.entity';
 import { PaymentEntity } from '../entities/Payment.entity';
 import { OrderStatusChangeLogEntity } from '../entities/OrderStatusChangeLogs.entity';
+import { CashInventoryEntity } from '../entities/CashInventory.entity';
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ async function seed() {
         PaymentEntity,
         StatusEntity,
         OrderStatusChangeLogEntity,
+        CashInventoryEntity,
       ],
     });
     await connection.initialize();
@@ -63,12 +65,17 @@ async function seed() {
     );
     const candlesJson = fs.readFileSync(path.join(__dirname, '../../src/seedersData/candles-seed.json'), 'utf8');
     const bagsJson = fs.readFileSync(path.join(__dirname, '../../src/seedersData/bags-seed.json'), 'utf8');
+    const cashInventoryJson = fs.readFileSync(
+      path.join(__dirname, '../../src/seedersData/cashInventory-seed.json'),
+      'utf8',
+    );
 
     const statusData = JSON.parse(statusJson);
     const bankEntitiesData = JSON.parse(bankEntitiesJson);
     const configurationData = JSON.parse(configurationJson);
     const candlesData = JSON.parse(candlesJson);
     const bagsData = JSON.parse(bagsJson);
+    const cashInventoryData = JSON.parse(cashInventoryJson);
 
     await connection.transaction(async (manager) => {
       /* STATUS SEED */
@@ -139,6 +146,16 @@ async function seed() {
           /* BAG INGENTORY SEED */
           bag_inventory.bag_id = findBag.id;
           await manager.getRepository(BagInventoryEntity).save(bag_inventory);
+        }
+      }
+
+      /* CASH INVENTORY SEED*/
+      for (const cashInventory of cashInventoryData) {
+        const findCashInventory = await manager
+          .getRepository(CashInventoryEntity)
+          .findOne({ where: { name: cashInventory.name } });
+        if (findCashInventory === null) {
+          await manager.getRepository(CashInventoryEntity).save(cashInventory);
         }
       }
     });

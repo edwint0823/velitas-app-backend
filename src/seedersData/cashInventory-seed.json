@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Billete 100 mill",
+    "unit_value": 100000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete 50 mill",
+    "unit_value": 50000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete 20 mill",
+    "unit_value": 20000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete 10 mill",
+    "unit_value": 10000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete 5 mill",
+    "unit_value": 5000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete 2 mill",
+    "unit_value": 2000,
+    "quantity": 0
+  },
+  {
+    "name": "Billete o moneda 1 mill",
+    "unit_value": 1000,
+    "quantity": 0
+  },
+  {
+    "name": "Moneda 500",
+    "unit_value": 500,
+    "quantity": 0
+  },
+  {
+    "name": "Moneda 200",
+    "unit_value": 200,
+    "quantity": 0
+  },
+  {
+    "name": "Moneda 100",
+    "unit_value": 100,
+    "quantity": 0
+  },
+  {
+    "name": "Moneda 50",
+    "unit_value": 50,
+    "quantity": 0
+  }
+]

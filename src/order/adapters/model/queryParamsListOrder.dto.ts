@@ -1,13 +1,4 @@
-import {
-  ArrayNotEmpty,
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsNumberString, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IAuthUser, orderValidationMessages, timeZoneDayjs } from '../../../../core/constants';
 import * as dayjs from 'dayjs';
@@ -15,15 +6,14 @@ import 'dayjs/locale/es-mx.js';
 
 dayjs.locale(timeZoneDayjs);
 
-export class FiltersDto {
+export class QueryParamsListOrderDto {
   @IsOptional()
   @Transform(({ value }) => {
-    const arrString = value.split(',');
-    return arrString.map((x) => parseInt(x));
+    return value.split(',');
   })
   @IsArray({ message: orderValidationMessages.paginateListOperation.orderCodeIsArray })
   @ArrayNotEmpty({ message: orderValidationMessages.paginateListOperation.orderCodeRequired })
-  @IsNumber({}, { each: true, message: orderValidationMessages.paginateListOperation.orderCodeIsNumber })
+  @IsNumberString({}, { each: true, message: orderValidationMessages.paginateListOperation.orderCodeIsNumber })
   public orders_code?: number[];
 
   @IsOptional()
@@ -51,10 +41,5 @@ export class FiltersDto {
   @IsOptional()
   @IsString({ message: orderValidationMessages.paginateListOperation.customerNameIsString })
   public customer_name?: string;
-}
-
-export class QueryParamsListOrderDto {
-  @ValidateNested()
-  filters: FiltersDto;
   user: IAuthUser;
 }

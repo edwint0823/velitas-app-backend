@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { CandleInventoryEntity } from '../../../../database/entities/CandleInventory.entity';
 import { ICandleInventoryRepository } from '../../domain/outboundPorts/ICandleInventoryRepository';
+import { ListCandleFiltersDomain } from '../../domain/model/in/ListCandleFiltersDomain';
 
 @Injectable()
 export class CandleInventoryRepository extends Repository<CandleInventoryEntity> implements ICandleInventoryRepository {
@@ -37,7 +38,7 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
     return transaction.save(findCandleInventory);
   }
 
-  listCandleInventoryWithNames(whereOptions): Promise<CandleInventoryEntity[]> {
+  listCandleInventoryWithNames(whereOptions: ListCandleFiltersDomain): Promise<CandleInventoryEntity[]> {
     return this.find({
       relations: {
         candle: true,

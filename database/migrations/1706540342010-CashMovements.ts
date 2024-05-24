@@ -39,7 +39,7 @@ export class CashMovements1706540342010 implements MigrationInterface {
           },
           {
             name: 'created_by',
-            type: 'int',
+            type: 'text',
           },
         ],
       }),

@@ -19,4 +19,15 @@ export class BankEntityController {
   getBankEntitiesList() {
     return this.bankEntityService.listBankEntities();
   }
+
+  @Get('/list_with_amount')
+  @ApiOperation({ summary: bankEntityDocumentationLabels.listWithAmount.summary })
+  @ApiResponse({ status: 200, description: bankEntityDocumentationLabels.listWithAmount.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  listBanksWithAmounts() {
+    return this.bankEntityService.allBanksWthAmount();
+  }
 }
