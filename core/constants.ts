@@ -354,6 +354,10 @@ export const bankEntityDocumentationLabels = {
     summary: 'Obtener listado de entidades bancarias disponibles',
     success: 'Listado de entidades bancarias',
   },
+  listWithAmount: {
+    summary: 'Listar los bancos junto con el monto de dinero que tienen registrado',
+    success: 'Listado de bancos y sus montos',
+  },
 };
 
 export const bagInventoryDocumentationLabels = {
