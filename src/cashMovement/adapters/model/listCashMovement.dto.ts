@@ -1,7 +1,10 @@
 import { ArrayNotEmpty, IsArray, IsBoolean, IsDate, IsInt, IsNumberString, IsOptional } from 'class-validator';
-import { cashMovementsValidationsMessages, IAuthUser } from '../../../../core/constants';
+import { cashMovementsValidationsMessages, IAuthUser, timeZoneDayjs } from '../../../../core/constants';
 import { Transform, Type } from 'class-transformer';
 import * as dayjs from 'dayjs';
+import 'dayjs/locale/es-mx.js';
+
+dayjs.locale(timeZoneDayjs);
 
 export class ListCashMovementDto {
   @IsOptional()

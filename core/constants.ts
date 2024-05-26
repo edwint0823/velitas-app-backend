@@ -572,6 +572,31 @@ export const cashInventorySuccessMessages = {
   },
 };
 
+export const bagInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de bolsas',
+    success: 'Listado de inventario de bolsas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    bagIdParamDescription: 'Id del tipo bolsa que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const bagInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bagIdIsInt: 'El identificador de la bolsa debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

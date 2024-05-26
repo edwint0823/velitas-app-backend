@@ -37,6 +37,7 @@ import { CandleInventoryModule } from './candleInventory/candleInventory.module'
 import { CashMovementsModule } from './cashMovement/cashMovements.module';
 import { CashInventoryEntity } from '../database/entities/CashInventory.entity';
 import { CashInventoryModule } from './cashInventory/cashInventory.module';
+import { BagInventoryMovementModule } from './bagInventoryMovement/bagInventoryMovement.module';
 
 dotenv.config();
 
@@ -87,6 +88,7 @@ dotenv.config();
     CandleInventoryModule,
     CashMovementsModule,
     CashInventoryModule,
+    BagInventoryMovementModule,
   ],
   controllers: [AppController],
   providers: [AppService],
