@@ -597,6 +597,31 @@ export const bagInventoryMovementsValidationMessages = {
   },
 };
 
+export const candleInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de velas',
+    success: 'Listado de inventario de velas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    candleTypeIdParamDescription: 'Id del tipo de vela que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const candleInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    candleTypeIdIsInt: 'El identificador de la ela debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

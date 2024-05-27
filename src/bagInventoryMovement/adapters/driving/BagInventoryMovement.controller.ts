@@ -11,8 +11,8 @@ export class BagInventoryMovementController {
   constructor(private readonly bagInventoryMovementService: BagInventoryMovementService) {}
 
   @Get('/list/:page_size/:page_number')
-  @ApiOperation({ summary: '' })
-  @ApiResponse({ status: 200, description: '' })
+  @ApiOperation({ summary: bagInventoryMovementDocumentationLabels.listOperation.summary })
+  @ApiResponse({ status: 200, description: bagInventoryMovementDocumentationLabels.listOperation.success })
   @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
   @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
   @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
