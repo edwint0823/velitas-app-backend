@@ -36,5 +36,6 @@ export class ListCandleInventoryMovementDto {
   @IsOptional()
   @IsString({ message: candleInventoryMovementsValidationMessages.listOperation.createdAtNameIsString })
   created_by_name?: string;
+
   user: IAuthUser;
 }

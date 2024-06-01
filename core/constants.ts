@@ -622,6 +622,27 @@ export const candleInventoryMovementsValidationMessages = {
   },
 };
 
+export const orderStatusChangeLogsDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los cambios de estado de los pedidos',
+    success: 'Listado de los cambios de estado de los pedidos',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    orderCodeParamDescription: 'Código de pedido que se desea filtrar',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const orderStatusChangeLogsValidationMessages = {
+  listOperation: {
+    orderCodeIsStringNumber: 'El código del pedido debe ser una cadena de texto que contenga solo número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el cambio de estado debe ser una cadena de caracteres',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

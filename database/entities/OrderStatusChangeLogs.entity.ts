@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { OrderEntity } from './Order.entity';
+import { StatusEntity } from './Status.entity';
 
 @Entity('order_status_change_logs')
 export class OrderStatusChangeLogEntity {
@@ -30,4 +32,16 @@ export class OrderStatusChangeLogEntity {
     type: 'text',
   })
   created_by: string;
+
+  @ManyToOne(() => OrderEntity)
+  @JoinColumn({ name: 'order_id' })
+  order: OrderEntity;
+
+  @ManyToOne(() => StatusEntity)
+  @JoinColumn({ name: 'old_status_id' })
+  old_status: StatusEntity;
+
+  @ManyToOne(() => StatusEntity)
+  @JoinColumn({ name: 'new_status_id' })
+  new_status: StatusEntity;
 }

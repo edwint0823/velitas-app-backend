@@ -35,6 +35,7 @@ async function bootstrap() {
     .addTag('cash_inventory')
     .addTag('bag_inventory_movements')
     .addTag('candle_inventory_movements')
+    .addTag('order_status_change_logs')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
