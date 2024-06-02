@@ -643,6 +643,13 @@ export const orderStatusChangeLogsValidationMessages = {
   },
 };
 
+export const candleTypeDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los tipos de velas existentes',
+    success: 'Listado de velas existentes',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
