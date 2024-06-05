@@ -8,6 +8,7 @@ dayjs.locale(timeZoneDayjs);
 
 export class ListBagInventoryMovementDto {
   @IsOptional()
+  @Type(() => Number)
   @IsInt({ message: bagInventoryMovementsValidationMessages.listOperation.bagIdIsInt })
   bag_id?: number;
 

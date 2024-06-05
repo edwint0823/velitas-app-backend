@@ -8,6 +8,7 @@ dayjs.locale(timeZoneDayjs);
 
 export class ListCandleInventoryMovementDto {
   @IsOptional()
+  @Type(() => Number)
   @IsInt({ message: candleInventoryMovementsValidationMessages.listOperation.candleTypeIdIsInt })
   candle_type_id?: number;
 
