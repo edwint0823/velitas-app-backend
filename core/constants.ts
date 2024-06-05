@@ -572,6 +572,84 @@ export const cashInventorySuccessMessages = {
   },
 };
 
+export const bagInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de bolsas',
+    success: 'Listado de inventario de bolsas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    bagIdParamDescription: 'Id del tipo bolsa que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const bagInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bagIdIsInt: 'El identificador de la bolsa debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
+export const candleInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de velas',
+    success: 'Listado de inventario de velas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    candleTypeIdParamDescription: 'Id del tipo de vela que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const candleInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    candleTypeIdIsInt: 'El identificador de la ela debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
+export const orderStatusChangeLogsDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los cambios de estado de los pedidos',
+    success: 'Listado de los cambios de estado de los pedidos',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    orderCodeParamDescription: 'Código de pedido que se desea filtrar',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const orderStatusChangeLogsValidationMessages = {
+  listOperation: {
+    orderCodeIsStringNumber: 'El código del pedido debe ser una cadena de texto que contenga solo número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el cambio de estado debe ser una cadena de caracteres',
+  },
+};
+
+export const candleTypeDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los tipos de velas existentes',
+    success: 'Listado de velas existentes',
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;

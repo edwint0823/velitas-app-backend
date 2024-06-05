@@ -5,6 +5,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateEntryInventoryMovementDomain } from '../../domain/model/in/createEntryInventoryMovementDomain';
 import { CreateOutInventoryMovementDomain } from '../../domain/model/in/createOutInventoryMovementDomain';
 import { IBagInventoryRepository } from '../../../bagInventory/domain/outboundPorts/IBagInventoryRepository';
+import { FiltersListBagInventoryMovementDomain } from '../../domain/model/in/filtersListBagInventoryMovementDomain';
 
 @Injectable()
 export class BagInventoryMovementRepository
@@ -77,5 +78,26 @@ export class BagInventoryMovementRepository
     const newOutInventoryMovement = new BagInventoryMovementEntity();
     Object.assign(newOutInventoryMovement, outData);
     return await transaction.save(newOutInventoryMovement);
+  }
+
+  async listAllBagInventoryMovements(
+    skip: number,
+    take: number,
+    whereOptions: FiltersListBagInventoryMovementDomain,
+  ): Promise<{
+    movements: BagInventoryMovementEntity[];
+    total: number;
+  }> {
+    const movements = await this.find({
+      relations: {
+        bag: true,
+      },
+      where: { ...whereOptions },
+      skip: skip,
+      take: take,
+      order: { created_at: 'DESC' },
+    });
+    const total = await this.count({ where: { ...whereOptions } });
+    return { movements, total };
   }
 }

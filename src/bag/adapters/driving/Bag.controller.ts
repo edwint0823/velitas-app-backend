@@ -8,7 +8,7 @@ import { commonStatusErrorMessages, bagDocumentationLabels } from '../../../../c
 export class BagController {
   constructor(private readonly bagService: BagService) {}
 
-  @Get('/')
+  @Get('/list')
   @ApiOperation({
     summary: bagDocumentationLabels.listOperation.summary,
   })

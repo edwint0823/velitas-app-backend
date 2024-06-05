@@ -6,6 +6,8 @@ import { ICandleInventoryMovementRepository } from '../../domain/outboundPorts/I
 import { CreateEntryCandleInventoryMovementDomain } from '../../domain/model/in/createEntryCandleInventoryMovementDomain';
 import { CreateOutCandleInventoryMovementDomain } from '../../domain/model/in/createOutCandleInventoryMovementDomain';
 import { ICandleInventoryRepository } from '../../../candleInventory/domain/outboundPorts/ICandleInventoryRepository';
+// eslint-disable-next-line max-len
+import { FiltersListCandleInventoryMovementDomain } from '../../domain/model/in/filtersListCandleInventoryMovementDomain';
 
 @Injectable()
 export class CandleInventoryMovementRepository
@@ -80,5 +82,27 @@ export class CandleInventoryMovementRepository
     const newOutCandleInventoryMovement = new CandleInventoryMovementEntity();
     Object.assign(newOutCandleInventoryMovement, outData);
     return await transaction.save(newOutCandleInventoryMovement);
+  }
+
+  async listCandleInventoryMovements(
+    skip: number,
+    take: number,
+    whereOptions: FiltersListCandleInventoryMovementDomain,
+  ): Promise<{
+    movements: CandleInventoryMovementEntity[];
+    total: number;
+  }> {
+    const movements = await this.find({
+      relations: {
+        candle: true,
+      },
+      take: take,
+      skip: skip,
+      where: { ...whereOptions },
+      order: { created_at: 'DESC' },
+    });
+
+    const total = await this.count({ where: { ...whereOptions } });
+    return { movements, total };
   }
 }
