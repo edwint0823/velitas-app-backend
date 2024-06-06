@@ -66,7 +66,7 @@ export class CashInventoryController {
   @ApiParam({
     name: 'id',
     description: cashInventoryDocumentationLabels.updateQuantityOperation.idParamDescription,
-    required: false,
+    required: true,
     type: 'number',
     example: 1,
   })

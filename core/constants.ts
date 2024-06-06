@@ -55,6 +55,23 @@ export const configurationDocumentationLabels = {
     success: 'Valor del parámetro encontrado',
     paramNameDescription: 'nombre del parámetro ',
   },
+  listOperation: {
+    summary: 'Listar todos los parámetros de configuración',
+    success: 'Listado de parámetros de configuración ',
+  },
+  updateParamValueOperation: {
+    summary: 'Actualizar el valor de un parámetro por id',
+    success: 'Valor del parámetro actualizado',
+    valueParamDescription: 'Valor del parámetro a actualizar',
+    idParamDescription: 'Id del parámetro que se desea actualizar',
+  },
+};
+
+export const configurationValidationMessages = {
+  updateParamValueOperation: {
+    valueRequired: 'El nuevo valor del parámetro es obligatorio',
+    valueIsString: 'El nuevo valor a actualizar debe ser una cadena de caracteres',
+  },
 };
 
 export const configurationErrorMessages = {
@@ -62,6 +79,15 @@ export const configurationErrorMessages = {
     findByName: {
       default: 'Error al obtener el valor del parámetro seleccionado',
     },
+    updateParamValue: {
+      default: 'Error al actualizar el valor del parámetro',
+    },
+  },
+};
+
+export const configurationSuccessMessages = {
+  service: {
+    default: 'Valor del parámetro actualizado con éxito',
   },
 };
 

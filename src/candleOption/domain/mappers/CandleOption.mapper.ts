@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CandleTypeEntity } from '../../../../database/entities/CandleType.entity';
 import { defaultMinimumSizeBulkPrice } from '../../../../core/constants';
-import { findParamByNameDomain } from '../../../configuration/domain/model/findParamByNameDomain';
+import { findParamByNameDomain } from '../../../configuration/domain/model/out/findParamByNameDomain';
 import { CandleOptionAndMinBulkPrice, ICandleListOptions } from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
 
 @Injectable()
