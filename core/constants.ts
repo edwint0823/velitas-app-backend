@@ -35,18 +35,9 @@ export const bagErrorMessages = {
   },
 };
 
-export const candleOptionDocumentationLabels = {
-  listOperation: {
-    summary: 'Optener listado de opciones de vela junto con la cantidad minima de items para usar precio mayorista',
-    success: 'Listado de velas',
-  },
-};
+export const candleOptionDocumentationLabels = {};
 export const candleOptionErrorMessages = {
-  serviceErrors: {
-    get: {
-      default: 'Error al obtener el listado de opciones',
-    },
-  },
+  serviceErrors: {},
 };
 
 export const configurationDocumentationLabels = {
@@ -673,6 +664,19 @@ export const candleTypeDocumentationLabels = {
   listOperation: {
     summary: 'Listar los tipos de velas existentes',
     success: 'Listado de velas existentes',
+  },
+  listTypesWithOptionsOperations: {
+    summary:
+      'Optener listado de tipos de velas , sus opciones y la cantidad minima de items para usar precio mayorista',
+    success: 'Listado de velas',
+  },
+};
+
+export const candleTypeErrorMessages = {
+  service: {
+    listTypesWithOptionsOperations: {
+      default: 'Error al obtener el listado de opciones',
+    },
   },
 };
 
