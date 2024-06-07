@@ -35,7 +35,27 @@ export const bagErrorMessages = {
   },
 };
 
-export const candleOptionDocumentationLabels = {};
+export const candleOptionDocumentationLabels = {
+  listAllOptionsOperation: {
+    summary: 'Listar todas la opciones de vela registradas',
+    success: 'Listado de todas la opciones de vela registradas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    isPackParamDescription: 'Filtrar por opciones que son paquete de nombres definidos',
+    candleTypeIdParamDescription: 'Id de tipo de vela a filtrar',
+    visibleParamDescription: 'Filtrar por opciones visibles para los usuarios',
+    isVipPackParamDescription: 'Filtrar por la opciones marcadas como paquete vip',
+  },
+};
+
+export const candleOptionValidations = {
+  listAllOptionsOperation: {
+    isPackIsBoolean: 'El filtro por opciones de vela de tipo paquete debe ser un booleano',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    visibleIsBoolean: 'El filtro para opciones visibles debe ser un booleano ',
+    isVipPackIsBoolean: 'El filtro para opciones de tipo paquete vip debe ser un booleano',
+  },
+};
 export const candleOptionErrorMessages = {
   serviceErrors: {},
 };
