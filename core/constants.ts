@@ -46,6 +46,18 @@ export const candleOptionDocumentationLabels = {
     visibleParamDescription: 'Filtrar por opciones visibles para los usuarios',
     isVipPackParamDescription: 'Filtrar por la opciones marcadas como paquete vip',
   },
+  createOptionOperation: {
+    summary: 'Crear una opción de vela',
+    success: 'Opción de vela creada exitosamente',
+    fileParamDescription: 'Imagen de la opción a crear en formato jpg, png o jpeg ',
+    nameParamDescription: 'Nombre de la opción de vela',
+    bulkPriceParamDescription: 'Precio mayorista para la opción de vela',
+    retailPriceParamDescription: 'Precio detal para la opción de vela',
+    isPackParamDescription: 'Marcar si la opción de vela tiene un paquete de nombres predeterminado',
+    candleTypeIdParamDescription: 'Id de tipo de vela a la cual pertenecerá la opción',
+    isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
+    packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
+  },
 };
 
 export const candleOptionValidations = {
@@ -55,9 +67,41 @@ export const candleOptionValidations = {
     visibleIsBoolean: 'El filtro para opciones visibles debe ser un booleano ',
     isVipPackIsBoolean: 'El filtro para opciones de tipo paquete vip debe ser un booleano',
   },
+  createOption: {
+    nameIsRequired: 'El nombre de la opción de vela es requerido',
+    nameIsString: 'El nombre de la opción debe ser una de cadena de caracteres',
+    bulkPriceIsRequired: 'El precio mayorista de la vela es requerido',
+    bulkPriceIsNumber: 'El precio mayorista de la vela debe ser un número ',
+    retailPriceIsRequired: 'El precio detal de la vela es requerido',
+    retailPriceIsNumber: 'El precio detal de la vela debe ser un número ',
+    isPackIsRequired: 'La opción de marcar la opción como paquete es requerida',
+    isPackIsBoolean: 'La opción de marcar la opción debe ser un booleano',
+    candleTypeIdIsRequired: 'El id de tipo de vela es requerido',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    isVipPackIsRequired: 'La opción de marcar la opción como paquete vip es requerida',
+    isVipPackIsIsBoolean: 'La opción de marcar la opción como paquete vip debe ser un booleano',
+    packNamesIsArray: 'El listado de nombres debe ser un array si la opción esta marcada como tipo paquete',
+    packNamesIsRequired: 'El listado de nombres es requerido si la opción esta marcada como tipo paquete',
+    packNamesIsStringArray: 'Cada nombre del paquete debe ser una cadena de caracteres',
+  },
 };
 export const candleOptionErrorMessages = {
-  serviceErrors: {},
+  serviceErrors: {
+    createOption: {
+      default: 'Error al crear la nueva opción de vela',
+    },
+  },
+  controllerErrors: {
+    createOption: {
+      fileRequired: 'La foto de la opción es obligatoria',
+    },
+  },
+};
+
+export const candleOptionSuccessMessages = {
+  service: {
+    default: 'Opción de vela creada exitosamente',
+  },
 };
 
 export const configurationDocumentationLabels = {

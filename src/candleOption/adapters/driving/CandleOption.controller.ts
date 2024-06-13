@@ -1,8 +1,30 @@
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Query, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  FileTypeValidator,
+  Get,
+  HttpException,
+  HttpStatus,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CandleOptionService } from '../../domain/inboundPorts/CandleOption.service';
-import { candleOptionDocumentationLabels, commonStatusErrorMessages } from '../../../../core/constants';
+import {
+  candleOptionDocumentationLabels,
+  candleOptionErrorMessages,
+  commonStatusErrorMessages,
+} from '../../../../core/constants';
 import { ListAllOptionsDto } from '../model/listAllOptions.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { CreateCandleOptionDto } from '../model/createCandleOption.dto';
 
 @ApiTags('candle_options')
 @ApiBearerAuth()
@@ -72,5 +94,70 @@ export class CandleOptionController {
     query?: ListAllOptionsDto,
   ) {
     return await this.candleOptionService.listAllOptions(pageSize, pageNumber, query);
+  }
+
+  @Post('create')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: candleOptionDocumentationLabels.createOptionOperation.fileParamDescription,
+        },
+        name: {
+          type: 'string',
+          description: candleOptionDocumentationLabels.createOptionOperation.nameParamDescription,
+        },
+        bulk_price: {
+          type: 'number',
+          description: candleOptionDocumentationLabels.createOptionOperation.bulkPriceParamDescription,
+        },
+        retail_price: {
+          type: 'number',
+          description: candleOptionDocumentationLabels.createOptionOperation.retailPriceParamDescription,
+        },
+        is_pack: {
+          type: 'boolean',
+          description: candleOptionDocumentationLabels.createOptionOperation.isPackParamDescription,
+        },
+        candle_type_id: {
+          type: 'number',
+          description: candleOptionDocumentationLabels.createOptionOperation.candleTypeIdParamDescription,
+        },
+        is_vip_pack: {
+          type: 'boolean',
+          description: candleOptionDocumentationLabels.createOptionOperation.isVipPackParamDescription,
+        },
+        pack_names: {
+          type: 'array',
+          description: candleOptionDocumentationLabels.createOptionOperation.packNamesParamDescription,
+        },
+      },
+      required: ['file', 'name', 'retail_price', 'is_pack', 'candle_type_id', 'is_vip_pack'],
+    },
+  })
+  async createAnCandleOption(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5000000, message: 'Tamaño máximo del archivo es de 50 Kb' }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @Body() body: CreateCandleOptionDto,
+  ) {
+    if (!file) {
+      throw new HttpException(
+        { message: candleOptionErrorMessages.controllerErrors.createOption.fileRequired },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return await this.candleOptionService.createOption(file, body);
   }
 }
