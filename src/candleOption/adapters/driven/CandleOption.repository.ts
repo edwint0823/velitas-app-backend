@@ -6,6 +6,7 @@ import { FiltersToListAllCandleOptionsDomain } from '../../domain/model/in/filte
 
 import { CreateOptionDomain } from '../../domain/model/in/createOptionDomain';
 import { IPackNameRepository } from '../../../packName/domain/outboundPorts/IPackNameRepository';
+import { UpdateCandleOptionDomain } from '../../domain/model/in/updateCandleOptionDomain';
 
 @Injectable()
 export class CandleOptionRepository extends Repository<CandleOptionEntity> implements ICandleOptionRepository {
@@ -58,6 +59,32 @@ export class CandleOptionRepository extends Repository<CandleOptionEntity> imple
         }
       }
       return candleOptionSaved;
+    });
+  }
+
+  async findCandleOptionById(optionId: number): Promise<CandleOptionEntity> {
+    return await this.findOne({ relations: { candle_type: true, pack_names: true }, where: { id: optionId } });
+  }
+
+  async updateOption(candleOptionId: number, candleOptionInfo: UpdateCandleOptionDomain): Promise<CandleOptionEntity> {
+    return await this.dataSource.transaction(async (entityManager: EntityManager): Promise<CandleOptionEntity> => {
+      const candleOptionFind = await entityManager.findOne(CandleOptionEntity, { where: { id: candleOptionId } });
+      for (const key in candleOptionInfo) {
+        if (key === 'pack_names') continue;
+
+        if (candleOptionInfo[key] !== null) {
+          candleOptionFind[key] = candleOptionInfo[key];
+        }
+      }
+
+      if (candleOptionInfo.pack_names) {
+        await this.packNameRepository.deleteAllPackNamesByCandleOptionIdWithTransaction(candleOptionId, entityManager);
+        for (const packName of candleOptionInfo.pack_names) {
+          await this.packNameRepository.createPackNameByTransaction(packName.name, candleOptionId, entityManager);
+        }
+      }
+      await entityManager.save(candleOptionFind);
+      return candleOptionFind;
     });
   }
 }

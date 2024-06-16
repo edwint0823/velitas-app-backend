@@ -8,6 +8,7 @@ import { CreateCandleOptionDto } from '../../adapters/model/createCandleOption.d
 import { CloudinaryService } from '../../../cloudinary/domain/inboundPorts/Clouddinary.service';
 import { candleOptionErrorMessages, candleOptionSuccessMessages } from '../../../../core/constants';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
+import { UpdateCandleOptionDto } from '../../adapters/model/updateCandleOption.dto';
 
 @Injectable()
 export class CandleOptionService implements ICandleOptionService {
@@ -40,8 +41,6 @@ export class CandleOptionService implements ICandleOptionService {
   async createOption(file: Express.Multer.File, body: CreateCandleOptionDto): Promise<{ message: string }> {
     try {
       const fileUploaded = await this.cloudinaryService.upload(file);
-      console.log(fileUploaded);
-      console.log(body.pack_names);
       const payload = {
         name: body.name,
         url_image: fileUploaded.secure_url,
@@ -56,9 +55,54 @@ export class CandleOptionService implements ICandleOptionService {
         }),
       };
       await this.candleOptionRepository.createOption(payload);
-      return Promise.resolve({ message: candleOptionSuccessMessages.service.default });
+      return { message: candleOptionSuccessMessages.service.create.default };
     } catch (e) {
       const { message, status } = getErrorParams(e, candleOptionErrorMessages.serviceErrors.createOption.default);
+      throw new HttpException({ message }, status);
+    }
+  }
+
+  async updateCandleOption(
+    file: Express.Multer.File | undefined,
+    body: UpdateCandleOptionDto,
+    candle_option_id: string,
+  ): Promise<{
+    message: string;
+  }> {
+    try {
+      let oldUrlImage = null;
+      const payload = {
+        name: body.name !== '' ? body.name : null,
+        url_image: null,
+        bulk_price: body.bulk_price !== 0 ? body.bulk_price : null,
+        retail_price: body.retail_price !== 0 ? body.retail_price : null,
+        is_pack: body.is_pack !== undefined ? body.is_pack : null,
+        visible: body.is_visible !== undefined ? body.is_visible : null,
+        is_vip_pack: body.is_vip_pack !== undefined ? body.is_vip_pack : null,
+        pack_names:
+          body.pack_names.length === 1 && body.pack_names.includes('')
+            ? null
+            : body.pack_names.map((p) => {
+                return { name: p };
+              }),
+      };
+      if (file) {
+        const newFileUploaded = await this.cloudinaryService.upload(file);
+        const oldCandleOptionInfo = await this.candleOptionRepository.findCandleOptionById(parseInt(candle_option_id));
+        oldUrlImage = oldCandleOptionInfo.url_image;
+        payload.url_image = newFileUploaded.secure_url;
+      }
+
+      await this.candleOptionRepository.updateOption(parseInt(candle_option_id), payload);
+      if (oldUrlImage) {
+        const nameArr = oldUrlImage.split('/');
+        const name = nameArr[nameArr.length - 1];
+        const [publicId] = name.split('.');
+        await this.cloudinaryService.destroy(publicId);
+      }
+      return Promise.resolve({ message: candleOptionSuccessMessages.service.updateOption.default });
+    } catch (e) {
+      const { message, status } = getErrorParams(e, candleOptionErrorMessages.serviceErrors.updateOption.default);
       throw new HttpException({ message }, status);
     }
   }

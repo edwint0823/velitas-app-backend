@@ -1,4 +1,4 @@
-import { EntityManager } from 'typeorm';
+import { DeleteResult, EntityManager } from 'typeorm';
 import { PackNameEntity } from '../../../../database/entities/PackName.entity';
 
 export interface IPackNameRepository {
@@ -7,6 +7,11 @@ export interface IPackNameRepository {
     candleOptionId: number,
     transaction: EntityManager,
   ): Promise<PackNameEntity>;
+
+  deleteAllPackNamesByCandleOptionIdWithTransaction(
+    candleOptionId: number,
+    transaction: EntityManager,
+  ): Promise<DeleteResult>;
 }
 
 export const IPackNameRepository = Symbol('IPackNameRepository');

@@ -9,6 +9,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  Patch,
   Post,
   Query,
   UploadedFile,
@@ -25,6 +26,8 @@ import { ListAllOptionsDto } from '../model/listAllOptions.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { CreateCandleOptionDto } from '../model/createCandleOption.dto';
+import { UpdateCandleOptionDto } from '../model/updateCandleOption.dto';
+import { OptionalImageValidationPipe } from '../../../../core/OptionalImageValidationPipe';
 
 @ApiTags('candle_options')
 @ApiBearerAuth()
@@ -159,5 +162,71 @@ export class CandleOptionController {
       );
     }
     return await this.candleOptionService.createOption(file, body);
+  }
+
+  @Patch('update/:candle_option_id')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiParam({
+    name: 'candle_option_id',
+    description: candleOptionDocumentationLabels.updateOptionOperation.candleOptionIdParamDescription,
+    required: true,
+    type: 'string',
+    example: '1',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: candleOptionDocumentationLabels.updateOptionOperation.fileParamDescription,
+        },
+        name: {
+          type: 'string',
+          description: candleOptionDocumentationLabels.updateOptionOperation.nameParamDescription,
+        },
+        bulk_price: {
+          type: 'number',
+          description: candleOptionDocumentationLabels.updateOptionOperation.bulkPriceParamDescription,
+        },
+        retail_price: {
+          type: 'number',
+          description: candleOptionDocumentationLabels.updateOptionOperation.retailPriceParamDescription,
+        },
+        is_pack: {
+          type: 'boolean',
+          description: candleOptionDocumentationLabels.updateOptionOperation.isPackParamDescription,
+        },
+        is_visible: {
+          type: 'boolean',
+          description: candleOptionDocumentationLabels.updateOptionOperation.isVisibleParamDescription,
+        },
+        is_vip_pack: {
+          type: 'boolean',
+          description: candleOptionDocumentationLabels.updateOptionOperation.isVipPackParamDescription,
+        },
+        pack_names: {
+          type: 'array',
+          description: candleOptionDocumentationLabels.updateOptionOperation.packNamesParamDescription,
+        },
+      },
+    },
+  })
+  async updateCandleOption(
+    @UploadedFile(new OptionalImageValidationPipe())
+    file: Express.Multer.File | undefined,
+    @Body(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    body: UpdateCandleOptionDto,
+    @Param('candle_option_id') candle_option_id: string,
+  ) {
+    return await this.candleOptionService.updateCandleOption(file, body, candle_option_id);
   }
 }

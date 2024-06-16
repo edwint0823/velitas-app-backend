@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { DataSource, DeleteResult, EntityManager, Repository } from 'typeorm';
 import { PackNameEntity } from '../../../../database/entities/PackName.entity';
 import { IPackNameRepository } from '../../domain/outboundPorts/IPackNameRepository';
 
@@ -18,5 +18,12 @@ export class PackNameRepository extends Repository<PackNameEntity> implements IP
     packName.name = name;
     packName.candle_option_id = candleOptionId;
     return await transaction.save(packName);
+  }
+
+  async deleteAllPackNamesByCandleOptionIdWithTransaction(
+    candleOptionId: number,
+    transaction: EntityManager,
+  ): Promise<DeleteResult> {
+    return await transaction.delete(PackNameEntity, { candle_option_id: candleOptionId });
   }
 }
