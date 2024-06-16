@@ -229,4 +229,23 @@ export class CandleOptionController {
   ) {
     return await this.candleOptionService.updateCandleOption(file, body, candle_option_id);
   }
+
+  @Get('/find/:id')
+  @ApiOperation({ summary: candleOptionDocumentationLabels.findOptionOperation.summary })
+  @ApiResponse({ status: 200, description: candleOptionDocumentationLabels.findOptionOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 404, description: candleOptionDocumentationLabels.findOptionOperation.candleOptionNotFound })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'id',
+    description: candleOptionDocumentationLabels.findOptionOperation.idParamDescription,
+    required: true,
+    type: 'number',
+    example: 1,
+  })
+  async findCandleOption(@Param('id') id: number) {
+    return await this.candleOptionService.findCandleOptionById(id);
+  }
 }

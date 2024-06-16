@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ICandleOptionService } from './ICandleOptionService';
 import { ICandleOptionRepository } from '../outboundPorts/ICandleOptionRepository';
 import { ListAllOptionsDto } from '../../adapters/model/listAllOptions.dto';
@@ -9,6 +9,9 @@ import { CloudinaryService } from '../../../cloudinary/domain/inboundPorts/Cloud
 import { candleOptionErrorMessages, candleOptionSuccessMessages } from '../../../../core/constants';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { UpdateCandleOptionDto } from '../../adapters/model/updateCandleOption.dto';
+import e, { query } from 'express';
+import { skip } from 'rxjs';
+import { FindCandleOptionDomain } from '../model/out/findCandleOptionDomain';
 
 @Injectable()
 export class CandleOptionService implements ICandleOptionService {
@@ -105,5 +108,16 @@ export class CandleOptionService implements ICandleOptionService {
       const { message, status } = getErrorParams(e, candleOptionErrorMessages.serviceErrors.updateOption.default);
       throw new HttpException({ message }, status);
     }
+  }
+
+  async findCandleOptionById(id: number): Promise<FindCandleOptionDomain> {
+    const repositoryResponse = await this.candleOptionRepository.findCandleOptionById(id);
+    if (!repositoryResponse) {
+      throw new HttpException(
+        { message: candleOptionErrorMessages.serviceErrors.findOption.candleOptionNotFound },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return CandleOptionMapper.findCandleOptionMapper(repositoryResponse);
   }
 }

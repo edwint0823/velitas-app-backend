@@ -2,6 +2,7 @@ import { ListAllCandleOptions } from '../model/out/listAllCandleOptions';
 import { ListAllOptionsDto } from '../../adapters/model/listAllOptions.dto';
 import { CreateCandleOptionDto } from '../../adapters/model/createCandleOption.dto';
 import { UpdateCandleOptionDto } from '../../adapters/model/updateCandleOption.dto';
+import { FindCandleOptionDomain } from '../model/out/findCandleOptionDomain';
 
 export interface ICandleOptionService {
   listAllOptions(pageSize: number, pageNumber: number, query?: ListAllOptionsDto): Promise<ListAllCandleOptions>;
@@ -15,4 +16,6 @@ export interface ICandleOptionService {
   ): Promise<{
     message: string;
   }>;
+
+  findCandleOptionById(id: number): Promise<FindCandleOptionDomain>;
 }

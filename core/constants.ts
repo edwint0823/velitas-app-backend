@@ -71,6 +71,12 @@ export const candleOptionDocumentationLabels = {
     isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
     packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
   },
+  findOptionOperation: {
+    summary: 'Buscar una opción de vela por su id',
+    success: 'Información de la opción de vela obtenida',
+    idParamDescription: 'Id de la opción de vela a buscar',
+    candleOptionNotFound: 'Opción de vela no encontrada con el id proporcionado',
+  },
 };
 
 export const candleOptionValidations = {
@@ -115,6 +121,9 @@ export const candleOptionErrorMessages = {
     },
     updateOption: {
       default: 'Error al actualizar la nueva opción de vela',
+    },
+    findOption: {
+      candleOptionNotFound: 'No se encontró ninguna opción de vela con el id proporcionado',
     },
   },
   controllerErrors: {
