@@ -200,16 +200,33 @@ export const customerDocumentationLabels = {
     phoneParamDescription: 'Número telefónico del cliente',
     priceTypeParamDescription: 'Tipo de catalogo para precios',
   },
+  listPaginateOperation: {
+    summary: 'Paginar clientes',
+    success: 'Listado paginado de clientes',
+    emailParamDescription: 'correo electrónico del cliente a filtrar',
+    nameParamDescription: 'Nombre del cliente a filtrar',
+    phoneParamDescription: 'Número telefónico del cliente a filtrar',
+    priceTypeParamDescription: 'Tipo de catalogo para precios a filtrar',
+    pageSizeParamDescription: 'Cantidad de items por pagina',
+    pageNumberParamDescription: 'Número de pagina',
+  },
 };
 
 export const customerValidationMessages = {
   createOperation: {
     emailRequired: 'El correo del cliente es requerido',
     emailIsString: 'El correo electrónico del cliente debe ser una cadena de caracteres',
+    emailType: 'El correo electrónico del cliente debe ser valido',
     nameRequired: 'El nombre del cliente es requerido',
     nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
     phoneRequired: 'El número telefónico del cliente es requerido',
     priceTypeIn: 'El tipo de precio debe estar dentro de uno de los siguientes valores:',
+  },
+  listPaginateOperation: {
+    nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
+    emailIsString: 'El correo electrónico del cliente debe ser una cadena de caracteres',
+    emailType: 'El correo electrónico del cliente debe ser valido',
+    priceTypeIsString: 'El tipo de precio debe ser una cadena de caracteres',
   },
 };
 
