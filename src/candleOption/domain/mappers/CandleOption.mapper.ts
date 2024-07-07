@@ -1,39 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { CandleTypeEntity } from '../../../../database/entities/CandleType.entity';
-import { defaultMinimumSizeBulkPrice } from '../../../../core/constants';
-import { findParamByNameDomain } from '../../../configuration/domain/model/findParamByNameDomain';
-import { CandleOptionAndMinBulkPrice, ICandleListOptions } from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
+import { CandleOptionEntity } from '../../../../database/entities/CandleOption.entity';
+import { ListAllCandleOptions } from '../model/out/listAllCandleOptions';
+import { FindCandleOptionDomain } from '../model/out/findCandleOptionDomain';
 
 @Injectable()
 export class CandleOptionMapper {
-  public static getCandleOptionsAndConfigParamMapper(
-    candleTypeEntities: CandleTypeEntity[],
-    configData: findParamByNameDomain,
-  ): CandleOptionAndMinBulkPrice {
-    const configParam = configData.found ? configData.value : defaultMinimumSizeBulkPrice;
+  public static listAllOptionsMapper(repositoryResponse: {
+    options: CandleOptionEntity[];
+    total: number;
+  }): ListAllCandleOptions {
+    const options = repositoryResponse.options.map((candleOption: CandleOptionEntity) => {
+      return {
+        id: candleOption.id,
+        name: candleOption.name,
+        urlImage: candleOption.url_image,
+        bulkPrice: candleOption.bulk_price,
+        retailPrice: candleOption.retail_price,
+        isPack: candleOption.is_pack,
+        candleTypeName: candleOption.candle_type.name,
+        visible: candleOption.visible,
+        isVipPack: candleOption.is_vip_pack,
+        packNames: candleOption.pack_names.map((packName) => packName.name),
+      };
+    });
+    return { options, total: repositoryResponse.total };
+  }
 
-    const candleOptions: ICandleListOptions[] = [];
-    for (const candleType of candleTypeEntities) {
-      candleOptions.push({
-        label: candleType.name,
-        items: candleType.candle_options.map((candle) => {
-          return {
-            id: candle.id,
-            candleTypeId: candle.candle_type_id,
-            name: candle.name,
-            urlImage: candle.url_image,
-            isPack: candle.is_pack,
-            isVipPack: candle.is_vip_pack,
-            packNames: candle.pack_names.map((pack) => pack.name),
-            bulkPrice: candle.bulk_price,
-            retailPrice: candle.retail_price,
-          };
-        }),
-      });
-    }
+  public static findCandleOptionMapper(candleOptionEntity: CandleOptionEntity): FindCandleOptionDomain {
     return {
-      minimumSizeBulkPrice: Number(configParam),
-      candleListOptions: candleOptions,
+      id: candleOptionEntity.id,
+      name: candleOptionEntity.name,
+      url_image: candleOptionEntity.url_image,
+      bulk_price: candleOptionEntity.bulk_price,
+      retail_price: candleOptionEntity.retail_price,
+      is_pack: candleOptionEntity.is_pack,
+      candleTypeName: candleOptionEntity.candle_type.name,
+      candleTypeId: candleOptionEntity.candle_type.id,
+      visible: candleOptionEntity.visible,
+      is_vip_pack: candleOptionEntity.is_vip_pack,
+      pack_names: candleOptionEntity.pack_names.map((packItem) => {
+        return { name: packItem.name };
+      }),
     };
   }
 }

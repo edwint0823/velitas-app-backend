@@ -19,4 +19,15 @@ export class CandleTypeController {
   async listCandleTypes() {
     return await this.candleTypeService.listCandleTypes();
   }
+
+  @Get('/candle_options_with_min_items')
+  @ApiOperation({
+    summary: candleTypeDocumentationLabels.listTypesWithOptionsOperations.summary,
+  })
+  @ApiResponse({ status: 200, description: candleTypeDocumentationLabels.listTypesWithOptionsOperations.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  async getCandleOptionAndMinItemsBulkPrice() {
+    return this.candleTypeService.getCandleOptionAndMinItemsBulkPrice();
+  }
 }

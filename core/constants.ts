@@ -36,15 +36,110 @@ export const bagErrorMessages = {
 };
 
 export const candleOptionDocumentationLabels = {
-  listOperation: {
-    summary: 'Optener listado de opciones de vela junto con la cantidad minima de items para usar precio mayorista',
-    success: 'Listado de velas',
+  listAllOptionsOperation: {
+    summary: 'Listar todas la opciones de vela registradas',
+    success: 'Listado de todas la opciones de vela registradas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    isPackParamDescription: 'Filtrar por opciones que son paquete de nombres definidos',
+    candleTypeIdParamDescription: 'Id de tipo de vela a filtrar',
+    visibleParamDescription: 'Filtrar por opciones visibles para los usuarios',
+    isVipPackParamDescription: 'Filtrar por la opciones marcadas como paquete vip',
+  },
+  createOptionOperation: {
+    summary: 'Crear una opción de vela',
+    success: 'Opción de vela creada exitosamente',
+    fileParamDescription: 'Imagen de la opción a crear en formato jpg, png o jpeg ',
+    nameParamDescription: 'Nombre de la opción de vela',
+    bulkPriceParamDescription: 'Precio mayorista para la opción de vela',
+    retailPriceParamDescription: 'Precio detal para la opción de vela',
+    isPackParamDescription: 'Marcar si la opción de vela tiene un paquete de nombres predeterminado',
+    candleTypeIdParamDescription: 'Id de tipo de vela a la cual pertenecerá la opción',
+    isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
+    packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
+  },
+  updateOptionOperation: {
+    summary: 'Actualizar una opción de vela',
+    success: 'Opción de vela actualizada exitosamente',
+    candleOptionIdParamDescription: 'Id de la opción de vela que se desea actualizar',
+    fileParamDescription: 'Imagen de la opción a actualizar en formato jpg, png o jpeg ',
+    nameParamDescription: 'Nombre de la opción de vela',
+    bulkPriceParamDescription: 'Precio mayorista para la opción de vela',
+    retailPriceParamDescription: 'Precio detal para la opción de vela',
+    isPackParamDescription: 'Marcar si la opción de vela tiene un paquete de nombres predeterminado',
+    isVisibleParamDescription: 'Marcar si la opción de vela estará disponible al momento de crear un pedido',
+    isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
+    packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
+  },
+  findOptionOperation: {
+    summary: 'Buscar una opción de vela por su id',
+    success: 'Información de la opción de vela obtenida',
+    idParamDescription: 'Id de la opción de vela a buscar',
+    candleOptionNotFound: 'Opción de vela no encontrada con el id proporcionado',
+  },
+};
+
+export const candleOptionValidations = {
+  listAllOptionsOperation: {
+    isPackIsBoolean: 'El filtro por opciones de vela de tipo paquete debe ser un booleano',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    visibleIsBoolean: 'El filtro para opciones visibles debe ser un booleano ',
+    isVipPackIsBoolean: 'El filtro para opciones de tipo paquete vip debe ser un booleano',
+  },
+  createOption: {
+    nameIsRequired: 'El nombre de la opción de vela es requerido',
+    nameIsString: 'El nombre de la opción debe ser una de cadena de caracteres',
+    bulkPriceIsRequired: 'El precio mayorista de la vela es requerido',
+    bulkPriceIsNumber: 'El precio mayorista de la vela debe ser un número ',
+    retailPriceIsRequired: 'El precio detal de la vela es requerido',
+    retailPriceIsNumber: 'El precio detal de la vela debe ser un número ',
+    isPackIsRequired: 'La opción de marcar si es un paquete es requerida',
+    isPackIsBoolean: 'La opción de marcar si es un paquete debe ser un booleano',
+    candleTypeIdIsRequired: 'El id de tipo de vela es requerido',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    isVipPackIsRequired: 'La opción de marcar la opción como paquete vip es requerida',
+    isVipPackIsIsBoolean: 'La opción de marcar la opción como paquete vip debe ser un booleano',
+    packNamesIsArray: 'El listado de nombres debe ser un array si la opción esta marcada como tipo paquete',
+    packNamesIsRequired: 'El listado de nombres es requerido si la opción esta marcada como tipo paquete',
+    packNamesIsStringArray: 'Cada nombre del paquete debe ser una cadena de caracteres',
+  },
+  updateOption: {
+    nameIsString: 'El nombre de la opción debe ser una de cadena de caracteres',
+    bulkPriceIsNumber: 'El precio mayorista de la vela debe ser un número ',
+    retailPriceIsNumber: 'El precio detal de la vela debe ser un número ',
+    isPackIsBoolean: 'La opción de marcar si es paquete debe ser un booleano',
+    isVisibleIsBoolean: 'La opción de marcar si esta visible debe ser un booleano',
+    isVipPackIsIsBoolean: 'La opción de marcar la opción como paquete vip debe ser un booleano',
+    packNamesIsArray: 'El listado de nombres debe ser un array si la opción esta marcada como tipo paquete',
+    packNamesIsStringArray: 'Cada nombre del paquete debe ser una cadena de caracteres',
   },
 };
 export const candleOptionErrorMessages = {
   serviceErrors: {
-    get: {
-      default: 'Error al obtener el listado de opciones',
+    createOption: {
+      default: 'Error al crear la nueva opción de vela',
+    },
+    updateOption: {
+      default: 'Error al actualizar la nueva opción de vela',
+    },
+    findOption: {
+      candleOptionNotFound: 'No se encontró ninguna opción de vela con el id proporcionado',
+    },
+  },
+  controllerErrors: {
+    createOption: {
+      fileRequired: 'La foto de la opción es obligatoria',
+    },
+  },
+};
+
+export const candleOptionSuccessMessages = {
+  service: {
+    create: {
+      default: 'Opción de vela creada exitosamente',
+    },
+    updateOption: {
+      default: 'Opción de vela actualizada exitosamente',
     },
   },
 };
@@ -55,6 +150,23 @@ export const configurationDocumentationLabels = {
     success: 'Valor del parámetro encontrado',
     paramNameDescription: 'nombre del parámetro ',
   },
+  listOperation: {
+    summary: 'Listar todos los parámetros de configuración',
+    success: 'Listado de parámetros de configuración ',
+  },
+  updateParamValueOperation: {
+    summary: 'Actualizar el valor de un parámetro por id',
+    success: 'Valor del parámetro actualizado',
+    valueParamDescription: 'Valor del parámetro a actualizar',
+    idParamDescription: 'Id del parámetro que se desea actualizar',
+  },
+};
+
+export const configurationValidationMessages = {
+  updateParamValueOperation: {
+    valueRequired: 'El nuevo valor del parámetro es obligatorio',
+    valueIsString: 'El nuevo valor a actualizar debe ser una cadena de caracteres',
+  },
 };
 
 export const configurationErrorMessages = {
@@ -62,6 +174,15 @@ export const configurationErrorMessages = {
     findByName: {
       default: 'Error al obtener el valor del parámetro seleccionado',
     },
+    updateParamValue: {
+      default: 'Error al actualizar el valor del parámetro',
+    },
+  },
+};
+
+export const configurationSuccessMessages = {
+  service: {
+    default: 'Valor del parámetro actualizado con éxito',
   },
 };
 
@@ -647,6 +768,19 @@ export const candleTypeDocumentationLabels = {
   listOperation: {
     summary: 'Listar los tipos de velas existentes',
     success: 'Listado de velas existentes',
+  },
+  listTypesWithOptionsOperations: {
+    summary:
+      'Optener listado de tipos de velas , sus opciones y la cantidad minima de items para usar precio mayorista',
+    success: 'Listado de velas',
+  },
+};
+
+export const candleTypeErrorMessages = {
+  service: {
+    listTypesWithOptionsOperations: {
+      default: 'Error al obtener el listado de opciones',
+    },
   },
 };
 
