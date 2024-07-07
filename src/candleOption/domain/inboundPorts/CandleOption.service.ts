@@ -9,8 +9,6 @@ import { CloudinaryService } from '../../../cloudinary/domain/inboundPorts/Cloud
 import { candleOptionErrorMessages, candleOptionSuccessMessages } from '../../../../core/constants';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { UpdateCandleOptionDto } from '../../adapters/model/updateCandleOption.dto';
-import e, { query } from 'express';
-import { skip } from 'rxjs';
 import { FindCandleOptionDomain } from '../model/out/findCandleOptionDomain';
 
 @Injectable()
@@ -53,9 +51,12 @@ export class CandleOptionService implements ICandleOptionService {
         candle_type_id: body.candle_type_id,
         visible: true,
         is_vip_pack: body.is_vip_pack,
-        pack_names: body.pack_names.split(',').map((name) => {
-          return { name };
-        }),
+        pack_names:
+          body.pack_names !== ''
+            ? body.pack_names.split(',').map((name) => {
+                return { name };
+              })
+            : [],
       };
       await this.candleOptionRepository.createOption(payload);
       return { message: candleOptionSuccessMessages.service.create.default };

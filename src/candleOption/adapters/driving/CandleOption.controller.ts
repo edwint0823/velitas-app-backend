@@ -140,7 +140,7 @@ export class CandleOptionController {
           description: candleOptionDocumentationLabels.createOptionOperation.packNamesParamDescription,
         },
       },
-      required: ['file', 'name', 'retail_price', 'is_pack', 'candle_type_id', 'is_vip_pack'],
+      required: ['file', 'name', 'retail_price', 'bulk_price', 'is_pack', 'candle_type_id', 'is_vip_pack'],
     },
   })
   async createAnCandleOption(

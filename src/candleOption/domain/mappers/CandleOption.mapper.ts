@@ -35,6 +35,7 @@ export class CandleOptionMapper {
       retail_price: candleOptionEntity.retail_price,
       is_pack: candleOptionEntity.is_pack,
       candleTypeName: candleOptionEntity.candle_type.name,
+      candleTypeId: candleOptionEntity.candle_type.id,
       visible: candleOptionEntity.visible,
       is_vip_pack: candleOptionEntity.is_vip_pack,
       pack_names: candleOptionEntity.pack_names.map((packItem) => {

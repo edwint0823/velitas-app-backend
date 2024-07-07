@@ -10,6 +10,7 @@ export interface FindCandleOptionDomain {
   retail_price: number;
   is_pack: boolean;
   candleTypeName: string;
+  candleTypeId: number;
   visible: boolean;
   is_vip_pack: boolean;
   pack_names: PackNameItem[];
