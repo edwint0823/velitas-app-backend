@@ -1,4 +1,4 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ICustomerService } from './ICustomerService';
 import { ICustomerRepository } from '../outboundPorts/ICustomerRepository';
 import { CustomerMapper } from '../mappers/Customer.mapper';
@@ -8,6 +8,7 @@ import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { customerErrorMessages, customerSuccessMessages } from '../../../../core/constants';
 import { paginateCustomers } from '../../adapters/model/paginateCustomers.dto';
 import { listCustomersDomain } from '../model/out/listCustomersDomain';
+import { UpdateCustomerDto } from '../../adapters/model/updateCustomer.dto';
 
 @Injectable()
 export class CustomerService implements ICustomerService {
@@ -55,7 +56,20 @@ export class CustomerService implements ICustomerService {
     }
     const skip = (pageNumber - 1) * pageSize;
     const repositoryResponse = await this.customerRepository.paginateCustomers(skip, pageSize, whereOptions);
-    console.log(repositoryResponse);
     return CustomerMapper.ListCustomerMapper(repositoryResponse);
+  }
+
+  async updateCustomer(email: string, customerInfo: UpdateCustomerDto): Promise<{ message: string }> {
+    try {
+      const findCustomer = await this.customerRepository.findByEmail(email);
+      if (!findCustomer) {
+        throw new HttpException({ message: customerErrorMessages.serviceErrors.update }, HttpStatus.BAD_REQUEST);
+      }
+      await this.customerRepository.updateCustomer(email, customerInfo);
+      return { message: customerSuccessMessages.service.update };
+    } catch (e) {
+      const { message, status } = getErrorParams(e, customerErrorMessages.serviceErrors.update.default);
+      throw new HttpException({ message }, status);
+    }
   }
 }

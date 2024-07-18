@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { CustomerService } from '../../domain/inboundPorts/Customer.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { findByEmailDomain } from '../../domain/model/out/findByEmailDomain';
 import { createCustomerDto } from '../model/createCustomer.dto';
 import { commonStatusErrorMessages, customerDocumentationLabels } from '../../../../core/constants';
 import { paginateCustomers } from '../model/paginateCustomers.dto';
+import { UpdateCustomerDto } from '../model/updateCustomer.dto';
 
 @ApiTags('customer')
 @ApiBearerAuth()
@@ -82,5 +83,33 @@ export class CustomerController {
     query?: paginateCustomers,
   ) {
     return await this.customerService.paginateListCustomers(pageSize, pageNumber, query);
+  }
+
+  @Patch('update/:email')
+  @ApiOperation({ summary: customerDocumentationLabels.updateCustomerOperation.summary })
+  @ApiResponse({ status: 200, description: customerDocumentationLabels.updateCustomerOperation.success })
+  @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
+  @ApiResponse({ status: 401, description: commonStatusErrorMessages.unauthorizedErrorMessage })
+  @ApiResponse({ status: 403, description: commonStatusErrorMessages.forbiddenErrorMessage })
+  @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
+  @ApiParam({
+    name: 'email',
+    description: customerDocumentationLabels.updateCustomerOperation.emailParamDescription,
+    required: true,
+    type: 'string',
+    example: 'example@example.com',
+  })
+  async updateCustomer(
+    @Param('email') email: string,
+    @Body(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    customerInfo: UpdateCustomerDto,
+  ) {
+    return await this.customerService.updateCustomer(email, customerInfo);
   }
 }

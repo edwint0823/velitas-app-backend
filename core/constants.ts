@@ -210,6 +210,14 @@ export const customerDocumentationLabels = {
     pageSizeParamDescription: 'Cantidad de items por pagina',
     pageNumberParamDescription: 'Número de pagina',
   },
+  updateCustomerOperation: {
+    summary: 'Actualizar información de cliente',
+    success: 'Información del cliente actualizado exitosamente',
+    emailParamDescription: 'correo electrónico del cliente ',
+    nameParamDescription: 'Nombre del cliente',
+    phoneParamDescription: 'Número telefónico del cliente',
+    priceTypeParamDescription: 'Tipo de catalogo para precios',
+  },
 };
 
 export const customerValidationMessages = {
@@ -228,6 +236,13 @@ export const customerValidationMessages = {
     emailType: 'El correo electrónico del cliente debe ser valido',
     priceTypeIsString: 'El tipo de precio debe ser una cadena de caracteres',
   },
+  updateCustomerOperation: {
+    nameRequired: 'El nombre del cliente es requerido',
+    nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
+    phoneRequired: 'El número telefónico del cliente es requerido',
+    phoneIsString: 'El número telefónico del cliente debe ser una cadena de caracteres',
+    priceTypeIn: 'El tipo de precio debe estar dentro de uno de los siguientes valores:',
+  },
 };
 
 export const customerErrorMessages = {
@@ -235,12 +250,17 @@ export const customerErrorMessages = {
     create: {
       default: 'Error al crear el cliente',
     },
+    update: {
+      default: 'Error al actualizar la información del cliente',
+      customerNotFound: 'No existe ningún cliente con el correo electrónico proporcionado ',
+    },
   },
 };
 
 export const customerSuccessMessages = {
   service: {
-    create: 'cliente creado correctamente',
+    create: 'Cliente creado correctamente',
+    update: 'Cliente actualizado correctamente',
   },
 };
 

@@ -14,6 +14,8 @@ import { AuthMiddleware } from '../../middlewares/auth.middleware';
 })
 export class CustomerModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('customer/create', 'customer/list/:page_size/:page_number');
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('customer/create', 'customer/list/:page_size/:page_number', 'customer/update/:email');
   }
 }

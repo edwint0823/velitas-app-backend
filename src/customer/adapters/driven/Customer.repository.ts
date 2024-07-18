@@ -4,6 +4,7 @@ import { CustomerEntity } from '../../../../database/entities/Customer.entity';
 import { DataSource, Repository } from 'typeorm';
 import { createCustomerDomain } from '../../domain/model/in/createCustomerDomain';
 import { FilterOptionsListCustomerDomain } from '../../domain/model/in/filterOptionsListCustomerDomain';
+import { UpdateCustomerDomain } from '../../domain/model/in/updateCustomerDomain';
 
 @Injectable()
 export class CustomerRepository extends Repository<CustomerEntity> implements ICustomerRepository {
@@ -34,5 +35,13 @@ export class CustomerRepository extends Repository<CustomerEntity> implements IC
     });
     const total = await this.count({ where: whereOptions });
     return { customers, total };
+  }
+
+  async updateCustomer(email: string, customer: UpdateCustomerDomain): Promise<CustomerEntity> {
+    const findedCustomer = await this.findOne({ where: { email } });
+    findedCustomer.name = customer.name;
+    findedCustomer.phone_number = customer.phone_number;
+    findedCustomer.price_type = customer.price_type;
+    return await this.save(findedCustomer);
   }
 }
