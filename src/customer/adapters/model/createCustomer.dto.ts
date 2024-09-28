@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsIn, IsString } from 'class-validator';
 import { customerDocumentationLabels, customerValidationMessages, priceTypeOptions } from '../../../../core/constants';
+import { Transform } from 'class-transformer';
 
 export class createCustomerDto {
   @ApiProperty({
@@ -14,7 +15,7 @@ export class createCustomerDto {
   @IsNotEmpty({
     message: customerValidationMessages.createOperation.emailRequired,
   })
-  @IsEmail()
+  @IsEmail({}, { message: customerValidationMessages.createOperation.emailType })
   email: string;
 
   @ApiProperty({
@@ -28,6 +29,7 @@ export class createCustomerDto {
   @IsNotEmpty({
     message: customerValidationMessages.createOperation.nameRequired,
   })
+  @Transform(({ value }) => value.toUpperCase())
   name: string;
 
   @ApiProperty({
