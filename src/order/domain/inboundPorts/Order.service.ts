@@ -5,7 +5,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { IOrderService } from './IOrderService';
 import { createOrderDto } from '../../adapters/model/orderCreate.dto';
-import { FiltersDto } from '../../adapters/model/queryParamsListOrder.dto';
+import { QueryParamsListOrderDto } from '../../adapters/model/queryParamsListOrder.dto';
 import { IBagInventoryNeed, ICreateOrderInfoDomain } from '../model/in/createOrderInfoDomain';
 import { createOrderResponseDomain } from '../model/out/createOrderResponseDomain';
 import { FindOrderAndDetailsDomain } from '../model/out/findOrderAndDetailsDomain';
@@ -43,6 +43,8 @@ import { IBagInventoryMovementRepository } from '../../../bagInventoryMovement/d
 import { BagInventoryNeed, UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
 import { OrderDetailsAndBagsDomain } from '../model/out/orderDetailsAndBagsDomain';
 import { OrderAndDetailsDomain } from '../model/out/editOrderAndDetailsDomain';
+import { Workbook } from 'exceljs';
+import { PaginateOrderDomain } from '../model/out/paginateOrderDomain';
 
 dayjs.locale(timeZoneDayjs);
 
@@ -182,33 +184,39 @@ export class OrderService implements IOrderService {
 
   async findByCode(code: string): Promise<FindOrderAndDetailsDomain> {
     const findOrder = await this.orderRepository.getOrderAndDetailsByCode(code);
+    if (!findOrder) {
+      throw new HttpException({ message: orderErrorMessages.service.findByCode.orderNotFound }, HttpStatus.BAD_REQUEST);
+    }
     return OrderMapper.findOrderAndDetailsByCodeMapper(findOrder);
   }
 
-  async getPaginateListOrders(pageSize: number, pageNumber: number, filters?: FiltersDto) {
+  async getPaginateListOrders(
+    pageSize: number,
+    pageNumber: number,
+    query?: QueryParamsListOrderDto,
+  ): Promise<PaginateOrderDomain> {
     const whereOptions = {};
-    if (filters) {
-      if (filters.customer_name) {
-        whereOptions['customer'] = {
-          name: Like(`%${filters.customer_name.toUpperCase()}%`),
-        };
-      }
-      if (filters.orders_code) {
-        whereOptions['code'] = In(filters.orders_code);
-      }
-
-      if (filters.delivery_date_end) {
-        whereOptions['delivery_date'] = Between(filters.delivery_date_begin, filters.delivery_date_end);
-      } else if (filters.delivery_date_begin) {
-        whereOptions['delivery_date'] = MoreThanOrEqual(filters.delivery_date_begin);
-      }
-
-      if (filters.created_at_end) {
-        whereOptions['created_at'] = Between(filters.created_at_begin, filters.created_at_end);
-      } else if (filters.created_at_begin) {
-        whereOptions['created_at'] = MoreThanOrEqual(filters.created_at_begin);
-      }
+    if (query.customer_name) {
+      whereOptions['customer'] = {
+        name: Like(`%${query.customer_name.toUpperCase()}%`),
+      };
     }
+    if (query.orders_code) {
+      whereOptions['code'] = In(query.orders_code);
+    }
+
+    if (query.delivery_date_end) {
+      whereOptions['delivery_date'] = Between(query.delivery_date_begin, query.delivery_date_end);
+    } else if (query.delivery_date_begin) {
+      whereOptions['delivery_date'] = MoreThanOrEqual(query.delivery_date_begin);
+    }
+
+    if (query.created_at_end) {
+      whereOptions['created_at'] = Between(query.created_at_begin, query.created_at_end);
+    } else if (query.created_at_begin) {
+      whereOptions['created_at'] = MoreThanOrEqual(query.created_at_begin);
+    }
+
     const skip = (pageNumber - 1) * pageSize;
     const paginatedData = await this.orderRepository.listOrdersPaginated(skip, pageSize, whereOptions);
     return OrderMapper.paginateOrder(paginatedData);
@@ -262,7 +270,12 @@ export class OrderService implements IOrderService {
         order_id: orderInfo.id,
         old_status_id: oldStatusInfo.id,
         new_status_id: Number(newStatusId),
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       await this.orderRepository.updateStatusOrder(orderInfo.id, statusLogPayload);
 
@@ -288,7 +301,12 @@ export class OrderService implements IOrderService {
           is_out: true,
           // eslint-disable-next-line max-len
           observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-          created_by: user.id,
+          created_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
         }));
         for (const candle of candlesAndQuantity) {
           await this.candleInventoryMovementRepository.createOutCandleInventoryMovement(candle);
@@ -308,7 +326,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario por modificación de estado a ${newStatusInfo.name} del pedido Nro ${orderInfo.code}`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
           await this.bagInventoryMovementRepository.createOutInventoryMovement(payload);
         }
@@ -375,7 +398,12 @@ export class OrderService implements IOrderService {
           total_quantity: totalQuantity,
           delivery_date: deliveryDate.toDate(),
           updated_at: dayjs().toDate(),
-          updated_by: user.id,
+          updated_by: JSON.stringify({
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+          }),
           delivery_address: orderData.delivery_address,
           additional_info: orderData.additional_info,
           delivery_price: orderData.delivery_price,
@@ -457,7 +485,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
 
@@ -480,7 +513,12 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           }),
         );
       }
@@ -496,7 +534,12 @@ export class OrderService implements IOrderService {
             is_out: false,
             // eslint-disable-next-line max-len
             observation: `Entrada de inventario antiguo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
         /* SACAR INVENTOARIO DE VELAS NUEVO */
@@ -508,11 +551,15 @@ export class OrderService implements IOrderService {
             is_out: true,
             // eslint-disable-next-line max-len
             observation: `Salida de inventario nuevo del pedido Nro ${order.code} por actualización del contenido del pedido`,
-            created_by: user.id,
+            created_by: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
           };
         });
       }
-      // console.log('PAYLOAD FINAL', updateOrderPayload);
       await this.orderRepository.updateOrderAndDetails(updateOrderPayload);
       return { message: orderSuccessMessages.service.updateOrderAndDetails.default };
     } catch (error) {
@@ -529,5 +576,135 @@ export class OrderService implements IOrderService {
   async editOrderByCode(orderCode: string): Promise<OrderAndDetailsDomain> {
     const repositoryResponse = await this.orderRepository.getOrderWithOnlyDetailByCode(orderCode);
     return OrderMapper.editOrderMapper(repositoryResponse);
+  }
+
+  async exportOrderToExcel(orderCode: string): Promise<{ buffer: any; fileName: string }> {
+    const orderInfo = await this.orderRepository.getOrderAndDetailsByCode(orderCode);
+
+    const orderWorkbook = new Workbook();
+    const orderWorkSheet = orderWorkbook.addWorksheet('Encabezado');
+    orderWorkSheet.columns = [
+      { header: 'Nro Pedido', key: 'code', width: 11 },
+      { header: 'Cliente', key: 'customerName', width: 28 },
+      { header: 'Tipo de cliente', key: 'customerType', width: 15 },
+      { header: 'Fecha de entrega', key: 'deliveryDate', width: 17 },
+      { header: 'Dirección de entrega', key: 'deliveryAddress', width: 41 },
+      { header: 'Cantidad total', key: 'totalQuantity', width: 14 },
+      { header: 'Precio total', key: 'totalPrice', width: 12 },
+      { header: 'Información adicional', key: 'additionalInfo', width: 22 },
+    ];
+    orderWorkSheet.getRow(1).eachCell((cell) => {
+      cell.font = {
+        bold: true,
+      };
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+    orderWorkSheet.addRow({
+      code: orderInfo.code,
+      customerName: orderInfo.customer.name,
+      customerType: orderInfo.customer.price_type,
+      deliveryDate: orderInfo.delivery_date,
+      deliveryAddress: orderInfo.delivery_address,
+      totalQuantity: orderInfo.total_quantity,
+      totalPrice: orderInfo.total_price,
+      additionalInfo: orderInfo.additional_info === null ? '' : orderInfo.additional_info,
+    });
+    orderWorkSheet.getRow(2).eachCell((cell) => {
+      cell.alignment = {
+        wrapText: true,
+        shrinkToFit: true,
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    const detailsWorkSheet = orderWorkbook.addWorksheet('Detalles');
+    detailsWorkSheet.columns = [
+      { header: 'Tipo de vela', key: 'candleName', width: 38 },
+      { header: 'Nombre', key: 'itemName', width: 22 },
+      { header: 'Empacar solo', key: 'packAlone', width: 13 },
+      { header: 'Difunto', key: 'deceased', width: 8 },
+      { header: 'Mascota', key: 'pet', width: 9 },
+      { header: 'Observaciones', key: 'observations', width: 31 },
+      { header: 'Precio', key: 'price', width: 12 },
+      { header: 'Cantidad', key: 'quantity', width: 9 },
+    ];
+    detailsWorkSheet.getRow(1).eachCell((cell) => {
+      cell.font = {
+        bold: true,
+      };
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    let lastColumn = 0;
+    let rowCont = 2;
+    for (const [detailIndex, detail] of orderInfo.orders_details.entries()) {
+      const arrNameList: Array<{
+        name: string;
+        pack_alone: boolean;
+        deceased: boolean;
+        pet: boolean;
+      }> = JSON.parse(detail.name_list);
+
+      for (const [index, item] of arrNameList.entries()) {
+        detailsWorkSheet.addRow({
+          candleName: index === 0 ? detail.candle_option.name : '',
+          itemName: item.name,
+          packAlone: item.pack_alone ? 'Si' : 'No',
+          deceased: item.deceased ? 'Si' : 'No',
+          pet: item.pet ? 'Si' : 'No',
+          observations: index === 0 ? detail.observation : '',
+          price: index === 0 ? detail.price : '',
+          quantity: index === 0 ? detail.quantity : '',
+        });
+
+        detailsWorkSheet.getRow(rowCont).eachCell((cell) => {
+          cell.alignment = {
+            wrapText: true,
+            shrinkToFit: true,
+          };
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
+        rowCont++;
+      }
+
+      detailsWorkSheet.getRow(detailIndex === 0 ? detailIndex + 2 : lastColumn + 2).eachCell((cell) => {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'e3b944' },
+        };
+      });
+      lastColumn += arrNameList.length;
+    }
+    const buffer = await orderWorkbook.xlsx.writeBuffer();
+    return { buffer: buffer, fileName: `Pedido-${orderInfo.code}-${orderInfo.customer.name}` };
   }
 }

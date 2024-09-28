@@ -13,6 +13,10 @@ export function getErrorParams(error, message: string): ErrorParamsResponse {
   } else if (error.message && error.message === 'Errores de validación') {
     status = HttpStatus.BAD_REQUEST;
   }
+
+  if (error.driverError.detail) {
+    error.message = error.driverError.detail;
+  }
   return {
     message: error.message ? error.message : message,
     error: error.errors ? error.errors : error,

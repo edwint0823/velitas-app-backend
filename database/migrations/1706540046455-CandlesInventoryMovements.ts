@@ -41,7 +41,7 @@ export class CandlesInventoryMovements1706540046455 implements MigrationInterfac
           },
           {
             name: 'created_by',
-            type: 'int',
+            type: 'text',
           },
         ],
       }),

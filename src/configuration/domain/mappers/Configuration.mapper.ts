@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigurationEntity } from '../../../../database/entities/Configuration.entity';
-import { findParamByNameDomain } from '../model/findParamByNameDomain';
+import { findParamByNameDomain } from '../model/out/findParamByNameDomain';
 import { FunctionsHelper } from '../../../../core/Helper';
 
 @Injectable()
 export class ConfigurationMapper {
-  public static findParamByNameMapper(
-    entity: ConfigurationEntity | null,
-  ): findParamByNameDomain {
+  public static findParamByNameMapper(entity: ConfigurationEntity | null): findParamByNameDomain {
     if (entity !== null) {
       let value: string | boolean | number = entity.value;
       if (FunctionsHelper.isBoolean(value)) {

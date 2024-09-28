@@ -52,7 +52,12 @@ export class PaymentService implements IPaymentService {
         bank_entity_id: payment.bank_entity_id,
         entry_movement: true,
         out_movement: false,
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
         payment: {
           partial: paymentIsPartial,
           movement_id: null,

@@ -1,5 +1,6 @@
 import { EntityManager } from 'typeorm';
 import { BagInventoryEntity } from '../../../../database/entities/BagInventory.entity';
+import { ListAllBagsFilterDomain } from '../model/in/ListAllBagsFilterDomain';
 
 export interface IBagInventoryRepository {
   findBagInventoryByBagId(bagId: number): Promise<BagInventoryEntity>;
@@ -15,6 +16,8 @@ export interface IBagInventoryRepository {
     quantity: number,
     transaction: EntityManager,
   ): Promise<BagInventoryEntity>;
+
+  listAvailableBags(whereOptions: ListAllBagsFilterDomain): Promise<BagInventoryEntity[]>;
 }
 
 export const IBagInventoryRepository = Symbol('IBagInventoryRepository');

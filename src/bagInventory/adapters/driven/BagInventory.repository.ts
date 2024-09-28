@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { BagInventoryEntity } from '../../../../database/entities/BagInventory.entity';
 import { IBagInventoryRepository } from '../../domain/outboundPorts/IBagInventoryRepository';
+import { ListAllBagsFilterDomain } from '../../domain/model/in/ListAllBagsFilterDomain';
 
 @Injectable()
 export class BagInventoryRepository extends Repository<BagInventoryEntity> implements IBagInventoryRepository {
@@ -31,5 +32,17 @@ export class BagInventoryRepository extends Repository<BagInventoryEntity> imple
 
   async findBagInventoryByBagId(bagId: number): Promise<BagInventoryEntity> {
     return await this.findOne({ where: { bag_id: bagId } });
+  }
+
+  listAvailableBags(whereOptions: ListAllBagsFilterDomain): Promise<BagInventoryEntity[]> {
+    return this.find({
+      relations: {
+        bag: true,
+      },
+      where: {
+        ...whereOptions,
+      },
+      order: { bag: { name: 'ASC' } },
+    });
   }
 }

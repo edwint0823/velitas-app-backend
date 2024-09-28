@@ -36,15 +36,110 @@ export const bagErrorMessages = {
 };
 
 export const candleOptionDocumentationLabels = {
-  listOperation: {
-    summary: 'Optener listado de opciones de vela junto con la cantidad minima de items para usar precio mayorista',
-    success: 'Listado de velas',
+  listAllOptionsOperation: {
+    summary: 'Listar todas la opciones de vela registradas',
+    success: 'Listado de todas la opciones de vela registradas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    isPackParamDescription: 'Filtrar por opciones que son paquete de nombres definidos',
+    candleTypeIdParamDescription: 'Id de tipo de vela a filtrar',
+    visibleParamDescription: 'Filtrar por opciones visibles para los usuarios',
+    isVipPackParamDescription: 'Filtrar por la opciones marcadas como paquete vip',
+  },
+  createOptionOperation: {
+    summary: 'Crear una opción de vela',
+    success: 'Opción de vela creada exitosamente',
+    fileParamDescription: 'Imagen de la opción a crear en formato jpg, png o jpeg ',
+    nameParamDescription: 'Nombre de la opción de vela',
+    bulkPriceParamDescription: 'Precio mayorista para la opción de vela',
+    retailPriceParamDescription: 'Precio detal para la opción de vela',
+    isPackParamDescription: 'Marcar si la opción de vela tiene un paquete de nombres predeterminado',
+    candleTypeIdParamDescription: 'Id de tipo de vela a la cual pertenecerá la opción',
+    isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
+    packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
+  },
+  updateOptionOperation: {
+    summary: 'Actualizar una opción de vela',
+    success: 'Opción de vela actualizada exitosamente',
+    candleOptionIdParamDescription: 'Id de la opción de vela que se desea actualizar',
+    fileParamDescription: 'Imagen de la opción a actualizar en formato jpg, png o jpeg ',
+    nameParamDescription: 'Nombre de la opción de vela',
+    bulkPriceParamDescription: 'Precio mayorista para la opción de vela',
+    retailPriceParamDescription: 'Precio detal para la opción de vela',
+    isPackParamDescription: 'Marcar si la opción de vela tiene un paquete de nombres predeterminado',
+    isVisibleParamDescription: 'Marcar si la opción de vela estará disponible al momento de crear un pedido',
+    isVipPackParamDescription: 'Marcar si la opción es de tipo paquete vip',
+    packNamesParamDescription: 'Listado de nombres que tendrá la opción si es de tipo paquete',
+  },
+  findOptionOperation: {
+    summary: 'Buscar una opción de vela por su id',
+    success: 'Información de la opción de vela obtenida',
+    idParamDescription: 'Id de la opción de vela a buscar',
+    candleOptionNotFound: 'Opción de vela no encontrada con el id proporcionado',
+  },
+};
+
+export const candleOptionValidations = {
+  listAllOptionsOperation: {
+    isPackIsBoolean: 'El filtro por opciones de vela de tipo paquete debe ser un booleano',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    visibleIsBoolean: 'El filtro para opciones visibles debe ser un booleano ',
+    isVipPackIsBoolean: 'El filtro para opciones de tipo paquete vip debe ser un booleano',
+  },
+  createOption: {
+    nameIsRequired: 'El nombre de la opción de vela es requerido',
+    nameIsString: 'El nombre de la opción debe ser una de cadena de caracteres',
+    bulkPriceIsRequired: 'El precio mayorista de la vela es requerido',
+    bulkPriceIsNumber: 'El precio mayorista de la vela debe ser un número ',
+    retailPriceIsRequired: 'El precio detal de la vela es requerido',
+    retailPriceIsNumber: 'El precio detal de la vela debe ser un número ',
+    isPackIsRequired: 'La opción de marcar si es un paquete es requerida',
+    isPackIsBoolean: 'La opción de marcar si es un paquete debe ser un booleano',
+    candleTypeIdIsRequired: 'El id de tipo de vela es requerido',
+    candleTypeIdIsInt: 'El id de tipo de vela debe ser un número entero',
+    isVipPackIsRequired: 'La opción de marcar la opción como paquete vip es requerida',
+    isVipPackIsIsBoolean: 'La opción de marcar la opción como paquete vip debe ser un booleano',
+    packNamesIsArray: 'El listado de nombres debe ser un array si la opción esta marcada como tipo paquete',
+    packNamesIsRequired: 'El listado de nombres es requerido si la opción esta marcada como tipo paquete',
+    packNamesIsStringArray: 'Cada nombre del paquete debe ser una cadena de caracteres',
+  },
+  updateOption: {
+    nameIsString: 'El nombre de la opción debe ser una de cadena de caracteres',
+    bulkPriceIsNumber: 'El precio mayorista de la vela debe ser un número ',
+    retailPriceIsNumber: 'El precio detal de la vela debe ser un número ',
+    isPackIsBoolean: 'La opción de marcar si es paquete debe ser un booleano',
+    isVisibleIsBoolean: 'La opción de marcar si esta visible debe ser un booleano',
+    isVipPackIsIsBoolean: 'La opción de marcar la opción como paquete vip debe ser un booleano',
+    packNamesIsArray: 'El listado de nombres debe ser un array si la opción esta marcada como tipo paquete',
+    packNamesIsStringArray: 'Cada nombre del paquete debe ser una cadena de caracteres',
   },
 };
 export const candleOptionErrorMessages = {
   serviceErrors: {
-    get: {
-      default: 'Error al obtener el listado de opciones',
+    createOption: {
+      default: 'Error al crear la nueva opción de vela',
+    },
+    updateOption: {
+      default: 'Error al actualizar la nueva opción de vela',
+    },
+    findOption: {
+      candleOptionNotFound: 'No se encontró ninguna opción de vela con el id proporcionado',
+    },
+  },
+  controllerErrors: {
+    createOption: {
+      fileRequired: 'La foto de la opción es obligatoria',
+    },
+  },
+};
+
+export const candleOptionSuccessMessages = {
+  service: {
+    create: {
+      default: 'Opción de vela creada exitosamente',
+    },
+    updateOption: {
+      default: 'Opción de vela actualizada exitosamente',
     },
   },
 };
@@ -55,6 +150,23 @@ export const configurationDocumentationLabels = {
     success: 'Valor del parámetro encontrado',
     paramNameDescription: 'nombre del parámetro ',
   },
+  listOperation: {
+    summary: 'Listar todos los parámetros de configuración',
+    success: 'Listado de parámetros de configuración ',
+  },
+  updateParamValueOperation: {
+    summary: 'Actualizar el valor de un parámetro por id',
+    success: 'Valor del parámetro actualizado',
+    valueParamDescription: 'Valor del parámetro a actualizar',
+    idParamDescription: 'Id del parámetro que se desea actualizar',
+  },
+};
+
+export const configurationValidationMessages = {
+  updateParamValueOperation: {
+    valueRequired: 'El nuevo valor del parámetro es obligatorio',
+    valueIsString: 'El nuevo valor a actualizar debe ser una cadena de caracteres',
+  },
 };
 
 export const configurationErrorMessages = {
@@ -62,6 +174,15 @@ export const configurationErrorMessages = {
     findByName: {
       default: 'Error al obtener el valor del parámetro seleccionado',
     },
+    updateParamValue: {
+      default: 'Error al actualizar el valor del parámetro',
+    },
+  },
+};
+
+export const configurationSuccessMessages = {
+  service: {
+    default: 'Valor del parámetro actualizado con éxito',
   },
 };
 
@@ -79,15 +200,47 @@ export const customerDocumentationLabels = {
     phoneParamDescription: 'Número telefónico del cliente',
     priceTypeParamDescription: 'Tipo de catalogo para precios',
   },
+  listPaginateOperation: {
+    summary: 'Paginar clientes',
+    success: 'Listado paginado de clientes',
+    emailParamDescription: 'correo electrónico del cliente a filtrar',
+    nameParamDescription: 'Nombre del cliente a filtrar',
+    phoneParamDescription: 'Número telefónico del cliente a filtrar',
+    priceTypeParamDescription: 'Tipo de catalogo para precios a filtrar',
+    pageSizeParamDescription: 'Cantidad de items por pagina',
+    pageNumberParamDescription: 'Número de pagina',
+  },
+  updateCustomerOperation: {
+    summary: 'Actualizar información de cliente',
+    success: 'Información del cliente actualizado exitosamente',
+    emailParamDescription: 'correo electrónico del cliente ',
+    nameParamDescription: 'Nombre del cliente',
+    phoneParamDescription: 'Número telefónico del cliente',
+    priceTypeParamDescription: 'Tipo de catalogo para precios',
+  },
 };
 
 export const customerValidationMessages = {
   createOperation: {
     emailRequired: 'El correo del cliente es requerido',
     emailIsString: 'El correo electrónico del cliente debe ser una cadena de caracteres',
+    emailType: 'El correo electrónico del cliente debe ser valido',
     nameRequired: 'El nombre del cliente es requerido',
     nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
     phoneRequired: 'El número telefónico del cliente es requerido',
+    priceTypeIn: 'El tipo de precio debe estar dentro de uno de los siguientes valores:',
+  },
+  listPaginateOperation: {
+    nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
+    emailIsString: 'El correo electrónico del cliente debe ser una cadena de caracteres',
+    emailType: 'El correo electrónico del cliente debe ser valido',
+    priceTypeIsString: 'El tipo de precio debe ser una cadena de caracteres',
+  },
+  updateCustomerOperation: {
+    nameRequired: 'El nombre del cliente es requerido',
+    nameIsString: 'El nombre del cliente debe ser una cadena de caracteres',
+    phoneRequired: 'El número telefónico del cliente es requerido',
+    phoneIsString: 'El número telefónico del cliente debe ser una cadena de caracteres',
     priceTypeIn: 'El tipo de precio debe estar dentro de uno de los siguientes valores:',
   },
 };
@@ -97,12 +250,17 @@ export const customerErrorMessages = {
     create: {
       default: 'Error al crear el cliente',
     },
+    update: {
+      default: 'Error al actualizar la información del cliente',
+      customerNotFound: 'No existe ningún cliente con el correo electrónico proporcionado ',
+    },
   },
 };
 
 export const customerSuccessMessages = {
   service: {
-    create: 'cliente creado correctamente',
+    create: 'Cliente creado correctamente',
+    update: 'Cliente actualizado correctamente',
   },
 };
 
@@ -184,6 +342,11 @@ export const orderDocumentationLabels = {
     success: 'Información del pedido a editar',
     orderCodeParamDescription: 'Código del pedido',
   },
+  exportExcelOperation: {
+    summary: 'Obtener la información del pedido en una hoja de calculo de excel',
+    success: 'Hoja de calculo de excel con información del pedido',
+    orderCodeParamDescription: 'Código del pedido',
+  },
 };
 export const orderValidationMessages = {
   createOperation: {
@@ -260,6 +423,9 @@ export const orderErrorMessages = {
   service: {
     create: {
       default: 'Error al crear el pedido',
+    },
+    findByCode: {
+      orderNotFound: 'No se encontró la pedido con el código proporcionado',
     },
     updateStatus: {
       isNotSuperuser: 'No tiene permisos para actualizar el estado del pedido',
@@ -346,6 +512,10 @@ export const bankEntityDocumentationLabels = {
     summary: 'Obtener listado de entidades bancarias disponibles',
     success: 'Listado de entidades bancarias',
   },
+  listWithAmount: {
+    summary: 'Listar los bancos junto con el monto de dinero que tienen registrado',
+    success: 'Listado de bancos y sus montos',
+  },
 };
 
 export const bagInventoryDocumentationLabels = {
@@ -356,6 +526,11 @@ export const bagInventoryDocumentationLabels = {
     quantityParamDescription: 'Cantidad de inventario a aumentar o disminuir',
     isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
     observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la bolsa',
+  },
+  listInventory: {
+    summary: 'Listar el inventario bolsas',
+    success: 'Listado de inventario de bolsas',
+    nameParamDescription: 'Nombre de una bolsa a filtrar',
   },
 };
 
@@ -370,6 +545,9 @@ export const bagInventoryValidationMessages = {
 
     observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
     observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres ',
+  },
+  listInventory: {
+    nameIsString: 'El nombre de la vela debe ser una cadena de caracteres',
   },
 };
 
@@ -400,6 +578,11 @@ export const candleInventoryDocumentationLabels = {
     isEntryParamDescription: 'Si se desea aumentar o disminuir la cantidad',
     observationParamDescription: 'Descripción del motivo por el cual se agrega o se quita inventario de la vela',
   },
+  listOperation: {
+    summary: 'Obtener el listado de velas con el inventario actual',
+    success: 'Listado de velas y su inventario',
+    nameParamDescription: 'Nombre de la vela a buscar',
+  },
 };
 
 export const candleInventoryValidationMessages = {
@@ -413,6 +596,9 @@ export const candleInventoryValidationMessages = {
 
     observationIsRequired: 'La descripción del movimiento de inventario es requerida ',
     observationIsString: 'La descripción del movimiento de inventario debe ser una cadena de caracteres',
+  },
+  listOperation: {
+    nameIsString: 'El nombre a buscar debe ser una cadena de caracteres',
   },
 };
 
@@ -434,6 +620,207 @@ export const candleInventorySuccessMessages = {
   },
 };
 
+export const cashMovementsDocumentationsLabels = {
+  listAllOperations: {
+    summary: 'listar todos los movimientos de dinero que se han realizado',
+    success: 'Listado de los movimientos de dinero',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    bankEntityIdParamDescription: 'Filtrar por id de banco',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    ordersCodeParamDescription: 'Listado de código de pedido de movimiento separado por ,',
+  },
+  createOutMovementOperation: {
+    summary: 'Crear un gasto sobre un banco especifico',
+    success: 'Gasto creado con éxito',
+    bankIdParamDescription: 'ID del banco al cual se le registrará el gasto',
+    amountParamDescription: 'Valor del gasto a registrar',
+    conceptParamDescription: 'Concepto del gasto a registrar',
+  },
+};
+
+export const cashMovementsValidationsMessages = {
+  listAllOperations: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bankEntityIdIsNumber: 'El identificador del banco debe ser un número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    ordersCodeIsArray: 'El listado de Números de pedidos deben ser una lista',
+    orderCodeRequired: 'El listado de Números de pedido debe tener al menos un item',
+    orderCodeIsStringNumber: 'Todos los códigos de pedido deben ser números',
+  },
+  createOutMovementOperation: {
+    bankEntityIdIsRequired: 'EL identificador del banco es requerido',
+    bankEntityIdIsInt: 'El identificador del banco debe ser un número entero',
+    amountIsRequired: 'El monto a registrar es requerido',
+    amountIsNumber: 'El monto a registrar debe ser un número',
+    conceptIsRequired: 'El concepto a registrar para el gasto requerido',
+    conceptIsString: 'El concepto a registrar debe ser una cadena de caracteres',
+  },
+};
+
+export const cashMovementsErrorMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Error al crear el gasto',
+      bankDoesNotExist: 'EL banco proporcionado no existe',
+    },
+  },
+};
+
+export const cashMovementsSuccessMessages = {
+  service: {
+    createOutMovement: {
+      default: 'Gasto registrado con éxito',
+    },
+  },
+};
+
+export const cashInventoryDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar el inventario de dinero físico',
+    success: 'Listado de inventario de dinero físico',
+    nameParamDescription: 'Nombre del item a buscar',
+  },
+  findOperation: {
+    summary: 'Buscar por id un item de inventario de dinero físico',
+    success: 'Información del item obtenida',
+    idParamDescription: 'Id del item a actualizar',
+  },
+  updateQuantityOperation: {
+    summary: 'Actualizar la cantidad de inventario de dinero físico',
+    success: 'Cantidad actualizada con éxito',
+    idParamDescription: 'Id del item a actualizar',
+    quantityParamDescription: 'Cantidad de inventario a actualizar',
+  },
+};
+
+export const cashInventoryValidationMessages = {
+  listOperation: {
+    nameIsString: 'El nombre debe ser una cadena de texto',
+  },
+  updateQuantityOperation: {
+    quantityRequired: 'La cantidad a actualizar es requerida',
+    quantityIsInt: 'La cantidad deber ser un número entero',
+    quantityIsPositive: 'La cantidad debe ser un número positivo',
+  },
+};
+
+export const cashInventoryErrorMessages = {
+  service: {
+    findCashInventory: {
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+    updateQuantity: {
+      default: 'Error al actualizar la cantidad',
+      inventoryItemNotFound: 'El item de inventario de dinero físico no existe',
+    },
+  },
+};
+
+export const cashInventorySuccessMessages = {
+  service: {
+    updateQuantity: {
+      default: 'Cantidad actualizada con éxito',
+    },
+  },
+};
+
+export const bagInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de bolsas',
+    success: 'Listado de inventario de bolsas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    bagIdParamDescription: 'Id del tipo bolsa que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const bagInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    bagIdIsInt: 'El identificador de la bolsa debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
+export const candleInventoryMovementDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los movimientos de inventario de velas',
+    success: 'Listado de inventario de velas',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    candleTypeIdParamDescription: 'Id del tipo de vela que se desea filtrar',
+    entryMovementParamDescription: 'Filtrar solo los movimientos de entrada',
+    outMovementParamDescription: 'Filtrar solo los movimientos de salida',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const candleInventoryMovementsValidationMessages = {
+  listOperation: {
+    entryMovementIsBoolean: 'El filtro de movimientos de entrada debe ser un boleano',
+    outMovementIsBoolean: 'El filtro de movimientos de salida debe ser un boleano',
+    candleTypeIdIsInt: 'El identificador de la ela debe ser un número entero',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el movimiento debe ser una cadena de caracteres',
+  },
+};
+
+export const orderStatusChangeLogsDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los cambios de estado de los pedidos',
+    success: 'Listado de los cambios de estado de los pedidos',
+    pageSizeParamDescription: 'Cantidad de items por página',
+    pageNumberParamDescription: 'Número de página',
+    orderCodeParamDescription: 'Código de pedido que se desea filtrar',
+    createdAtBeginParamDescription: 'Filtrar fecha inicial de creación del movimiento',
+    createdAtEndParamDescription: 'Filtrar fecha final de creación del movimiento',
+    createdByNameParamDescription: 'Nombre de la persona que realizo el movimiento',
+  },
+};
+export const orderStatusChangeLogsValidationMessages = {
+  listOperation: {
+    orderCodeIsStringNumber: 'El código del pedido debe ser una cadena de texto que contenga solo número',
+    createdAtBeginIsDate: 'La fecha inicial de creación debe ser una fecha valida',
+    createdAtEndIsDate: 'La fecha final de creación debe ser una fecha valida',
+    createdAtNameIsString: 'El nombre de la persona que realizo el cambio de estado debe ser una cadena de caracteres',
+  },
+};
+
+export const candleTypeDocumentationLabels = {
+  listOperation: {
+    summary: 'Listar los tipos de velas existentes',
+    success: 'Listado de velas existentes',
+  },
+  listTypesWithOptionsOperations: {
+    summary:
+      'Optener listado de tipos de velas , sus opciones y la cantidad minima de items para usar precio mayorista',
+    success: 'Listado de velas',
+  },
+};
+
+export const candleTypeErrorMessages = {
+  service: {
+    listTypesWithOptionsOperations: {
+      default: 'Error al obtener el listado de opciones',
+    },
+  },
+};
+
 export interface IAuthUser {
   username: string;
   email: string;
@@ -442,6 +829,13 @@ export interface IAuthUser {
   is_superuser: boolean;
   id: number;
   permissions: string[];
+}
+
+export interface IUserInfoInDb {
+  email: string;
+  first_name: string;
+  last_name: string;
+  id: number;
 }
 
 export const maxStatusToCancel = {
@@ -462,4 +856,12 @@ export const statusForCandleInventoryMovement = {
 export const statusForBagInventoryMovement = {
   name: 'En Proceso de Empaquetado',
   order: 7,
+};
+
+export const quantityCandleInventoryLowStock = 300;
+export const quantityBagInventoryLowStock = 100;
+export const inventoryStatusNames = {
+  lowStock: 'STOCK BAJO',
+  inStock: 'EN STOCK',
+  outOfStock: 'AGOTADO',
 };

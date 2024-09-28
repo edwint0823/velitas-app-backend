@@ -9,6 +9,14 @@ export interface IBankEntityRepository {
     amount: number,
     transaction: EntityManager,
   ): Promise<BankEntityEntity>;
+
+  removeAmountToBankByTransaction(
+    bankEntityId: number,
+    amount: number,
+    transaction: EntityManager,
+  ): Promise<BankEntityEntity>;
+
+  findBankById(bankId: number): Promise<BankEntityEntity>;
 }
 
 export const IBankEntityRepository = Symbol.for('IBankEntityRepository');

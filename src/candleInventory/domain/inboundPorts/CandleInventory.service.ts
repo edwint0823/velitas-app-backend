@@ -6,6 +6,10 @@ import { UpdateCandleInventoryQuantityDto } from '../../adapters/model/updateCan
 import { ICandleInventoryRepository } from '../outboundPorts/ICandleInventoryRepository';
 // eslint-disable-next-line max-len
 import { ICandleInventoryMovementRepository } from '../../../candleInventoryMovement/domain/outboundPorts/ICandleInventoryMovementRepository';
+import { ListCandleInventoryDto } from '../../adapters/model/listCandleInventory.dto';
+import { ListInventoryDomain } from '../model/out/listInventoryDomain';
+import { Like } from 'typeorm';
+import { CandleInventoryMapper } from '../mappers/CandleInventory.mapper';
 
 @Injectable()
 export class CandleInventoryService implements ICandleInventoryService {
@@ -43,7 +47,12 @@ export class CandleInventoryService implements ICandleInventoryService {
         is_entry: inventoryInfo.is_entry,
         is_out: !inventoryInfo.is_entry,
         observation: inventoryInfo.observation,
-        created_by: user.id,
+        created_by: JSON.stringify({
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }),
       };
       if (inventoryInfo.is_entry) {
         await this.candleInventoryMovementRepository.createEntryCandleInventoryMovement(
@@ -60,5 +69,16 @@ export class CandleInventoryService implements ICandleInventoryService {
       );
       throw new HttpException({ message }, status);
     }
+  }
+
+  async listInventory(query: ListCandleInventoryDto): Promise<ListInventoryDomain[]> {
+    const whereOptions = {};
+    if (query.name) {
+      whereOptions['candle'] = {
+        name: Like(`%${query.name}%`),
+      };
+    }
+    const repositoryResponse = await this.candleInventoryRepository.listCandleInventoryWithNames(whereOptions);
+    return CandleInventoryMapper.listCandleInventory(repositoryResponse);
   }
 }

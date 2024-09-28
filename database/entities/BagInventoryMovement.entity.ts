@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { BagEntity } from './Bag.entity';
 
 @Entity('bags_inventory_movements')
 export class BagInventoryMovementEntity {
@@ -36,7 +37,11 @@ export class BagInventoryMovementEntity {
   created_at: Date;
 
   @Column({
-    type: 'int',
+    type: 'text',
   })
-  created_by: number;
+  created_by: string;
+
+  @OneToOne(() => BagEntity)
+  @JoinColumn({ name: 'bag_id' })
+  bag: BagEntity;
 }
