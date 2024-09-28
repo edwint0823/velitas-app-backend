@@ -7,50 +7,15 @@
     },
     "candle_options": [
       {
-        "name": "Vela blanca letra negra cursiva",
+        "name": "Vela blanca deseos",
         "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/cwzfq9gli2v0zqfzitiv.jpg",
-        "bulk_price": 12000,
-        "retail_price": 14000,
-        "is_pack": false,
-        "is_vip_pack": false,
-        "visible": true,
-        "candle_type_id": null,
-        "pack_names": []
-      },
-      {
-        "name": "Frases vela blanca letras de colores ST",
-        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/ag0hpfvdkler2aiv0cqi.jpg",
-        "bulk_price": 13000,
-        "retail_price": 14000,
+        "bulk_price": 14000,
+        "retail_price": 18000,
         "is_pack": true,
         "is_vip_pack": true,
         "visible": true,
         "candle_type_id": null,
         "pack_names": [
-          {
-            "name": "Trabajo",
-            "candle_option_id": null
-          },
-          {
-            "name": "Felicidad",
-            "candle_option_id": null
-          },
-          {
-            "name": "Esperanza",
-            "candle_option_id": null
-          },
-          {
-            "name": "Amor",
-            "candle_option_id": null
-          },
-          {
-            "name": "Paz",
-            "candle_option_id": null
-          },
-          {
-            "name": "Tranquilidad",
-            "candle_option_id": null
-          },
           {
             "name": "Dios",
             "candle_option_id": null
@@ -60,11 +25,15 @@
             "candle_option_id": null
           },
           {
-            "name": "Sabiduria",
+            "name": "Trabajo",
             "candle_option_id": null
           },
           {
-            "name": "Respeto",
+            "name": "Salud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
             "candle_option_id": null
           },
           {
@@ -72,10 +41,363 @@
             "candle_option_id": null
           },
           {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sabiduría",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Bondad",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
+        "name": "Vela blanca letra negra (personalizado)",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/cwzfq9gli2v0zqfzitiv.jpg",
+        "bulk_price": 14000,
+        "retail_price": 18000,
+        "is_pack": false,
+        "is_vip_pack": false,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": []
+      },
+      {
+        "name": "Vela blanca deseos gnomos",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727547905/FOTOS_P_VELITAS_APP/vela_blanca_gnoms_dl6ft1.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Riqueza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Salud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sabiduría",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Bondad",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
+        "name": "Vela blanca gnomos (personalizado)",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727547905/FOTOS_P_VELITAS_APP/vela_blanca_gnoms_dl6ft1.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": false,
+        "is_vip_pack": false,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": []
+      },
+      {
+        "name": "Vela blanca deseos letra colores",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/ag0hpfvdkler2aiv0cqi.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Paz",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Bondad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Riqueza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
             "name": "Salud",
             "candle_option_id": null
           }
         ]
+      },
+      {
+        "name": "Vela blanca frases letra colores",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727548270/FOTOS_P_VELITAS_APP/Frases_2024_u0oil8.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "2024",
+            "candle_option_id": null
+          },
+          {
+            "name": "Resiste",
+            "candle_option_id": null
+          },
+          {
+            "name": "El tiempo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esfuérzate",
+            "candle_option_id": null
+          },
+          {
+            "name": "Créelo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Ten fe",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amate",
+            "candle_option_id": null
+          },
+          {
+            "name": "La vida",
+            "candle_option_id": null
+          },
+          {
+            "name": "Orar",
+            "candle_option_id": null
+          },
+          {
+            "name": "No temas",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sonríe",
+            "candle_option_id": null
+          },
+          {
+            "name": "2025",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
+        "name": "Vela blanca deseos con mensaje",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727548639/FOTOS_P_VELITAS_APP/vela_blanca_deseos_mensaje_wahulu.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Paz",
+            "candle_option_id": null
+          },
+          {
+            "name": "Salud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Abundancia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
+            "name": "Perdón",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
+        "name": "Vela blanca degrade deseo",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727548735/FOTOS_P_VELITAS_APP/vela_blanca_degrade_deseos_cl8mfd.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Riqueza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Salud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sabiduría",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Bondad",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
+        "name": "Vela blanca degrade (personalizado)",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1727548735/FOTOS_P_VELITAS_APP/vela_blanca_degrade_deseos_cl8mfd.jpg",
+        "bulk_price": 15000,
+        "retail_price": 20000,
+        "is_pack": false,
+        "is_vip_pack": false,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": []
       }
     ]
   },
@@ -87,10 +409,70 @@
     },
     "candle_options": [
       {
+        "name": "Vela de colores deseos letra negra cursiva",
+        "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/dzuvlindvf4n6vxwrb7k.jpg",
+        "bulk_price": 14000,
+        "retail_price": 18000,
+        "is_pack": true,
+        "is_vip_pack": true,
+        "visible": true,
+        "candle_type_id": null,
+        "pack_names": [
+          {
+            "name": "Dios",
+            "candle_option_id": null
+          },
+          {
+            "name": "Riqueza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Trabajo",
+            "candle_option_id": null
+          },
+          {
+            "name": "Salud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Amor",
+            "candle_option_id": null
+          },
+          {
+            "name": "Gratitud",
+            "candle_option_id": null
+          },
+          {
+            "name": "Familia",
+            "candle_option_id": null
+          },
+          {
+            "name": "Felicidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Prosperidad",
+            "candle_option_id": null
+          },
+          {
+            "name": "Sabiduría",
+            "candle_option_id": null
+          },
+          {
+            "name": "Esperanza",
+            "candle_option_id": null
+          },
+          {
+            "name": "Bondad",
+            "candle_option_id": null
+          }
+        ]
+      },
+      {
         "name": "Vela de colores letra negra cursiva",
         "url_image": "https://res.cloudinary.com/dcrozdskk/image/upload/v1705685076/FOTOS_P_VELITAS_APP/dzuvlindvf4n6vxwrb7k.jpg",
-        "bulk_price": 12000,
-        "retail_price": 14000,
+        "bulk_price": 14000,
+        "retail_price": 18000,
         "is_pack": false,
         "is_vip_pack": false,
         "visible": true,
