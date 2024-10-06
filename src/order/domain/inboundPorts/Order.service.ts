@@ -121,10 +121,10 @@ export class OrderService implements IOrderService {
         orderDetails: [],
       };
 
-      const temporaryBagsNeed: IBagInventoryNeed[] = [];
       console.log('detalle', createOrderInfo);
       console.log('bolsas', bagsInDb);
       for (const detail of orderInfo.candles) {
+        const temporaryBagsNeed: IBagInventoryNeed[] = [];
         let candleToPackAlone = detail.name_list.filter((name) => name.packAlone).length;
         let RemindCandles = detail.quantity - candleToPackAlone;
 
