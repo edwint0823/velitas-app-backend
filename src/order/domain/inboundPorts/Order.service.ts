@@ -121,8 +121,6 @@ export class OrderService implements IOrderService {
         orderDetails: [],
       };
 
-      console.log('detalle', createOrderInfo);
-      console.log('bolsas', bagsInDb);
       for (const detail of orderInfo.candles) {
         const temporaryBagsNeed: IBagInventoryNeed[] = [];
         let candleToPackAlone = detail.name_list.filter((name) => name.packAlone).length;
@@ -150,7 +148,6 @@ export class OrderService implements IOrderService {
             order_id: undefined,
           });
         }
-        console.log('temporaly bags need ', temporaryBagsNeed);
         for (const bag of temporaryBagsNeed) {
           const indexBagsInventoryNeed = createOrderInfo.bagInventoryNeed.findIndex((x) => x.bag_id === bag.bag_id);
 
