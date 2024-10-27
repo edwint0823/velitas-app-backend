@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { findByEmailDomain } from '../model/out/findByEmailDomain';
 import { CustomerEntity } from '../../../../database/entities/Customer.entity';
 import { listCustomersDomain } from '../model/out/listCustomersDomain';
+import * as dayjs from 'dayjs';
+import { timeZoneDayjs } from '../../../../core/constants';
+
+dayjs.locale(timeZoneDayjs);
 
 @Injectable()
 export class CustomerMapper {
@@ -13,6 +17,7 @@ export class CustomerMapper {
         name: '',
         tel: '',
         priceType: 'detal',
+        orders: [],
       };
     }
     return {
@@ -21,6 +26,12 @@ export class CustomerMapper {
       name: entity.name,
       tel: entity.phone_number,
       priceType: entity.price_type,
+      orders: entity.orders.map((order) => {
+        return {
+          code: order.code,
+          created_at: dayjs(order.created_at).format('DD-MM-YYYY'),
+        };
+      }),
     };
   }
 

@@ -3,6 +3,7 @@ import { OrderEntity } from '../../../../database/entities/Order.entity';
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 import { UpdateOrderAndDetailsDomain } from '../model/in/updateOrderAndDetailsDomain';
 import { PaginateOrderFiltersDomain } from '../model/in/paginateOrderFiltersDomain';
+import { OrderStatusCountDomain } from '../model/out/OrderStatusCountDomain';
 
 export interface IOrderRepository {
   getCodeOrder(): Promise<string>;
@@ -29,6 +30,10 @@ export interface IOrderRepository {
   getAllOrderInfoAndBagsByCode(code: string): Promise<OrderEntity>;
 
   getOrderWithOnlyDetailByCode(code: string): Promise<OrderEntity>;
+
+  totalOrder(): Promise<number>;
+
+  totalOrderByStatus(): Promise<OrderStatusCountDomain[]>;
 }
 
 export const IOrderRepository = Symbol('IOrderRepository');

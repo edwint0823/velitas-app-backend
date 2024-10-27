@@ -13,7 +13,7 @@ export class CustomerRepository extends Repository<CustomerEntity> implements IC
   }
 
   async findByEmail(email: string): Promise<CustomerEntity | null> {
-    return this.findOne({ where: { email } });
+    return this.findOne({ relations: { orders: true }, where: { email }, order: { orders: { created_at: 'ASC' } } });
   }
 
   async createCustomer(customer: createCustomerDomain): Promise<CustomerEntity> {
@@ -31,7 +31,7 @@ export class CustomerRepository extends Repository<CustomerEntity> implements IC
       where: whereOptions,
       skip: skip,
       take: take,
-      order: { name: 'ASC' },
+      order: { name: 'DESC' },
     });
     const total = await this.count({ where: whereOptions });
     return { customers, total };
