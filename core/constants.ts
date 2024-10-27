@@ -454,6 +454,13 @@ export const orderSuccessMessages = {
   },
 };
 
+export const dashboardDocumentationLabels = {
+  productionTotals: {
+    summary: 'Obtener listado de totales de la producción de la empresa',
+    success: 'Listado de totales de la producción de la empresa',
+  },
+};
+
 export const statusDocumentationLabels = {
   listOperation: {
     summary: 'Listado de status con orden mayor o igual a la dispuesta',

@@ -41,6 +41,7 @@ import { BagInventoryMovementModule } from './bagInventoryMovement/bagInventoryM
 import { CandleInventoryMovementModule } from './candleInventoryMovement/candleInventoryMovement.module';
 import { OrderStatusModule } from './orderStatus/OrderStatus.module';
 import { CandlesTypeModule } from './candleType/candlesType.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 dotenv.config();
 
@@ -95,6 +96,7 @@ dotenv.config();
     CandleInventoryMovementModule,
     OrderStatusModule,
     CandlesTypeModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

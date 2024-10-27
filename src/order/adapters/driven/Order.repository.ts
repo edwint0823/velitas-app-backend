@@ -15,6 +15,7 @@ import { ICreateOrderInfoDomain } from '../../domain/model/in/createOrderInfoDom
 import { CreateOrderStatusLogDomain } from '../../../orderStatus/domain/model/in/createOrderStatusLogDomain';
 import { UpdateOrderAndDetailsDomain } from '../../domain/model/in/updateOrderAndDetailsDomain';
 import { PaginateOrderFiltersDomain } from '../../domain/model/in/paginateOrderFiltersDomain';
+import { OrderStatusCountDomain } from '../../domain/model/out/OrderStatusCountDomain';
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> implements IOrderRepository {
@@ -226,5 +227,15 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       relations: { orders_details: true, customer: true, status: true },
       where: { code: code },
     });
+  }
+
+  async totalOrder(): Promise<number> {
+    return await this.count();
+  }
+
+  async totalOrderByStatus(): Promise<OrderStatusCountDomain[]> {
+    return await this.query(
+      'SELECT count(o.id) AS cantidad, s."name" AS "estado" FROM orders o JOIN status s ON s.id = o.status_id GROUP BY s."name" ',
+    );
   }
 }
