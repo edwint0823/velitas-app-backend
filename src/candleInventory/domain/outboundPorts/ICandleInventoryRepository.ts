@@ -18,6 +18,8 @@ export interface ICandleInventoryRepository {
   ): Promise<CandleInventoryEntity>;
 
   listCandleInventoryWithNames(whereOptions: ListCandleFiltersDomain): Promise<CandleInventoryEntity[]>;
+
+  getCandleWithLowInventory(): Promise<CandleInventoryEntity[]>;
 }
 
 export const ICandleInventoryRepository = Symbol('ICandleInventoryRepository');

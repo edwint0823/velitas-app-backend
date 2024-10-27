@@ -18,6 +18,8 @@ export interface IBagInventoryRepository {
   ): Promise<BagInventoryEntity>;
 
   listAvailableBags(whereOptions: ListAllBagsFilterDomain): Promise<BagInventoryEntity[]>;
+
+  getBagWithLowInventory(): Promise<BagInventoryEntity[]>;
 }
 
 export const IBagInventoryRepository = Symbol('IBagInventoryRepository');

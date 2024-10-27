@@ -45,4 +45,14 @@ export class BagInventoryRepository extends Repository<BagInventoryEntity> imple
       order: { bag: { name: 'ASC' } },
     });
   }
+
+  getBagWithLowInventory(): Promise<BagInventoryEntity[]> {
+    return this.find({
+      relations: {
+        bag: true,
+      },
+      take: 1,
+      order: { quantity: 'ASC' },
+    });
+  }
 }

@@ -47,4 +47,14 @@ export class CandleInventoryRepository extends Repository<CandleInventoryEntity>
       order: { candle: { name: 'ASC' } },
     });
   }
+
+  getCandleWithLowInventory(): Promise<CandleInventoryEntity[]> {
+    return this.find({
+      relations: {
+        candle: true,
+      },
+      take: 1,
+      order: { quantity: 'ASC' },
+    });
+  }
 }
