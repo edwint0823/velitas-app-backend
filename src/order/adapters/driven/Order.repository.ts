@@ -108,7 +108,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       order: { created_at: 'DESC', status: { order: 'ASC' } },
     });
 
-    const total = await this.count();
+    const total = await this.count({ where: { ...whereOptions } });
     return { orders, total };
   }
 
