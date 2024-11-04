@@ -14,7 +14,7 @@ export function getErrorParams(error, message: string): ErrorParamsResponse {
     status = HttpStatus.BAD_REQUEST;
   }
   console.log('error', error, message);
-  if (error.driverError.detail) {
+  if (error.driverError && error.driverError.detail) {
     error.message = error.driverError.detail;
   }
   return {
