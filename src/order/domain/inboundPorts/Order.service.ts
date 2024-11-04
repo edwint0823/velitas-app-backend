@@ -337,6 +337,7 @@ export class OrderService implements IOrderService {
 
       return { message: orderSuccessMessages.service.updateStatus.default };
     } catch (error) {
+      console.log('error al momento de actualizar pedido', error);
       const { message, status } = getErrorParams(error, orderErrorMessages.service.updateStatus.default);
       throw new HttpException({ message }, status);
     }
