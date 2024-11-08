@@ -661,7 +661,7 @@ export class OrderService implements IOrderService {
     for (const [detailIndex, detail] of orderInfo.orders_details.entries()) {
       const arrNameList: Array<{
         name: string;
-        pack_alone: boolean;
+        packAlone: boolean;
         deceased: boolean;
         pet: boolean;
       }> = JSON.parse(detail.name_list);
@@ -670,7 +670,7 @@ export class OrderService implements IOrderService {
         detailsWorkSheet.addRow({
           candleName: index === 0 ? detail.candle_option.name : '',
           itemName: item.name,
-          packAlone: item.pack_alone ? 'Si' : 'No',
+          packAlone: item.packAlone ? 'Si' : 'No',
           deceased: item.deceased ? 'Si' : 'No',
           pet: item.pet ? 'Si' : 'No',
           observations: index === 0 ? detail.observation : '',
