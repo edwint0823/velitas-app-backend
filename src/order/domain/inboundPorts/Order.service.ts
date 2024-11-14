@@ -690,6 +690,22 @@ export class OrderService implements IOrderService {
             right: { style: 'thin' },
           };
         });
+        if (item.deceased) {
+          // color rojo para celda de difunto
+          detailsWorkSheet.getRow(rowCont).getCell(4).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF0000' },
+          };
+        }
+        if (item.pet) {
+          // color azul para celda de mascota
+          detailsWorkSheet.getRow(rowCont).getCell(5).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: '00B0F0' },
+          };
+        }
         rowCont++;
       }
 
