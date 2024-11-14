@@ -19,3 +19,21 @@ export class AuthMiddleware implements NestMiddleware {
     next();
   }
 }
+
+export class AuthOptionalMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    if (['', null, undefined].includes(req.headers.authorization)) {
+      next();
+      return;
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+      const verify = jwt.verify(token, process.env.SECRET_KEY_JWT);
+      req.query.user = { ...verify.user, permissions: verify.permissions };
+    } catch (e) {
+      throw new HttpException({ message: 'Token invalido o expirado' }, HttpStatus.UNAUTHORIZED);
+    }
+    next();
+  }
+}

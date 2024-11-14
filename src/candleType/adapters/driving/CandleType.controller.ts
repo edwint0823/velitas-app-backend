@@ -1,7 +1,7 @@
 import { CandleTypeService } from '../../domain/inboundPorts/CandleType.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get } from '@nestjs/common';
-import { candleTypeDocumentationLabels, commonStatusErrorMessages } from '../../../../core/constants';
+import { Controller, Get, Query } from '@nestjs/common';
+import { candleTypeDocumentationLabels, commonStatusErrorMessages, IAuthUser } from '../../../../core/constants';
 
 @ApiTags('candle_type')
 @ApiBearerAuth()
@@ -27,7 +27,7 @@ export class CandleTypeController {
   @ApiResponse({ status: 200, description: candleTypeDocumentationLabels.listTypesWithOptionsOperations.success })
   @ApiResponse({ status: 400, description: commonStatusErrorMessages.badRequestMessage })
   @ApiResponse({ status: 500, description: commonStatusErrorMessages.internalServerErrorMessage })
-  async getCandleOptionAndMinItemsBulkPrice() {
-    return this.candleTypeService.getCandleOptionAndMinItemsBulkPrice();
+  async getCandleOptionAndMinItemsBulkPrice(@Query('user') user?: IAuthUser) {
+    return this.candleTypeService.getCandleOptionAndMinItemsBulkPrice(user);
   }
 }

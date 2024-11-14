@@ -15,7 +15,9 @@ export class CandleTypeRepository extends Repository<CandleTypeEntity> implement
     });
   }
 
-  async listCandleTypesWithOptions(): Promise<CandleTypeEntity[]> {
+  async listCandleTypesWithOptions(whereVisible: {
+    candle_options?: { visible?: boolean };
+  }): Promise<CandleTypeEntity[]> {
     return await this.find({
       select: {
         name: true,
@@ -28,6 +30,7 @@ export class CandleTypeRepository extends Repository<CandleTypeEntity> implement
           is_pack: true,
           bulk_price: true,
           retail_price: true,
+          visible: true,
           pack_names: {
             name: true,
           },
@@ -38,7 +41,7 @@ export class CandleTypeRepository extends Repository<CandleTypeEntity> implement
           pack_names: true,
         },
       },
-      where: { candle_options: { visible: true } },
+      where: { ...whereVisible },
     });
   }
 }

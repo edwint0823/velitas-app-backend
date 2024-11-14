@@ -8,6 +8,7 @@ interface IItemOption {
   packNames: Array<string>;
   bulkPrice: number;
   retailPrice: number;
+  visible: boolean;
 }
 
 export interface ICandleListOptions {

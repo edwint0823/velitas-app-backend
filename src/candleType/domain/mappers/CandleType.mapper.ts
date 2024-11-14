@@ -3,6 +3,7 @@ import { ListCandleTypeDomain } from '../model/out/ListCandleTypeDomain';
 import { findParamByNameDomain } from '../../../configuration/domain/model/out/findParamByNameDomain';
 import { CandleOptionAndMinBulkPrice, ICandleListOptions } from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
 import { defaultMinimumSizeBulkPrice } from '../../../../core/constants';
+import { CandleOptionEntity } from '../../../../database/entities/CandleOption.entity';
 
 export class CandleTypeMapper {
   public static listCandleTypeMapper(candleTypes: CandleTypeEntity[]): ListCandleTypeDomain[] {
@@ -24,7 +25,7 @@ export class CandleTypeMapper {
     for (const candleType of candleTypeEntities) {
       candleOptions.push({
         label: candleType.name,
-        items: candleType.candle_options.map((candle) => {
+        items: candleType.candle_options.map((candle: CandleOptionEntity) => {
           return {
             id: candle.id,
             candleTypeId: candle.candle_type_id,
@@ -35,6 +36,7 @@ export class CandleTypeMapper {
             packNames: candle.pack_names.map((pack) => pack.name),
             bulkPrice: candle.bulk_price,
             retailPrice: candle.retail_price,
+            visible: candle.visible,
           };
         }),
       });

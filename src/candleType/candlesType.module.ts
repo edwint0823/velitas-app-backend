@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { AuthMiddleware } from '../../middlewares/auth.middleware';
+import { AuthMiddleware, AuthOptionalMiddleware } from '../../middlewares/auth.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CandleTypeEntity } from '../../database/entities/CandleType.entity';
 import { CandleTypeController } from './adapters/driving/CandleType.controller';
@@ -27,5 +27,6 @@ import { ConfigurationRepository } from '../configuration/adapters/driven/Config
 export class CandlesTypeModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes('candle_type/list');
+    consumer.apply(AuthOptionalMiddleware).forRoutes('candle_type/candle_options_with_min_items');
   }
 }

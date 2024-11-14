@@ -4,7 +4,7 @@ import { ICandleTypeRepository } from '../outboundPorts/ICandleTypeRepository';
 import { ListCandleTypeDomain } from '../model/out/ListCandleTypeDomain';
 import { CandleTypeMapper } from '../mappers/CandleType.mapper';
 import { CandleOptionAndMinBulkPrice } from '../model/out/getOptionsAndMinItemsBulkPriceDomain';
-import { candleTypeErrorMessages, minimumSizeBulkPriceNameParam } from '../../../../core/constants';
+import { candleTypeErrorMessages, IAuthUser, minimumSizeBulkPriceNameParam } from '../../../../core/constants';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
 import { IConfigurationService } from '../../../configuration/domain/inboundPorts/IConfigurationService';
 
@@ -22,11 +22,14 @@ export class CandleTypeService implements ICandleTypeService {
     return CandleTypeMapper.listCandleTypeMapper(candleTypes);
   }
 
-  async getCandleOptionAndMinItemsBulkPrice(): Promise<CandleOptionAndMinBulkPrice> {
+  async getCandleOptionAndMinItemsBulkPrice(user?: IAuthUser): Promise<CandleOptionAndMinBulkPrice> {
     try {
-      const candleOptionRepo = await this.candleTypeRepository.listCandleTypesWithOptions();
+      let whereVisible = {};
+      if (user === undefined || (user && !user.is_superuser)) {
+        whereVisible = { candle_options: { visible: true } };
+      }
+      const candleOptionRepo = await this.candleTypeRepository.listCandleTypesWithOptions(whereVisible);
       const configService = await this.configurationService.findParamByName(minimumSizeBulkPriceNameParam);
-
       return CandleTypeMapper.getCandleTypesWithOptionsAndConfigParamMapper(candleOptionRepo, configService);
     } catch (error) {
       const { message, status } = getErrorParams(
