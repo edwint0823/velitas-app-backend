@@ -1,6 +1,6 @@
 export class FunctionsHelper {
   public static isBoolean(valor: string): boolean {
-    return valor.toLowerCase() === 'true' || valor.toLowerCase() === 'false';
+    return valor.toString().toLowerCase() === 'true' || valor.toString().toLowerCase() === 'false';
   }
 
   public static convertToBoolean(valor: string): boolean {
