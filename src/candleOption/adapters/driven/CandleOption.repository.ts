@@ -34,7 +34,7 @@ export class CandleOptionRepository extends Repository<CandleOptionEntity> imple
       where: whereOptions,
       skip: skip,
       take: take,
-      order: { candle_type: { name: 'ASC' } },
+      order: { id: 'ASC', name: 'ASC' },
     });
     const total = await this.count({ where: whereOptions });
     return { options, total };
