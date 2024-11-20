@@ -38,6 +38,7 @@ export interface OrderDetailsAndBagsDomain {
   createdAt: string;
   customerName: string;
   customerPriceType: string;
+  customerPhoneNumber: string;
   statusName: string;
   publicStatusName: string;
   orderDetails: IOrderDetailsInfo[];

@@ -45,8 +45,13 @@
     "order": 8
   },
   {
+    "name": "Pendiente por entregar",
+    "public_name": "Listo para entrega",
+    "order": 9
+  },
+  {
     "name": "Entregado",
     "public_name": "Entregado",
-    "order": 9
+    "order": 10
   }
 ]

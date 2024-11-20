@@ -69,6 +69,7 @@ export class OrderMapper {
       createdAt: dayjs(order.created_at).format('YYYY-MM-DD'),
       customerName: order.customer.name,
       customerPriceType: order.customer.price_type,
+      customerPhoneNumber: order.customer.phone_number,
       statusName: order.status.name,
       publicStatusName: order.status.public_name,
       orderDetails: order.orders_details.map((orderDetail) => {
