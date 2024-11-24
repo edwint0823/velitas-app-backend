@@ -52,7 +52,7 @@ export class OrderEntity {
 
   @Column({
     type: 'timestamp',
-    default: 'now()',
+    default: () => "CURRENT_TIMESTAMP AT TIME ZONE 'EST'",
   })
   created_at: Date;
 

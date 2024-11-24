@@ -65,6 +65,6 @@ import { BagInventoryMovementRepository } from '../bagInventoryMovement/adapters
 })
 export class DashboardModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware);
+    consumer.apply(AuthMiddleware).forRoutes('dashboard');
   }
 }

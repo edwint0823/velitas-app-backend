@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { getErrorParams } from '../../../../core/errorsHandlers/getErrorParams';
-import { Between, In, Like, MoreThanOrEqual } from 'typeorm';
+import { Between, Equal, In, Like, MoreThanOrEqual } from 'typeorm';
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/es-mx.js';
 import { IOrderService } from './IOrderService';
@@ -213,6 +213,16 @@ export class OrderService implements IOrderService {
       whereOptions['created_at'] = Between(query.created_at_begin, query.created_at_end);
     } else if (query.created_at_begin) {
       whereOptions['created_at'] = MoreThanOrEqual(query.created_at_begin);
+    }
+
+    if (query.status) {
+      whereOptions['status_id'] = Equal(query.status);
+    }
+
+    if (query.candle_name) {
+      whereOptions['orders_details'] = {
+        name_list: Like(`%${query.candle_name}%`),
+      };
     }
 
     const skip = (pageNumber - 1) * pageSize;

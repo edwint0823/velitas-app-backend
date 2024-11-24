@@ -70,6 +70,27 @@ export class CustomerController {
     type: 'number',
     example: 1,
   })
+  @ApiParam({
+    name: 'name',
+    description: customerDocumentationLabels.listPaginateOperation.customerNameParamDescription,
+    required: false,
+    type: 'string',
+    example: 'MARIAN',
+  })
+  @ApiParam({
+    name: 'email',
+    description: customerDocumentationLabels.listPaginateOperation.customerEmailParamDescription,
+    required: false,
+    type: 'string',
+    example: 'Prueba@hotmail.com\t',
+  })
+  @ApiParam({
+    name: 'phone_number',
+    description: customerDocumentationLabels.listPaginateOperation.customerPhoneNUmberParamDescription,
+    required: false,
+    type: 'string',
+    example: '314 333 2754',
+  })
   async listCustomers(
     @Param('page_size') pageSize: number,
     @Param('page_number') pageNumber: number,

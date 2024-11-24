@@ -9,6 +9,7 @@ import { customerErrorMessages, customerSuccessMessages } from '../../../../core
 import { paginateCustomers } from '../../adapters/model/paginateCustomers.dto';
 import { listCustomersDomain } from '../model/out/listCustomersDomain';
 import { UpdateCustomerDto } from '../../adapters/model/updateCustomer.dto';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class CustomerService implements ICustomerService {
@@ -43,13 +44,13 @@ export class CustomerService implements ICustomerService {
   ): Promise<listCustomersDomain> {
     const whereOptions = {};
     if (query.name) {
-      whereOptions['name'] = query.name;
+      whereOptions['name'] = ILike(`%${query.name}%`);
     }
     if (query.email) {
-      whereOptions['email'] = query.email;
+      whereOptions['email'] = ILike(`%${query.email}%`);
     }
     if (query.phone_number) {
-      whereOptions['phone_number'] = query.phone_number;
+      whereOptions['phone_number'] = ILike(`%${query.phone_number}%`);
     }
     if (query.price_type) {
       whereOptions['price_type'] = query.price_type;

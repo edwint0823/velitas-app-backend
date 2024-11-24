@@ -209,6 +209,9 @@ export const customerDocumentationLabels = {
     priceTypeParamDescription: 'Tipo de catalogo para precios a filtrar',
     pageSizeParamDescription: 'Cantidad de items por pagina',
     pageNumberParamDescription: 'Número de pagina',
+    customerNameParamDescription: 'Nombre del cliente',
+    customerEmailParamDescription: 'Correo electrónico del cliente',
+    customerPhoneNUmberParamDescription: 'Número telefónico del cliente',
   },
   updateCustomerOperation: {
     summary: 'Actualizar información de cliente',
@@ -302,6 +305,8 @@ export const orderDocumentationLabels = {
     createAtBeginParamDescription: 'Fecha inicial para fecha de creación del pedido',
     createdAtEndParamDescription: 'Fecha final para fecha de creación del pedido',
     customerNameParamDescription: 'Nombre del cliente',
+    statusIdParamDescription: 'Id del estado del pedido',
+    candleNameParamDescription: 'Nombre de la vela',
   },
   updateStatusOperation: {
     summary: 'Actualizar el estado de un pedido en especifico',
@@ -387,6 +392,8 @@ export const orderValidationMessages = {
     createdAtBeginIsDate: 'La fecha inicial de creación del pedido debe ser una fecha',
     createdAtEndIsDate: 'La fecha final de creación del pedido debe ser una fecha',
     customerNameIsString: 'El nombre del cliente debe ser una cadena de texto',
+    statusIdIsInt: 'El estado del pedido debe ser un número entero',
+    candleNameIsString: 'El nombre de la vela debe ser una cadena de texto',
   },
   updateOrderAndDetailOperation: {
     nameNameListIsString: 'El nombre de la vela debe ser una cadena de caracteres',

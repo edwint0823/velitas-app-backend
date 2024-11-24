@@ -1,4 +1,13 @@
-import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsNumberString, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IAuthUser, orderValidationMessages, timeZoneDayjs } from '../../../../core/constants';
 import * as dayjs from 'dayjs';
@@ -42,4 +51,13 @@ export class QueryParamsListOrderDto {
   @IsString({ message: orderValidationMessages.paginateListOperation.customerNameIsString })
   public customer_name?: string;
   user: IAuthUser;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsInt({ message: orderValidationMessages.paginateListOperation.statusIdIsInt })
+  public status?: number;
+
+  @IsOptional()
+  @IsString({ message: orderValidationMessages.paginateListOperation.candleNameIsString })
+  public candle_name?: string;
 }

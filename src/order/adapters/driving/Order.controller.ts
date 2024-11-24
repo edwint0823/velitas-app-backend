@@ -105,6 +105,20 @@ export class OrderController {
     example: 'EDWIN',
     type: 'string',
   })
+  @ApiQuery({
+    name: 'status',
+    description: orderDocumentationLabels.paginateListOperation.customerNameParamDescription,
+    required: false,
+    example: 1,
+    type: 'number',
+  })
+  @ApiQuery({
+    name: 'candle_name',
+    description: orderDocumentationLabels.paginateListOperation.customerNameParamDescription,
+    required: false,
+    example: 'Leonor',
+    type: 'string',
+  })
   async paginateListOrders(
     @Param('page_size') pageSize: number,
     @Param('page_number') pageNumber: number,

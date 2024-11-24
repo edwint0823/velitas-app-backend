@@ -102,6 +102,7 @@ export class OrderRepository extends Repository<OrderEntity> implements IOrderRe
       relations: {
         customer: true,
         status: true,
+        orders_details: true,
       },
       skip: skip,
       take: take,
