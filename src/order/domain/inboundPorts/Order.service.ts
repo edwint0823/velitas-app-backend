@@ -728,6 +728,46 @@ export class OrderService implements IOrderService {
       });
       lastColumn += arrNameList.length;
     }
+
+    const rotulosOrderWorkSheet = orderWorkbook.addWorksheet('Rotulos');
+    rotulosOrderWorkSheet.columns = [{ header: 'Nro rotulo', key: 'nroRotulo', width: 30 }];
+    rotulosOrderWorkSheet.getRow(1).eachCell((cell) => {
+      cell.alignment = {
+        wrapText: true,
+        shrinkToFit: true,
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      cell.font = {
+        bold: true,
+        size: 14,
+      };
+    });
+    for (let i = 1; i <= orderInfo.orders_details.length; i++) {
+      rotulosOrderWorkSheet.addRow({
+        nroRotulo: `${orderCode} - ${i}`,
+      });
+      rotulosOrderWorkSheet.getRow(i + 1).eachCell((cell) => {
+        cell.alignment = {
+          wrapText: true,
+          shrinkToFit: true,
+        };
+        cell.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        cell.font = {
+          bold: true,
+          size: 25,
+        };
+      });
+    }
     const buffer = await orderWorkbook.xlsx.writeBuffer();
     return { buffer: buffer, fileName: `Pedido-${orderInfo.code}-${orderInfo.customer.name}` };
   }
